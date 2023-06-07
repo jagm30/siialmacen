@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use App\Models\Producto;
 use App\Models\categoriaproducto;
 class ProductoController extends Controller
 {
-    //
+    //    
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(){         
     	$productos = Producto::all();    	
 		$categoriaproductos = Categoriaproducto::all();
