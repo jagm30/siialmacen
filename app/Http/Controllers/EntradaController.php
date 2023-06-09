@@ -54,7 +54,10 @@ class EntradaController extends Controller
     public function show($id)
     {
         //
-        return $id;
+        $entrada  =Entrada::findOrFail($id);
+        //return $entrada;
+        $entradas = Entrada::all();
+        return view('entradas.show',compact('entradas','entrada'));
     }
 
     /**
