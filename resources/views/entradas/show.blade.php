@@ -5,7 +5,7 @@
 <div class="row">
         <div class="col-lg-2 col-xs-4" style="padding-right:2px; padding-left: 2px;">
           <!-- small box -->
-          <div class="small-box bg-yellow">
+          <div class="small-box bg-default">
             <div class="inner">
               <h3>{{$entrada->nfactura}}</h3>
 
@@ -17,8 +17,8 @@
         </div>
 
         <div class="col-md-6 col-sm-12 col-xs-12" style="padding-right:2px; padding-left: 2px;">
-          <div class="info-box bg-yellow">
-            <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+          <div class="info-box bg-default">
+            
 
             <div class="info-box-content">
               <span class="info-box-text">Proveedor: {{$entrada->proveedor}}   <br> Fecha: {{$entrada->fecha}}   </span>
