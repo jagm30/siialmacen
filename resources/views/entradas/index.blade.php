@@ -6,7 +6,7 @@
       <div class="box">
           <div class="box-header">
             <h3 class="box-title"><button type="button" class="btn btn-warning"> Registro de entradas</button> </h3> 
-            <button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar"> Agregar entrada</button>
+            <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregar"> Agregar entrada</button>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -14,11 +14,11 @@
             <thead>                  
               <tr>                    
                 <th scope="col">Id</th>                    
-                <th scope="col">Nombre</th>                    
-                <th scope="col">Descripción</th>   
-                <th scope="col">Categoria</th>                    
-                <th scope="col">Precio</th>                    
-                <th scope="col">Precio con descuento</th>                    
+                <th scope="col">No. de Factura</th>                    
+                <th scope="col">Proveedor</th>   
+                <th scope="col">Fecha</th>                    
+                <th scope="col">Almacen</th>                    
+                <th scope="col">Orden / Referencia</th>                    
                 <th scope="col">Acción</th>                    
                 <th scope="col"></th>                  
                 </tr>                
@@ -71,14 +71,15 @@
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Proveedor</label>
                     <select id="proveedor" name="proveedor" class="form-control">
-                        <option value="1">SIGMA</option>
-                        <option value="2">MCA COMPUTO</option>
-                        <option value="3">COCA COLA</option>
+                      <option>Seleccione un proveedor</option>
+                        @foreach($proveedores as $proveedor)
+                          <option value="{{$proveedor->id}}">{{$proveedor->nombre}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Fecha de recepción</label>
-                    <input id="fecha" type="date" class="form-control" name="fecha"  required  autofocus>
+                    <input id="fecha" type="date" class="form-control" name="fecha"  required  autofocus value="{{$date}}">
                 </div>
                 <div class="form-group has-success col-md-6">
                     <label class="control-label" for="inputSuccess1">Referencia / Orden de compra</label>
@@ -87,9 +88,10 @@
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Categoria</label>
                     <select id="categoria" name="categoria" class="form-control">
-                        <option value="1">ALMACEN GRAL</option>
-                        <option value="2">ALMACEN 2</option>
-                        <option value="3">ALMACEN 3</option>
+                        <option>Seleccione un almacen</option>
+                        @foreach($almacenes as $almacen)
+                          <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group has-error col-md-6">
@@ -101,7 +103,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
-        <button id="btn_guardaregistro" name="btn_guardaregistro" type="button" class="btn btn-primary">Guardar cambios</button>
+        <button id="btn_guardaregistro" name="btn_guardaregistro" type="button" class="btn btn-primary">Registrar entrada</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -121,7 +123,7 @@
       <div class="modal-body">
          <div class="row">
            <form id="formmodal">
-                <input id="id_producto" type="hidden" class="form-control" name="id_producto">
+                <input id="id_entrada" type="hidden" class="form-control" name="id_entrada">
                 <div class="form-group has-success col-md-6">
                     <label class="control-label" for="inputSuccess1">No. de factura</label>                     
                     <input id="nfactura-e" type="text" class="form-control" name="nfactura-e"  required  autofocus>
@@ -129,9 +131,10 @@
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Proveedor</label>
                     <select id="proveedor-e" name="proveedor-e" class="form-control">
-                        <option value="1">SIGMA</option>
-                        <option value="2">MCA COMPUTO</option>
-                        <option value="3">COCA COLA</option>
+                        <option>Seleccione un proveedor</option>
+                        @foreach($proveedores as $proveedor)
+                          <option value="{{$proveedor->id}}">{{$proveedor->nombre}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group has-error col-md-6">
@@ -145,9 +148,10 @@
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Categoria</label>
                     <select id="categoria-e" name="categoria-e" class="form-control">
-                        <option value="1">ALMACEN GRAL</option>
-                        <option value="2">ALMACEN 2</option>
-                        <option value="3">ALMACEN 3</option>
+                        <option>Seleccione un almacen</option>
+                        @foreach($almacenes as $almacen)
+                          <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group has-error col-md-6">
@@ -199,32 +203,36 @@
 
  $(document).on("click", "#btneditar", function () {
     //alert("accediendo a la edicion..."+$(this).attr('data-id'));
-    var id_producto = $(this).attr('data-id');
-     // alert(id_producto);
+    var id_entrada = $(this).attr('data-id');    
     $.ajax({
-           url:"/productos/"+id_producto,
+           url:"/entradas/"+id_entrada,
            async: false,
            dataType:"json",
-           success:function(html){                
-              $("#id_producto").val(html.id);
-              $("#nombre-e").val(html.nombre);
-              $("#descripcion-e").val(html.descripcion);
-              $("#categoria-e option[value='"+ html.categoria +"']").attr("selected",true);              
-              $("#precio-e").val(html.precio);
-              $("#precioPromocion-e").val(html.precioPromocion);            
+           success:function(html){   
+              $("#id_entrada").val(id_entrada);
+              $("#proveedor-e option[value='"+ html.proveedor +"']").attr("selected",true);
+              $("#fecha-e").val(html.fecha);
+              $("#nfactura-e").val(html.nfactura);
+              $("#referencia-e").val(html.referencia);
+              $("#categoria-e option[value='"+ html.categoria +"']").attr("selected",true);
+              $("#observaciones-e").val(html.observaciones);            
            }
         })
   });
 
-  $('#btn_guardarcambio').click(function() {    
-    var id_producto = $("#id_producto").val();
-    var nombre = $("#nombre-e").val();
-    var descripcion = $("#descripcion-e").val();
-    var categoria = $("#categoria-e").val();
-    var precio = $("#precio-e").val();
-    var precioPromocion = $("#precioPromocion-e").val(); 
+  $('#btn_guardarcambio').click(function() {   
+
+    var id_entrada    = $("#id_entrada").val();
+    var proveedor     = $("#proveedor-e").val();
+    var fecha         = $("#fecha-e").val();
+    var nfactura      = $("#nfactura-e").val();
+    var referencia    = $("#referencia-e").val();
+    var categoria     = $("#categoria-e").val();
+    var observaciones = $("#observaciones-e").val(); 
+
+
       $.ajax({
-         url:"/productos/edicion/"+id_producto+"/"+nombre+"/"+descripcion+"/"+categoria+"/"+precio+"/"+precioPromocion,
+         url:"/entradas/edicion/"+id_entrada+"/"+proveedor+"/"+fecha+"/"+nfactura+"/"+referencia+"/"+categoria+"/"+observaciones,
          dataType:"json",
          success:function(html){
           alert(html.data);

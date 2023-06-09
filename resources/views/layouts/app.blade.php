@@ -167,6 +167,8 @@
 </div>
 <!-- ./wrapper -->
 <!-- jQuery 3 -->
+<!-- Select2 -->
+
 <script src="{{ asset("bower_components/jquery/dist/jquery.min.js") }}"></script>
 <script src="{{ asset("bower_components/bootstrap/dist/js/bootstrap.min.js") }}"></script>
 <script src="{{ asset("bower_components/datatables.net/js/jquery.dataTables.min.js") }}"></script>

@@ -6,6 +6,9 @@ use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\CategoriaproductoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\EntradaController;
+use App\Http\Controllers\EntradaProductoController;
+use App\Http\Controllers\CatAlmacenController;
+use App\Http\Controllers\ProveedorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +32,11 @@ Route::resource('/categoriaproductos', CategoriaproductoController::class);
 Route::get('usuarios/delete/{id}', [App\Http\Controllers\UsuarioController::class,'destroy'])->name('eliminauser');
 Route::get('usuarios/edicion/{id_usuario}/{nombre}/{email}/{password}/{tipo_usuario}',[App\Http\Controllers\UsuarioController::class,'edicion'])->name('edicionUser');
 Route::resource('/usuarios', UsuarioController::class);
+Route::get('entradas/edicion/{id_entrada}/{proveedor}/{fecha}/{nfactura}/{referencia}/{categoria}/{observaciones}',[App\Http\Controllers\UsuarioController::class,'edicion'])->name('edicionEntrada');
 Route::resource('/entradas', EntradaController::class);
+Route::resource('/entradaproductos', EntradaProductoController::class);
+Route::resource('/almacenes', CatAlmacenController::class);
+Route::resource('/proveedores', ProveedorController::class);
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

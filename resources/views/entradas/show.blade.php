@@ -1,68 +1,66 @@
 @extends('layouts.app') 
 @section('contenidoprincipal') 
 
-<div class="container">   
-<div class="row">
-        <div class="col-lg-2 col-xs-4" style="padding-right:2px; padding-left: 2px;">
-          <!-- small box -->
-          <div class="small-box bg-default">
-            <div class="inner">
-              <h3>{{$entrada->nfactura}}</h3>
+<div class="container">  
+<!-- SELECT2 EXAMPLE -->
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title">Datos Generales || Categoria: <b>{{$entrada->categoria}}</b></h3>
 
-              <p>No. de Factura</p>
-            </div>
-
-           
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
           </div>
         </div>
-
-        <div class="col-md-6 col-sm-12 col-xs-12" style="padding-right:2px; padding-left: 2px;">
-          <div class="info-box bg-default">
-            
-
-            <div class="info-box-content">
-              <span class="info-box-text">Proveedor: {{$entrada->proveedor}}   <br> Fecha: {{$entrada->fecha}}   </span>
-
-              <div class="progress">
-                <div class="progress-bar" style="width: 100%"></div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-2">
+              <div class="form-group">
+                <label class="control-label" for="inputSuccess1">No. de factura</label>                     
+                <input id="nfactura" type="text" class="form-control" name="nfactura"  readonly value="{{$entrada->nfactura}}">                
               </div>
-                  <span class="progress-description">
-                    Requisicion: {{$entrada->referencia}} <br> Observaciones: {{$entrada->categoria}}
-                  </span>
-
             </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-2 col-xs-4" style="padding-right:2px; padding-left: 2px;">
-          <!-- small box -->
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>{{$entrada->categoria}}</h3>
-
-              <p>Categoria</p>
+            <div class="col-md-2">              
+              <div class="form-group">
+                <label class="control-label" for="inputWarning1">Proveedor</label>
+                <select id="proveedor" name="proveedor" class="form-control" value="{{$entrada->proveedor}}">
+                    <option value="1">SIGMA</option>
+                    <option value="2">MCA COMPUTO</option>
+                    <option value="3">COCA COLA</option>
+                </select>
+              </div>
             </div>
-           
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-xs-4" style="padding-right:2px; padding-left: 2px;">
-          <!-- small box -->
-          <div class="small-box ">
-            <div class="inner">
-             <button class="form-control btn-default">Editar</button><br>
-             <button class="form-control btn-default">Finalizar</button>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label class="control-label" for="inputError1">Fecha de recepción</label>
+                <input id="fecha" type="date" class="form-control" name="fecha"  readonly value="{{$entrada->fecha}}">
+              </div>             
             </div>
-           
+            <div class="col-md-3">
+              <!-- /.form-group -->
+              <div class="form-group">
+                <label class="control-label" for="inputSuccess1">Referencia / Orden de compra</label>
+                <input id="referencia" type="text" class="form-control" name="referencia"  readonly value="{{$entrada->referencia}}">
+              </div>
+              <!-- /.form-group -->
+            </div>
+            <div class="col-md-3">
+              <!-- /.form-group -->
+              <div class="form-group">
+                <label class="control-label" for="inputSuccess1">Observaciones</label>
+                <input id="referencia" type="text" class="form-control" name="referencia" readonly value="{{$entrada->observaciones}}">
+              </div>
+              <!-- /.form-group -->
+            </div>
+            <!-- /.col -->
           </div>
+          <!-- /.row -->
         </div>
-       
-     
-        <!-- ./col -->
-      </div>
-      <!-- /.row -->  
+        <!-- /.box-body -->
+      
+      <!-- /.box --> 
+
    <div class="row">
     <div class="col-xs-12">
       <div class="box">
@@ -110,7 +108,7 @@
     </div>
   </div>
 </div> 
-
+</div>
 
 <div class="modal fade" id="modal-agregar">
   <div class="modal-dialog">
@@ -118,32 +116,30 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Registro de entradas</h4>
+        <h4 class="modal-title">Registro de articulos</h4>
       </div>
       <div class="modal-body">
          <div class="row">
            <form id="formmodal">
               <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
-                <input id="id_producto" type="hidden" class="form-control" name="id_producto">
-                <div class="form-group has-success col-md-6">
-                    <label class="control-label" for="inputSuccess1">No. de factura</label>                     
-                    <input id="nfactura" type="text" class="form-control" name="nfactura"  required  autofocus>
-                </div>
-                <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Proveedor</label>
-                    <select id="proveedor" name="proveedor" class="form-control">
-                        <option value="1">SIGMA</option>
-                        <option value="2">MCA COMPUTO</option>
-                        <option value="3">COCA COLA</option>
+                <input id="id_entrada" type="hidden" value="{{ $id_entrada }}" class="form-control" name="id_entrada">
+                <div class="form-group has-success col-md-12">
+                    <label>Articulo</label>
+                    <select id="id_producto" name="id_producto" class="form-control select2" style="width: 100%;" >
+                      <!--<option selected="selected">Alabama</option>-->
+                      @foreach($productos as $producto)
+                        <option value="{{$producto->id}}">{{$producto->descripcion}}</option>        
+                      @endforeach              
                     </select>
                 </div>
-                <div class="form-group has-error col-md-6">
-                    <label class="control-label" for="inputError1">Fecha de recepción</label>
-                    <input id="fecha" type="date" class="form-control" name="fecha"  required  autofocus>
+
+                <div class="form-group has-error col-md-3">
+                    <label class="control-label" for="inputError1">Cantidad</label>
+                    <input id="cantidad" type="text" class="form-control" name="cantidad"  required  autofocus>
                 </div>
-                <div class="form-group has-success col-md-6">
-                    <label class="control-label" for="inputSuccess1">Referencia / Orden de compra</label>
-                    <input id="referencia" type="text" class="form-control" name="referencia"  required  autofocus>
+                <div class="form-group has-success col-md-3">
+                    <label class="control-label" for="inputSuccess1">Precio</label>
+                    <input id="precio" type="text" class="form-control" name="precio"  required  autofocus>
                 </div>
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Categoria</label>
@@ -152,11 +148,7 @@
                         <option value="2">ALMACEN 2</option>
                         <option value="3">ALMACEN 3</option>
                     </select>
-                </div>
-                <div class="form-group has-error col-md-6">
-                    <label class="control-label" for="inputError1">Observaciones</label>
-                    <input id="observaciones" type="text" class="form-control" name="observaciones"  required  autofocus>
-                </div>
+                </div>                
             </form>
          </div>
       </div>
@@ -182,7 +174,7 @@
       <div class="modal-body">
          <div class="row">
            <form id="formmodal">
-                <input id="id_producto" type="hidden" class="form-control" name="id_producto">
+                <input id="id_producto-e" type="hidden" class="form-control" name="id_producto-e">
                 <div class="form-group has-success col-md-6">
                     <label class="control-label" for="inputSuccess1">No. de factura</label>                     
                     <input id="nfactura-e" type="text" class="form-control" name="nfactura-e"  required  autofocus>
@@ -233,6 +225,8 @@
 @section("scriptpie")
 <script>
   $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
     $('#example1').DataTable({
       language: {
         "decimal": "",
@@ -299,32 +293,30 @@
 //Agregar producto
   $('#btn_guardaregistro').click(function() {    
     
-    var proveedor       = $('#proveedor').val();
-    var fecha           = $('#fecha').val();    
-    var nfactura        = $('#nfactura').val();
-    var referencia      = $('#referencia').val();
-    var categoria       = $('#categoria').val();
-    var observaciones   = $('#observaciones').val();
-    var id_usuario      = 1;
-
+    var id_entrada    = $('#id_entrada').val();
+    var id_producto   = $('#id_producto').val();    
+    var cantidad      = $('#cantidad').val();
+    var precio        = $('#precio').val();
+    var categoria     = $('#categoria').val();
+    var id_usuario    = 1;
+    alert(id_entrada + "- "+ id_producto + "- "+ cantidad + "- "+ precio + "- "+ categoria + "- "+ id_usuario);
       $.ajax({
-          url: "/entradas",
+          url: "/entradaproductos",
           type: "POST",
           data: {
               _token: $("#csrf").val(),
               type: 1,
-              proveedor:      proveedor,
-              fecha:          fecha,
-              nfactura:       nfactura,            
-              referencia:     referencia,
+              id_entrada:     id_entrada,
+              id_producto:    id_producto,
+              cantidad:       cantidad,            
+              precio:         precio,
               categoria:      categoria,
-              observaciones:  observaciones,
               id_usuario:     id_usuario
           },
           cache: false,
           success: function(dataResult){
             alert(dataResult.data);    
-            window.location.href = '/entradas/'+dataResult.data; 
+           // window.location.href = '/entradaproductos/'+dataResult.data; 
             /*$("#formmodal")[0].reset();
             $('#modal-agregar').modal('toggle');
             location.reload();             */

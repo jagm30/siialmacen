@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Entrada;
+use App\Models\Producto;
+use App\Models\Proveedor;
+use App\Models\CatAlmacen;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class EntradaController extends Controller
 {
@@ -17,8 +21,12 @@ class EntradaController extends Controller
     public function index()
     {
         //
-        $entradas = Entrada::all();
-        return view('entradas.index',compact('entradas'));
+        $date = Carbon::now();
+        $date = $date->format('Y-m-d');
+        $almacenes      = CatAlmacen::all();
+        $proveedores    = Proveedor::all();
+        $entradas       = Entrada::all();
+        return view('entradas.index',compact('entradas','proveedores','almacenes','date'));
 
     }
 
@@ -51,13 +59,20 @@ class EntradaController extends Controller
      * @param  \App\Models\Entrada  $entrada
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         //
-        $entrada  =Entrada::findOrFail($id);
-        //return $entrada;
-        $entradas = Entrada::all();
-        return view('entradas.show',compact('entradas','entrada'));
+        if ($request->ajax()) {
+            $entrada    = DB::table('entradas')
+                    ->where('entradas.id',$id)
+                    ->first();
+            return json_encode($entrada);
+        }
+        $id_entrada = $id;
+        $entrada    =Entrada::findOrFail($id);
+        $entradas   = Entrada::all();
+        $productos  = Producto::all();
+        return view('entradas.show',compact('entradas','entrada','productos','id_entrada'));
     }
 
     /**
@@ -83,6 +98,20 @@ class EntradaController extends Controller
         //
     }
 
+    public function edicion(Request $request, $id_entrada ,$proveedor ,$fecha ,$nfactura ,$referencia ,$categoria, $observaciones)
+    { 
+        
+           /* $entrada = Entrada::find($id_entrada);
+            $entrada->proveedor         = $proveedor;
+            $entrada->fecha             = $fecha;
+            $entrada->nfactura          = $nfactura;
+            $entrada->referencia        = $referencia;
+            $entrada->categoria         = $categoria;
+            $entrada->observaciones     = $observaciones;
+            $entrada->save();*/
+            return response()->json(['data' => "Cambios guardados correctamente..."]);    
+                 
+    }
     /**
      * Remove the specified resource from storage.
      *
