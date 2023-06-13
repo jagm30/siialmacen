@@ -61,7 +61,6 @@ class EntradaController extends Controller
      */
     public function show(Request $request, $id)
     {
-        //
         if ($request->ajax()) {
             $entrada    = DB::table('entradas')
                     ->where('entradas.id',$id)

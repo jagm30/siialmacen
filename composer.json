@@ -13,7 +13,9 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
         "livewire/livewire": "^2.12",
-        "rappasoft/laravel-livewire-tables": "^2.14"
+        "rappasoft/laravel-livewire-tables": "^2.14",
+        "yajra/laravel-datatables-editor": "^1.25",
+        "yajra/laravel-datatables-oracle": "^9.21"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

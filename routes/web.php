@@ -34,6 +34,9 @@ Route::get('usuarios/edicion/{id_usuario}/{nombre}/{email}/{password}/{tipo_usua
 Route::resource('/usuarios', UsuarioController::class);
 Route::get('entradas/edicion/{id_entrada}/{proveedor}/{fecha}/{nfactura}/{referencia}/{categoria}/{observaciones}',[App\Http\Controllers\UsuarioController::class,'edicion'])->name('edicionEntrada');
 Route::resource('/entradas', EntradaController::class);
+
+Route::get('entradaproductos/delete/{id}', [App\Http\Controllers\EntradaProductoController::class,'destroy'])->name('destroyentpro');
+Route::get('entradaproductos/listarxentrada/{id}',[App\Http\Controllers\EntradaProductoController::class,'listarxentrada'])->name('listarxentrada');
 Route::resource('/entradaproductos', EntradaProductoController::class);
 Route::resource('/almacenes', CatAlmacenController::class);
 Route::resource('/proveedores', ProveedorController::class);

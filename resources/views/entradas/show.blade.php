@@ -69,39 +69,16 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-             <table id="example1" class="table table-bordered table-striped">           
+            <table id="alumnos_table" class="table table-bordered table-striped">           
             <thead>                  
               <tr>                    
-                <th scope="col">Id</th>                    
-                <th scope="col">Nombre</th>                    
-                <th scope="col">Descripción</th>   
-                <th scope="col">Categoria</th>                    
-                <th scope="col">Precio</th>                    
-                <th scope="col">Precio con descuento</th>                    
-                <th scope="col">Acción</th>                    
-                <th scope="col"></th>                  
+                <th scope="col">Descripción</th>                    
+                <th scope="col">Cantidad</th>                    
+                <th scope="col">Precio</th>                 
+                <th>Accion</th>
                 </tr>                
             </thead>                
-            <tbody>                    
-              @foreach ($entradas as $entrada)                        
-                <tr>                            
-                  <td>{{ $entrada->id }}</td>                            
-                  <td>{{ $entrada->nfactura }}</td>                            
-                  <td>{{ $entrada->proveedor }}</td>
-                  <td>{{ $entrada->fecha}}</td>                            
-                  <td>{{ $entrada->categoria }}</td>                            
-                  <td>${{ $entrada->referencia }} MXN</td>                            
-                  <td>                                
-                    <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$entrada->id}}" data-toggle="modal" data-target="#modal-default">
-                Editar
-              </button>
-                  </td>                            
-                  <td>                                
-                    <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$entrada->id}}" class="btn btn-danger">Borrar</button>                            
-                  </td>                        
-                </tr>                    
-              @endforeach                
-            </tbody>            
+           
            </table>                
           <!-- /.box-body -->
         </div>
@@ -120,7 +97,7 @@
       </div>
       <div class="modal-body">
          <div class="row">
-           <form id="formmodal">
+           <form id="formmodal" name="formmodal">
               <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
                 <input id="id_entrada" type="hidden" value="{{ $id_entrada }}" class="form-control" name="id_entrada">
                 <div class="form-group has-success col-md-12">
@@ -161,7 +138,7 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
+<!--
 
 <div class="modal fade" id="modal-default">
   <div class="modal-dialog">
@@ -215,43 +192,45 @@
         <button id="btn_guardarcambio" name="btn_guardarcambio" type="button" class="btn btn-primary">Guardar Cambios</button>
       </div>
     </div>
-    <!-- /.modal-content -->
+   
   </div>
-  <!-- /.modal-dialog -->
+ 
 </div>
-<!-- /.modal -->
+.modal -->
 </div>
-@endsection
+@endsection('contenidoprincipal')
 @section("scriptpie")
-<script>
-  $(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
-    $('#example1').DataTable({
-      language: {
-        "decimal": "",
-        "emptyTable": "No hay información",
-        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-        "infoPostFix": "",
-        "thousands": ",",
-        "lengthMenu": "Mostrar _MENU_ Entradas",
-        "loadingRecords": "Cargando...",
-        "processing": "Procesando...",
-        "search": "Buscar:",
-        "zeroRecords": "Sin resultados encontrados"        
-      },
-      "search": {
-            "addClass": 'form-control input-lg col-xs-12'
-      },
-      "fnDrawCallback":function(){
-        $("input[type='search']").attr("id", "searchBox");            
-        $('#searchBox').css("width", "400px").focus();
-      }
-    })
-  })
+<script type="text/javascript">
+  $(function() {
+    $('.select2').select2();
+     $('#alumnos_table').DataTable({
+        processing: true,
+        serverSide: true,
 
+          ajax: "/entradaproductos/listarxentrada/"+{{$entrada->id}},
+          columns:[
+        {
+          data: 'descripcion',
+          name: 'descripcion'
+        },
+        {
+          data: 'cantidad',
+          name: 'cantidad'
+        },
+        {
+          data: 'precio',
+          name: 'precio'
+        },
+        {
+        data: 'action',
+        name: 'action',
+        orderable: false
+        }
+      ],
+      searching: true,
+      autoWidth: false
+      });
+});
  $(document).on("click", "#btneditar", function () {
     //alert("accediendo a la edicion..."+$(this).attr('data-id'));
     var id_producto = $(this).attr('data-id');
@@ -271,24 +250,6 @@
         })
   });
 
-  $('#btn_guardarcambio').click(function() {    
-    var id_producto = $("#id_producto").val();
-    var nombre = $("#nombre-e").val();
-    var descripcion = $("#descripcion-e").val();
-    var categoria = $("#categoria-e").val();
-    var precio = $("#precio-e").val();
-    var precioPromocion = $("#precioPromocion-e").val(); 
-      $.ajax({
-         url:"/productos/edicion/"+id_producto+"/"+nombre+"/"+descripcion+"/"+categoria+"/"+precio+"/"+precioPromocion,
-         dataType:"json",
-         success:function(html){
-          alert(html.data);
-          $("#formmodal")[0].reset();
-          $('#modal-default').modal('toggle');
-          location.reload();
-         }
-      })
-    }); 
 
 //Agregar producto
   $('#btn_guardaregistro').click(function() {    
@@ -299,7 +260,7 @@
     var precio        = $('#precio').val();
     var categoria     = $('#categoria').val();
     var id_usuario    = 1;
-    alert(id_entrada + "- "+ id_producto + "- "+ cantidad + "- "+ precio + "- "+ categoria + "- "+ id_usuario);
+    //alert(id_entrada + "- "+ id_producto + "- "+ cantidad + "- "+ precio + "- "+ categoria + "- "+ id_usuario);
       $.ajax({
           url: "/entradaproductos",
           type: "POST",
@@ -315,11 +276,9 @@
           },
           cache: false,
           success: function(dataResult){
-            alert(dataResult.data);    
-           // window.location.href = '/entradaproductos/'+dataResult.data; 
-            /*$("#formmodal")[0].reset();
-            $('#modal-agregar').modal('toggle');
-            location.reload();             */
+            alert("registrado correctamente...");     
+                $('#alumnos_table').DataTable().ajax.reload();           
+                $('#formmodal').trigger("reset");
           }
       });    
   });
@@ -327,14 +286,14 @@
 
 
   $(document).on("click", "#btn-eliminar", function () {
-    var id_producto = $(this).attr('data-id');
-    if (confirm("Desea eliminar el registro!"+id_producto) == true) {
+    var id_entradaproducto = $(this).attr('data-id');
+    if (confirm("Desea eliminar el registro!"+id_entradaproducto) == true) {
       $.ajax({
             type: "get",
-            url: "{{ url('productos/delete') }}"+'/'+ id_producto,
+            url: "{{ url('entradaproductos/delete') }}"+'/'+ id_entradaproducto,
             success: function (data) {
               alert(data.data);
-              location.reload();
+              $('#alumnos_table').DataTable().ajax.reload();
             }
         });
     }else{
@@ -342,5 +301,7 @@
     }
   });
 
+  
+
 </script>
-@endsection
+@endsection('scriptpie')

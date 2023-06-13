@@ -270,7 +270,7 @@
           },
           cache: false,
           success: function(dataResult){
-            alert(dataResult.data);    
+          //  alert(dataResult.data);    
             window.location.href = '/entradas/'+dataResult.data; 
             /*$("#formmodal")[0].reset();
             $('#modal-agregar').modal('toggle');
