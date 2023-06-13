@@ -32,7 +32,9 @@ Route::resource('/categoriaproductos', CategoriaproductoController::class);
 Route::get('usuarios/delete/{id}', [App\Http\Controllers\UsuarioController::class,'destroy'])->name('eliminauser');
 Route::get('usuarios/edicion/{id_usuario}/{nombre}/{email}/{password}/{tipo_usuario}',[App\Http\Controllers\UsuarioController::class,'edicion'])->name('edicionUser');
 Route::resource('/usuarios', UsuarioController::class);
-Route::get('entradas/edicion/{id_entrada}/{proveedor}/{fecha}/{nfactura}/{referencia}/{categoria}/{observaciones}',[App\Http\Controllers\UsuarioController::class,'edicion'])->name('edicionEntrada');
+Route::get('entradas/edicion/{id_entrada}/{proveedor}/{fecha}/{nfactura}/{referencia}/{categoria}/{observaciones}',[App\Http\Controllers\EntradaController::class,'edicion'])->name('edicionEntrada');
+Route::get('entradas/delete/{id}', [App\Http\Controllers\EntradaController::class,'destroy'])->name('eliminaent');
+Route::get('entradas/finalizarentrada/{id}', [App\Http\Controllers\EntradaController::class,'finalizarentrada'])->name('finalizarentrada');
 Route::resource('/entradas', EntradaController::class);
 
 Route::get('entradaproductos/delete/{id}', [App\Http\Controllers\EntradaProductoController::class,'destroy'])->name('destroyentpro');

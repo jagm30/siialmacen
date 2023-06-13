@@ -21,6 +21,7 @@ class CreateEntradasTable extends Migration
             $table->string('referencia',100);
             $table->string('categoria',20);
             $table->string('observaciones',200);
+            $table->string('status',15)->nullable();
             $table->integer('id_usuario');
             $table->timestamps();
         });

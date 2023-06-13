@@ -28,18 +28,14 @@
                 <tr>                            
                   <td>{{ $entrada->id }}</td>                            
                   <td>{{ $entrada->nfactura }}</td>                            
-                  <td>{{ $entrada->proveedor }}</td>
+                  <td>{{ $entrada->nombreproveedor }}</td>
                   <td>{{ $entrada->fecha}}</td>                            
-                  <td>{{ $entrada->categoria }}</td>                            
-                  <td>${{ $entrada->referencia }} MXN</td>                            
+                  <td>{{ $entrada->nomalmacen }}</td>                            
+                  <td>${{ $entrada->referencia }} MXN</td>                                              
+                  <td><a href="/entradas/{{$entrada->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$entrada->id}}" class="btn btn-info">Agregar / Ver</button></a></td>
                   <td>                                
-                    <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$entrada->id}}" data-toggle="modal" data-target="#modal-default">
-                Editar
-              </button>
-                  </td>                            
-                  <td>                                
-                    <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$entrada->id}}" class="btn btn-danger">Borrar</button>                            
-                  </td>                        
+                    <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$entrada->id}}" data-toggle="modal" data-target="#modal-default">Editar</button></td>                            
+                  <td><button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$entrada->id}}" class="btn btn-danger">Borrar</button></td>
                 </tr>                    
               @endforeach                
             </tbody>            
@@ -123,7 +119,7 @@
       <div class="modal-body">
          <div class="row">
            <form id="formmodal">
-                <input id="id_entrada" type="hidden" class="form-control" name="id_entrada">
+                <input id="id_entrada_e" type="hidden" class="form-control" name="id_entrada_e">
                 <div class="form-group has-success col-md-6">
                     <label class="control-label" for="inputSuccess1">No. de factura</label>                     
                     <input id="nfactura-e" type="text" class="form-control" name="nfactura-e"  required  autofocus>
@@ -209,7 +205,7 @@
            async: false,
            dataType:"json",
            success:function(html){   
-              $("#id_entrada").val(id_entrada);
+              $("#id_entrada_e").val(id_entrada);
               $("#proveedor-e option[value='"+ html.proveedor +"']").attr("selected",true);
               $("#fecha-e").val(html.fecha);
               $("#nfactura-e").val(html.nfactura);
@@ -222,14 +218,13 @@
 
   $('#btn_guardarcambio').click(function() {   
 
-    var id_entrada    = $("#id_entrada").val();
+    var id_entrada    = $("#id_entrada_e").val();
     var proveedor     = $("#proveedor-e").val();
     var fecha         = $("#fecha-e").val();
     var nfactura      = $("#nfactura-e").val();
     var referencia    = $("#referencia-e").val();
     var categoria     = $("#categoria-e").val();
     var observaciones = $("#observaciones-e").val(); 
-
 
       $.ajax({
          url:"/entradas/edicion/"+id_entrada+"/"+proveedor+"/"+fecha+"/"+nfactura+"/"+referencia+"/"+categoria+"/"+observaciones,
@@ -252,6 +247,7 @@
     var referencia      = $('#referencia').val();
     var categoria       = $('#categoria').val();
     var observaciones   = $('#observaciones').val();
+    var status          = 'captura';
     var id_usuario      = 1;
 
       $.ajax({
@@ -266,6 +262,7 @@
               referencia:     referencia,
               categoria:      categoria,
               observaciones:  observaciones,
+              status:         status,
               id_usuario:     id_usuario
           },
           cache: false,
@@ -282,11 +279,11 @@
 
 
   $(document).on("click", "#btn-eliminar", function () {
-    var id_producto = $(this).attr('data-id');
-    if (confirm("Desea eliminar el registro!"+id_producto) == true) {
+    var id_entrada = $(this).attr('data-id');
+    if (confirm("Desea eliminar el registro!"+id_entrada) == true) {
       $.ajax({
             type: "get",
-            url: "{{ url('productos/delete') }}"+'/'+ id_producto,
+            url: "{{ url('entradas/delete') }}"+'/'+ id_entrada,
             success: function (data) {
               alert(data.data);
               location.reload();

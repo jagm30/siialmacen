@@ -18,7 +18,7 @@ class CreateProductosTable extends Migration
             $table->string('nombre');
             $table->string('descripcion');
             $table->string('categoria');
-            $table->string('claveproducto');
+            $table->string('claveproducto')$table->string('status',15)->nullable();
             $table->string('precio');
             $table->string('precioPromocion');
             $table->timestamps();

@@ -66,6 +66,7 @@
       <div class="box">
           <div class="box-header">
             <button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar"> Agregar Articulo</button>
+            <button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > Finalizar captura</button>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -301,7 +302,21 @@
     }
   });
 
-  
+  $(document).on("click", "#btnfinalizar", function () {
+    var id_entrada    = $('#id_entrada').val();
+    
+    if (confirm("Desea finalizar la captura") == true) {
+      $.ajax({
+            type: "get",
+            url: "{{ url('entradas/finalizarentrada') }}"+'/'+ id_entrada,
+            success: function (data) {
+              alert(data.data);
+              $('#alumnos_table').DataTable().ajax.reload();
+            }
+        });
+    }
+  });
+
 
 </script>
 @endsection('scriptpie')

@@ -25,7 +25,12 @@ class EntradaController extends Controller
         $date = $date->format('Y-m-d');
         $almacenes      = CatAlmacen::all();
         $proveedores    = Proveedor::all();
-        $entradas       = Entrada::all();
+        //$entradas       = Entrada::all();
+        $entradas       = DB::table('entradas')
+            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
+            ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
+            ->get();
         return view('entradas.index',compact('entradas','proveedores','almacenes','date'));
 
     }
@@ -98,18 +103,17 @@ class EntradaController extends Controller
     }
 
     public function edicion(Request $request, $id_entrada ,$proveedor ,$fecha ,$nfactura ,$referencia ,$categoria, $observaciones)
-    { 
-        
-           /* $entrada = Entrada::find($id_entrada);
+    {         
+            $entrada = Entrada::find($id_entrada);
             $entrada->proveedor         = $proveedor;
             $entrada->fecha             = $fecha;
             $entrada->nfactura          = $nfactura;
             $entrada->referencia        = $referencia;
             $entrada->categoria         = $categoria;
             $entrada->observaciones     = $observaciones;
-            $entrada->save();*/
-            return response()->json(['data' => "Cambios guardados correctamente..."]);    
-                 
+            $entrada->id_usuario        = 1;
+            $entrada->save();
+            return response()->json(['data' => "Cambios guardados correctamente..."]);                     
     }
     /**
      * Remove the specified resource from storage.
@@ -117,8 +121,18 @@ class EntradaController extends Controller
      * @param  \App\Models\Entrada  $entrada
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Entrada $entrada)
+    public function destroy($id)
     {
-        //
+        $entrada   = Entrada::findOrFail($id);
+        $entrada->delete();
+        return response()->json(['data' => "Eliminado correctamente..."]);
+    }
+    public function finalizarentrada($id)
+    {
+        $entrada = Entrada::find($id);
+        $entrada->status            = 'finalizado';
+        $entrada->id_usuario        = 1;
+        $entrada->save();
+        return response()->json(['data' => "Cambios guardados correctamente..."]);      
     }
 }
