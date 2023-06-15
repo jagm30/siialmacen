@@ -19,7 +19,8 @@ class CreateEntradaProductosTable extends Migration
             $table->integer('id_producto');
             $table->integer('cantidad');
             $table->float('precio', 8,2);            
-            $table->string('categoria');
+            $table->string('categoria',30);
+            $table->string('status',30);
             $table->integer('id_usuario');
             $table->timestamps();
         });

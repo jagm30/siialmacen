@@ -9,6 +9,7 @@ use App\Http\Controllers\EntradaController;
 use App\Http\Controllers\EntradaProductoController;
 use App\Http\Controllers\CatAlmacenController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\InventarioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,7 @@ Route::get('entradaproductos/listarxentrada/{id}',[App\Http\Controllers\EntradaP
 Route::resource('/entradaproductos', EntradaProductoController::class);
 Route::resource('/almacenes', CatAlmacenController::class);
 Route::resource('/proveedores', ProveedorController::class);
+Route::resource('/inventario', InventarioController::class);
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

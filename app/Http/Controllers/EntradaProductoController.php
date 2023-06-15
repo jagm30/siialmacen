@@ -107,7 +107,12 @@ class EntradaProductoController extends Controller
     public function destroy ($id)
     {
         $entradaproducto   = EntradaProducto::findOrFail($id);
-        $entradaproducto->delete();
-        return response()->json(['data' => "Eliminado correctamente..."]);
+        if($entradaproducto->status=='captura'){
+            $entradaproducto->delete();
+            return response()->json(['data' => "Eliminado correctamente..."]);
+        }else{
+            return response()->json(['data' => "No se puede eliminar..."]);
+        }
+        
     }
 }

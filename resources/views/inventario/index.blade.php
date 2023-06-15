@@ -5,8 +5,7 @@
     <div class="col-xs-12">
       <div class="box">
           <div class="box-header">
-            <h3 class="box-title"><button type="button" class="btn btn-warning"> Catalogo de articulos</button> </h3> 
-            <button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar"> Agregar articulo</button>
+            <h3 class="box-title">
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -17,10 +16,7 @@
                 <th scope="col">Nombre</th>                    
                 <th scope="col">Descripción</th>   
                 <th scope="col">Categoria</th>                    
-                <th scope="col">Precio</th>                    
-                <th scope="col">Precio con descuento</th>                    
-                <th scope="col">Acción</th>                    
-                <th scope="col"></th>                  
+                <th scope="col">Stock</th>                                     
                 </tr>                
             </thead>                
             <tbody>                    
@@ -30,16 +26,7 @@
                   <td>{{ $producto->nombre }}</td>                            
                   <td>{{ $producto->descripcion }}</td>
                   <td>{{ $producto->categoria}}</td>                            
-                  <td>{{ $producto->precio }}</td>                            
-                  <td>${{ $producto->precioPromocion }} MXN</td>                            
-                  <td>                                
-                    <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$producto->id}}" data-toggle="modal" data-target="#modal-default">
-                Editar
-              </button>
-                  </td>                            
-                  <td>                                
-                    <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$producto->id}}" class="btn btn-danger">Borrar</button>                            
-                  </td>                        
+                  <td>{{ $producto->stock }}</td>                                                                
                 </tr>                    
               @endforeach                
             </tbody>            
@@ -49,7 +36,6 @@
     </div>
   </div>
 </div> 
-
 
 <div class="modal fade" id="modal-agregar">
   <div class="modal-dialog">
@@ -174,6 +160,7 @@
       "search": {
             "addClass": 'form-control input-lg col-xs-12'
       },
+      order: [[4, 'desc']],
       "fnDrawCallback":function(){
         $("input[type='search']").attr("id", "searchBox");            
         $('#searchBox').css("width", "400px").focus();

@@ -77,7 +77,7 @@
                 <li><a href="/cobros/deudores/">Deudores</a></li>
               </ul>
             </li>
-            <li><a href="#">Inventario</a></li>
+            <li><a href="/inventario">Inventario</a></li>
             <li><a href="/usuarios/">Usuarios</a></li>
             <li><a href="{{ route('logout') }}" class="btn btn-primary" onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">Salir</a></li>

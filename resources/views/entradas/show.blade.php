@@ -65,8 +65,8 @@
     <div class="col-xs-12">
       <div class="box">
           <div class="box-header">
-            <button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar"> Agregar Articulo</button>
-            <button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > Finalizar captura</button>
+            @if($entrada->status=='captura')<button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar"> Agregar Articulo</button>
+            <button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > Finalizar captura</button>@endif
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -260,6 +260,7 @@
     var cantidad      = $('#cantidad').val();
     var precio        = $('#precio').val();
     var categoria     = $('#categoria').val();
+    var status        = "captura";
     var id_usuario    = 1;
     //alert(id_entrada + "- "+ id_producto + "- "+ cantidad + "- "+ precio + "- "+ categoria + "- "+ id_usuario);
       $.ajax({
@@ -273,6 +274,7 @@
               cantidad:       cantidad,            
               precio:         precio,
               categoria:      categoria,
+              status:         status,
               id_usuario:     id_usuario
           },
           cache: false,
@@ -310,8 +312,9 @@
             type: "get",
             url: "{{ url('entradas/finalizarentrada') }}"+'/'+ id_entrada,
             success: function (data) {
-              alert(data.data);
-              $('#alumnos_table').DataTable().ajax.reload();
+              location.reload();
+              //alert(data.data);
+              //$('#alumnos_table').DataTable().ajax.reload();
             }
         });
     }
