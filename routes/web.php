@@ -10,6 +10,7 @@ use App\Http\Controllers\EntradaProductoController;
 use App\Http\Controllers\CatAlmacenController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\SalidaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,8 @@ Route::resource('/entradaproductos', EntradaProductoController::class);
 Route::resource('/almacenes', CatAlmacenController::class);
 Route::resource('/proveedores', ProveedorController::class);
 Route::resource('/inventario', InventarioController::class);
+
+Route::resource('/salidas', SalidaController::class);
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

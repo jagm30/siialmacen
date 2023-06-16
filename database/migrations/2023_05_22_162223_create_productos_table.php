@@ -22,8 +22,8 @@ class CreateProductosTable extends Migration
             $table->string('status',15)->nullable();
             $table->string('precio');
             $table->string('precioPromocion');
-            $table->integer('stock');
-            $table->integer('id_usuario');
+            $table->integer('stock')->nullable();;
+            $table->integer('id_usuario')->nullable();;
 
 
             $table->timestamps();

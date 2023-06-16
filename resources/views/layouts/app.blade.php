@@ -73,8 +73,8 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Salida<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="/cobros/reporte/">Inventario</a></li>
-                <li><a href="/cobros/deudores/">Deudores</a></li>
+                <li><a href="/salidas/">Registrar salida</a></li>
+                <li><a href="#">Reportes</a></li>            
               </ul>
             </li>
             <li><a href="/inventario">Inventario</a></li>
