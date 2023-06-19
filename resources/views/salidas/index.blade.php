@@ -59,7 +59,7 @@
          <div class="row">
            <form id="formmodal">
               <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
-                <input id="id_producto" type="hidden" class="form-control" name="id_producto">
+                
                 <div class="form-group has-success col-md-4">
                     <label class="control-label" for="inputSuccess1">Folio requerimiento</label>                     
                     <input id="folioreq" type="text" class="form-control" name="folioreq"  required  autofocus>
@@ -73,7 +73,7 @@
                     <input id="fecha" type="date" class="form-control" name="fecha"  required  value="{{ $date }}">
                 </div>                
                 <div class="form-group has-warning col-md-4">
-                    <label class="control-label" for="inputWarning1">Recepcion de pago</label>
+                    <label class="control-label" for="inputWarning1">¿Donde pago?</label>
                     <select id="cajapago" name="cajapago" class="form-control">
                       <option value="almacen">Almacen</option>
                       <option value="cajagral">Caja General</option>
@@ -81,11 +81,11 @@
                 </div>
                 <div id="contnnotaventa" class="form-group has-error col-md-4">
                     <label class="control-label" for="inputError1">Nota de venta</label>
-                    <input id="nnotaventa" type="text" class="form-control" name="nnotaventa">
+                    <input id="nnotaventa" type="text" class="form-control" name="nnotaventa" value="N/A">
                 </div>
-                <div id="contnfoliopago" class="form-group has-success col-md-4">
-                    <label class="control-label" for="inputSuccess1">Folio de pago de caja</label>
-                    <input id="nfoliopago" type="text" class="form-control" name="nfoliopago"  required  autofocus>
+                <div id="contfventa" class="form-group has-success col-md-4" style="display: none !important;">
+                    <label class="control-label" for="inputSuccess1">Folio de pago de cajaa</label>
+                    <input id="fventa" type="text" class="form-control" name="fventa"  value="N/A" required  autofocus>
                 </div>
                 <div class="form-group has-warning col-md-12">
                     <label class="control-label" for="inputWarning1">Observaciones</label>
@@ -96,7 +96,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
-        <button id="btn_guardaregistro" name="btn_guardaregistro" type="button" class="btn btn-primary">Registrar entrada</button>
+        <button id="btn_guardaregistro" name="btn_guardaregistro" type="button" class="btn btn-primary">Registrar salida</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -234,39 +234,39 @@
 //Agregar producto
   $('#btn_guardaregistro').click(function() {    
     
-    var proveedor       = $('#proveedor').val();
-    var fecha           = $('#fecha').val();    
-    var nfactura        = $('#nfactura').val();
-    var referencia      = $('#referencia').val();
-    var categoria       = $('#categoria').val();
-    var observaciones   = $('#observaciones').val();
-    var status          = 'captura';
-    var id_usuario      = 1;
+    var folioreq      = $('#folioreq').val();
+    var solicitante   = $('#solicitante').val();    
+    var fecha         = $('#fecha').val();
+    var almacen       = 'uniformes';
+    var cajapago      = $('#cajapago').val();
+    var nnotaventa    = $('#nnotaventa').val();
+    var fventa        = $('#fventa').val();
+    var observaciones = $('#observaciones').val();
+    var status        = 'captura';
+    var id_usuario    = 1;
 
       $.ajax({
-          url: "/entradas",
+          url: "/salidas",
           type: "POST",
           data: {
               _token: $("#csrf").val(),
               type: 1,
-              proveedor:      proveedor,
-              fecha:          fecha,
-              nfactura:       nfactura,            
-              referencia:     referencia,
-              categoria:      categoria,
-              observaciones:  observaciones,
-              status:         status,
-              id_usuario:     id_usuario
+              folioreq:     folioreq,
+              solicitante:  solicitante,
+              fecha:        fecha,            
+              almacen:      almacen,
+              cajapago:     cajapago,
+              nnotaventa:   nnotaventa,
+              fventa:       fventa,
+              observaciones:observaciones,
+              status:       status,
+              id_usuario:   id_usuario
           },
           cache: false,
           success: function(dataResult){
-          //  alert(dataResult.data);    
-            window.location.href = '/entradas/'+dataResult.data; 
-            /*$("#formmodal")[0].reset();
-            $('#modal-agregar').modal('toggle');
-            location.reload();             */
+            window.location.href = '/salidas/'+dataResult.data;             
           }
-      });    
+      });   
   });
 
 
@@ -290,10 +290,10 @@
   $("#cajapago" ).change(function() {  
       var cajapago       = $('#cajapago').val();
       if(cajapago=='cajagral'){
-        $('#contnfoliopago').show();
+        $('#contfventa').show();
         $('#contnnotaventa').hide();
       }else{
-        $('#contnfoliopago').hide();
+        $('#contfventa').hide();
         $('#contnnotaventa').show();
       }
       

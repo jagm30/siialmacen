@@ -5,7 +5,7 @@
 <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Datos Generales || Categoria: <b>{{$entrada->categoria}}</b></h3>
+          <h3 class="box-title">Datos Generales || Categoria: <b>{{$salida->folioreq}}</b></h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -18,13 +18,13 @@
             <div class="col-md-2">
               <div class="form-group">
                 <label class="control-label" for="inputSuccess1">No. de factura</label>                     
-                <input id="nfactura" type="text" class="form-control" name="nfactura"  readonly value="{{$entrada->nfactura}}">                
+                <input id="nfactura" type="text" class="form-control" name="nfactura"  readonly value="{{$salida->solicitante}}">                
               </div>
             </div>
             <div class="col-md-2">              
               <div class="form-group">
                 <label class="control-label" for="inputWarning1">Proveedor</label>
-                <select id="proveedor" name="proveedor" class="form-control" value="{{$entrada->proveedor}}">
+                <select id="proveedor" name="proveedor" class="form-control" value="{{$salida->almacen}}">
                     <option value="1">SIGMA</option>
                     <option value="2">MCA COMPUTO</option>
                     <option value="3">COCA COLA</option>
@@ -34,14 +34,14 @@
             <div class="col-md-2">
               <div class="form-group">
                 <label class="control-label" for="inputError1">Fecha de recepción</label>
-                <input id="fecha" type="date" class="form-control" name="fecha"  readonly value="{{$entrada->fecha}}">
+                <input id="fecha" type="date" class="form-control" name="fecha"  readonly value="{{$salida->fecha}}">
               </div>             
             </div>
             <div class="col-md-3">
               <!-- /.form-group -->
               <div class="form-group">
                 <label class="control-label" for="inputSuccess1">Referencia / Orden de compra</label>
-                <input id="referencia" type="text" class="form-control" name="referencia"  readonly value="{{$entrada->referencia}}">
+                <input id="referencia" type="text" class="form-control" name="referencia"  readonly value="{{$salida->cajapago}}">
               </div>
               <!-- /.form-group -->
             </div>
@@ -49,7 +49,7 @@
               <!-- /.form-group -->
               <div class="form-group">
                 <label class="control-label" for="inputSuccess1">Observaciones</label>
-                <input id="referencia" type="text" class="form-control" name="referencia" readonly value="{{$entrada->observaciones}}">
+                <input id="referencia" type="text" class="form-control" name="referencia" readonly value="{{$salida->observaciones}}">
               </div>
               <!-- /.form-group -->
             </div>
@@ -65,7 +65,7 @@
     <div class="col-xs-12">
       <div class="box">
           <div class="box-header">
-            @if($entrada->status=='captura')<button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar"> Agregar Articulo</button>
+            @if($salida->status=='captura')<button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar"> Agregar Articulo</button>
             <button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > Finalizar captura</button>@endif
           </div>
           <!-- /.box-header -->
@@ -100,7 +100,7 @@
          <div class="row">
            <form id="formmodal" name="formmodal">
               <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
-                <input id="id_entrada" type="hidden" value="{{ $id_entrada }}" class="form-control" name="id_entrada">
+                <input id="id_entrada" type="hidden" value="{{ $id_salida }}" class="form-control" name="id_entrada">
                 <div class="form-group has-success col-md-12">
                     <label>Articulo</label>
                     <select id="id_producto" name="id_producto" class="form-control select2" style="width: 100%;" >
@@ -208,7 +208,7 @@
         processing: true,
         serverSide: true,
 
-          ajax: "/entradaproductos/listarxentrada/"+{{$entrada->id}},
+          ajax: "/entradaproductos/listarxentrada/"+{{$salida->id}},
           columns:[
         {
           data: 'descripcion',
