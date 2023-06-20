@@ -11,7 +11,7 @@ use App\Http\Controllers\CatAlmacenController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\SalidaController;
-
+use App\Http\Controllers\SalidaproductoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,7 +46,11 @@ Route::resource('/almacenes', CatAlmacenController::class);
 Route::resource('/proveedores', ProveedorController::class);
 Route::resource('/inventario', InventarioController::class);
 
+Route::get('salidas/finalizarsalida/{id}', [App\Http\Controllers\SalidaController::class,'finalizarsalida'])->name('finalizarsalida');
 Route::resource('/salidas', SalidaController::class);
+Route::get('salidaproductos/delete/{id}', [App\Http\Controllers\SalidaproductoController::class,'destroy'])->name('destroysalprod');
+Route::get('salidaproductos/listarxsalida/{id}',[App\Http\Controllers\SalidaproductoController::class,'listarxsalida'])->name('listarxsalida');
+Route::resource('/salidaproductos', SalidaproductoController::class);
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

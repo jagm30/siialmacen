@@ -69,7 +69,7 @@ class SalidaController extends Controller
         $id_salida  = $id;
         $salida     = Salida::findOrFail($id);
         $salidas    = Salida::all();
-        $productos  = Producto::all();
+        $productos  = Producto::where('stock','>','0')->get();
         return view('salidas.show',compact('salidas','salida','productos','id_salida'));
     }
 
@@ -105,5 +105,13 @@ class SalidaController extends Controller
     public function destroy(Salida $salida)
     {
         //
+    }
+    public function finalizarsalida($id)
+    {
+        $salida = Salida::find($id);
+        $salida->status            = 'finalizado';
+        $salida->id_usuario        = 1;
+        $salida->save();
+        return response()->json(['data' => "Cambios guardados correctamente..."]);      
     }
 }

@@ -5,7 +5,7 @@
 <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Datos Generales || Categoria: <b>{{$salida->folioreq}}</b></h3>
+          <h3 class="box-title">Datos Generales || Almacen: <b>{{$salida->almacen}}</b></h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -17,18 +17,14 @@
           <div class="row">
             <div class="col-md-2">
               <div class="form-group">
-                <label class="control-label" for="inputSuccess1">No. de factura</label>                     
-                <input id="nfactura" type="text" class="form-control" name="nfactura"  readonly value="{{$salida->solicitante}}">                
+                <label class="control-label" for="inputSuccess1">Folio de Requerimiento</label>                     
+                <input id="nfactura" type="text" class="form-control" name="nfactura"  readonly value="{{$salida->folioreq}}">                
               </div>
             </div>
-            <div class="col-md-2">              
+            <div class="col-md-2">
               <div class="form-group">
-                <label class="control-label" for="inputWarning1">Proveedor</label>
-                <select id="proveedor" name="proveedor" class="form-control" value="{{$salida->almacen}}">
-                    <option value="1">SIGMA</option>
-                    <option value="2">MCA COMPUTO</option>
-                    <option value="3">COCA COLA</option>
-                </select>
+                <label class="control-label" for="inputSuccess1">Solicitante</label>                     
+                <input id="solicitante" type="text" class="form-control" name="solicitante"  readonly value="{{$salida->solicitante}}">                
               </div>
             </div>
             <div class="col-md-2">
@@ -37,15 +33,16 @@
                 <input id="fecha" type="date" class="form-control" name="fecha"  readonly value="{{$salida->fecha}}">
               </div>             
             </div>
-            <div class="col-md-3">
-              <!-- /.form-group -->
+            <div class="col-md-2">              
               <div class="form-group">
-                <label class="control-label" for="inputSuccess1">Referencia / Orden de compra</label>
-                <input id="referencia" type="text" class="form-control" name="referencia"  readonly value="{{$salida->cajapago}}">
+                <label class="control-label" for="inputWarning1">Pago en:</label>
+                <select id="proveedor" name="proveedor" class="form-control" value="{{$salida->almacen}}">
+                    <option value="1">Almacen</option>
+                    <option value="2">Caja Gral</option>
+                </select>
               </div>
-              <!-- /.form-group -->
-            </div>
-            <div class="col-md-3">
+            </div>            
+            <div class="col-md-4">
               <!-- /.form-group -->
               <div class="form-group">
                 <label class="control-label" for="inputSuccess1">Observaciones</label>
@@ -100,32 +97,27 @@
          <div class="row">
            <form id="formmodal" name="formmodal">
               <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
-                <input id="id_entrada" type="hidden" value="{{ $id_salida }}" class="form-control" name="id_entrada">
+                <input id="id_salida" type="hidden" value="{{ $id_salida }}" class="form-control" name="id_salida">
                 <div class="form-group has-success col-md-12">
                     <label>Articulo</label>
                     <select id="id_producto" name="id_producto" class="form-control select2" style="width: 100%;" >
-                      <!--<option selected="selected">Alabama</option>-->
+                      <option selected="selected">Seleccione un articulo</option>
                       @foreach($productos as $producto)
                         <option value="{{$producto->id}}">{{$producto->descripcion}}</option>        
                       @endforeach              
                     </select>
                 </div>
-
+                <div class="form-group has-error col-md-3">
+                    <label class="control-label" for="inputError1">Stock</label>
+                    <input id="stock" type="text" class="form-control" name="stock"  readonly>
+                </div>                
                 <div class="form-group has-error col-md-3">
                     <label class="control-label" for="inputError1">Cantidad</label>
                     <input id="cantidad" type="text" class="form-control" name="cantidad"  required  autofocus>
-                </div>
-                <div class="form-group has-success col-md-3">
-                    <label class="control-label" for="inputSuccess1">Precio</label>
-                    <input id="precio" type="text" class="form-control" name="precio"  required  autofocus>
-                </div>
-                <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Categoria</label>
-                    <select id="categoria" name="categoria" class="form-control">
-                        <option value="1">ALMACEN GRAL</option>
-                        <option value="2">ALMACEN 2</option>
-                        <option value="3">ALMACEN 3</option>
-                    </select>
+                </div>   
+                <div class="form-group has-error col-md-3">
+                    <label class="control-label" for="inputError1">Precio</label>
+                    <input id="precio" type="text" class="form-control" name="precio"  required  autofocus readonly>
                 </div>                
             </form>
          </div>
@@ -208,7 +200,7 @@
         processing: true,
         serverSide: true,
 
-          ajax: "/entradaproductos/listarxentrada/"+{{$salida->id}},
+          ajax: "/salidaproductos/listarxsalida/"+{{$salida->id}},
           columns:[
         {
           data: 'descripcion',
@@ -232,68 +224,58 @@
       autoWidth: false
       });
 });
- $(document).on("click", "#btneditar", function () {
-    //alert("accediendo a la edicion..."+$(this).attr('data-id'));
-    var id_producto = $(this).attr('data-id');
-     // alert(id_producto);
-    $.ajax({
-           url:"/productos/"+id_producto,
-           async: false,
-           dataType:"json",
-           success:function(html){                
-              $("#id_producto").val(html.id);
-              $("#nombre-e").val(html.nombre);
-              $("#descripcion-e").val(html.descripcion);
-              $("#categoria-e option[value='"+ html.categoria +"']").attr("selected",true);              
-              $("#precio-e").val(html.precio);
-              $("#precioPromocion-e").val(html.precioPromocion);            
-           }
-        })
-  });
-
 
 //Agregar producto
   $('#btn_guardaregistro').click(function() {    
     
-    var id_entrada    = $('#id_entrada').val();
+    var id_salida     = $('#id_salida').val();
     var id_producto   = $('#id_producto').val();    
     var cantidad      = $('#cantidad').val();
+    var stock         = $('#stock').val();
     var precio        = $('#precio').val();
-    var categoria     = $('#categoria').val();
-    var status        = "captura";
+    var status        = 'captura';
     var id_usuario    = 1;
-    //alert(id_entrada + "- "+ id_producto + "- "+ cantidad + "- "+ precio + "- "+ categoria + "- "+ id_usuario);
-      $.ajax({
-          url: "/entradaproductos",
-          type: "POST",
-          data: {
-              _token: $("#csrf").val(),
-              type: 1,
-              id_entrada:     id_entrada,
-              id_producto:    id_producto,
-              cantidad:       cantidad,            
-              precio:         precio,
-              categoria:      categoria,
-              status:         status,
-              id_usuario:     id_usuario
-          },
-          cache: false,
-          success: function(dataResult){
-            alert("registrado correctamente...");     
-                $('#alumnos_table').DataTable().ajax.reload();           
-                $('#formmodal').trigger("reset");
-          }
-      });    
+
+   
+    if (cantidad > stock) {
+      alert("No hay suficiente stock...");
+      return false;
+    }  
+    if (cantidad == 0 || cantidad.length == 0 ) {
+      alert("Ingrese una cantidad");
+      return false;
+    }  
+    $.ajax({
+      url: "/salidaproductos",
+      type: "POST",
+      data: {
+          _token: $("#csrf").val(),
+          type: 1,
+          id_salida:    id_salida,
+          id_producto:  id_producto,
+          cantidad:     cantidad,            
+          stock:        stock,
+          precio:       precio,
+          status:       status,
+          id_usuario:   id_usuario
+      },
+      cache: false,
+      success: function(dataResult){
+        alert("registrado correctamente...");     
+            $('#alumnos_table').DataTable().ajax.reload();           
+            $('#formmodal').trigger("reset");
+      }
+    });    
   });
 
 
 
   $(document).on("click", "#btn-eliminar", function () {
-    var id_entradaproducto = $(this).attr('data-id');
-    if (confirm("Desea eliminar el registro!"+id_entradaproducto) == true) {
+    var id_salidaproducto = $(this).attr('data-id');
+    if (confirm("Desea eliminar el registro!"+id_salidaproducto) == true) {
       $.ajax({
             type: "get",
-            url: "{{ url('entradaproductos/delete') }}"+'/'+ id_entradaproducto,
+            url: "{{ url('salidaproductos/delete') }}"+'/'+ id_salidaproducto,
             success: function (data) {
               alert(data.data);
               $('#alumnos_table').DataTable().ajax.reload();
@@ -305,12 +287,12 @@
   });
 
   $(document).on("click", "#btnfinalizar", function () {
-    var id_entrada    = $('#id_entrada').val();
+    var id_salida    = $('#id_salida').val();
     
     if (confirm("Desea finalizar la captura") == true) {
       $.ajax({
             type: "get",
-            url: "{{ url('entradas/finalizarentrada') }}"+'/'+ id_entrada,
+            url: "{{ url('salidas/finalizarsalida') }}"+'/'+ id_salida,
             success: function (data) {
               location.reload();
               //alert(data.data);
@@ -320,6 +302,18 @@
     }
   });
 
+  $("#id_producto" ).change(function() {  
+      var id_producto       = $('#id_producto').val();
+      $.ajax({
+         url:"/productos/"+id_producto,
+         async: false,
+         dataType:"json",
+         success:function(html){                
+            $("#stock").val(html.stock);
+            $("#precio").val(html.precio);
+         }
+      })      
+    });
 
 </script>
 @endsection('scriptpie')

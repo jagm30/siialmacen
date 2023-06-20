@@ -204,7 +204,7 @@
       alert("No pueden haber campos vacios.");
       return false;
     }    
-    alert(password);
+    //alert(password);
     if(password !== rpassword){
       alert("la contraseña no coincide");
       return false;
