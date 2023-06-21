@@ -29,9 +29,9 @@
                   <td>{{ $producto->id }}</td>                            
                   <td>{{ $producto->nombre }}</td>                            
                   <td>{{ $producto->descripcion }}</td>
-                  <td>{{ $producto->categoria}}</td>                            
-                  <td>{{ $producto->precio }}</td>                            
-                  <td>${{ $producto->precioPromocion }} MXN</td>                            
+                  <td>{{ $producto->nomcategoria}}</td>                            
+                  <td>$ {{ $producto->precio }}</td>                            
+                  <td>$ {{ $producto->precioPromocion }}</td>                            
                   <td>                                
                     <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$producto->id}}" data-toggle="modal" data-target="#modal-default">
                 Editar
@@ -76,17 +76,17 @@
                     <label class="control-label" for="inputError1">Categoria</label>
                     <select id="categoria" name="categoria" class="form-control">
                         @foreach($categoriaproductos as $categoria)
-                            <option value="{{$categoria->nombre}}">{{$categoria->nombre}}</option>
+                            <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="form-group has-success col-md-6">
                     <label class="control-label" for="inputSuccess1">Precio U.</label>
-                    <input id="precio" type="text" class="form-control" name="precio"  required  autofocus>
+                    <input id="precio" type="text" class="form-control" name="precio"  required  autofocus value="0">
                 </div>
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Precio Mayoreo</label>
-                    <input id="precioPromocion" type="text" class="form-control" name="precioPromocion"  required  autofocus>
+                    <input id="precioPromocion" type="text" class="form-control" name="precioPromocion"  required  autofocus value="0">
                 </div>
             </form>
          </div>
@@ -126,7 +126,7 @@
                     <label class="control-label" for="inputError1">Categoria</label>
                     <select id="categoria-e" name="categoria-e" class="form-control">
                         @foreach($categoriaproductos as $categoria)
-                            <option value="{{$categoria->nombre}}">{{$categoria->nombre}}</option>
+                            <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
                         @endforeach
                     </select>
                 </div>

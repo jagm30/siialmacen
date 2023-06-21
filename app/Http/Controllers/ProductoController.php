@@ -15,7 +15,11 @@ class ProductoController extends Controller
         $this->middleware('auth');
     }
     public function index(){         
-    	$productos = Producto::all();    	
+    	$productos = DB::table('productos')
+            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','categoriaproductos.nombre as nomcategoria')
+            ->leftJoin('categoriaproductos', 'categoriaproductos.id', '=', 'productos.categoria')
+            ->get();    
+
 		$categoriaproductos = Categoriaproducto::all();
 	   	return view('producto.index', compact('productos','categoriaproductos'));     
 	}

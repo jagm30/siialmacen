@@ -63,8 +63,6 @@
         </div>
         <!-- ./col -->
       </div>
-    <div class="row">
-        
-        
+    <div class="row">        
     </div>
 @endsection
