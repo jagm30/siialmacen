@@ -18,10 +18,8 @@
                 <th scope="col">Proveedor</th>   
                 <th scope="col">Fecha</th>                    
                 <th scope="col">Almacen</th>                    
-                <th scope="col">Orden / Referencia</th>                    
-                <th scope="col">Acción</th>                    
-                <th scope="col"></th>
-                <th scope="col"></th>    
+                <th scope="col" style="width: 100px;">Status</th>                    
+                <th scope="col" style="width: 300px">Acción</th>                      
                 </tr>                
             </thead>                
             <tbody>                    
@@ -32,11 +30,8 @@
                   <td>{{ $entrada->nombreproveedor }}</td>
                   <td>{{ $entrada->fecha}}</td>                            
                   <td>{{ $entrada->nomalmacen }}</td>                            
-                  <td>${{ $entrada->referencia }} MXN</td>                                              
-                  <td><a href="/entradas/{{$entrada->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$entrada->id}}" class="btn btn-info">Agregar / Ver</button></a></td>
-                  <td>                                
-                    <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$entrada->id}}" data-toggle="modal" data-target="#modal-default">Editar</button></td>                            
-                  <td><button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$entrada->id}}" class="btn btn-danger">Borrar</button></td>
+                  <td>@if($entrada->status=='finalizado')<button type="button" class="btn bg-olive btn-flat margin" style="width:150px;">{{ $entrada->status }}</button>@else <button type="button" class="btn bg-navy btn-flat margin" style="width:150px;">{{ $entrada->status }}</button> @endif </td>                                              
+                  <td><a href="/entradas/{{$entrada->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$entrada->id}}" class="btn btn-info">Agregar / Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$entrada->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$entrada->id}}" class="btn btn-danger">Borrar</button></td>
                 </tr>                    
               @endforeach                
             </tbody>            

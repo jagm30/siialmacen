@@ -44,11 +44,11 @@
              <table id="example1" class="table table-bordered table-striped">           
             <thead>                  
               <tr>                    
-                <th scope="col">Id</th>                    
-                <th scope="col">Nombre</th>                    
-                <th scope="col">Descripción</th>   
-                <th scope="col">Categoria</th>                    
-                <th scope="col">Stock</th>                                     
+                <th scope="col" style="width: 5%;">Id</th>                    
+                <th scope="col" style="width: 20%;">Nombre</th>                    
+                <th scope="col" style="width: 40%;">Descripción</th>   
+                <th scope="col" style="width: 20%;">Categoria</th>                    
+                <th scope="col" style="width: 15%;">Stock</th>                                     
                 </tr>                
             </thead>                
             <tbody>                    
@@ -57,7 +57,7 @@
                   <td>{{ $producto->id }}</td>                            
                   <td>{{ $producto->nombre }}</td>                            
                   <td>{{ $producto->descripcion }}</td>
-                  <td>{{ $producto->categoria}}</td>                            
+                  <td>{{ $producto->nomcategoria}}</td>                            
                   <td>{{ $producto->stock }}</td>                                                                
                 </tr>                    
               @endforeach                

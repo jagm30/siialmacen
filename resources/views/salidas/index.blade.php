@@ -18,10 +18,8 @@
                 <th scope="col">Fecha</th>                    
                 <th scope="col">Solicitante</th>   
                 <th scope="col">Almacen</th>                    
-                <th scope="col">Status</th>                    
-                <th scope="col">Acción</th>                    
-                <th scope="col"></th>
-                <th scope="col"></th>               
+                <th scope="col" style="width: 100px;">Status</th>                    
+                <th scope="col" style="width: 350px;">Acción</th>                    
                 </tr>                
             </thead>                
             <tbody>                    
@@ -32,7 +30,7 @@
                   <td>{{ $salida->solicitante }}</td>
                   <td>{{ $salida->almacen}}</td>                                                     
                   <td>@if($salida->status=='finalizado')<button type="button" class="btn bg-olive btn-flat margin" style="width:150px;">{{ $salida->status }}</button>@else <button type="button" class="btn bg-navy btn-flat margin" style="width:150px;">{{ $salida->status }}</button> @endif </td>                                              
-                  <td><a href="/entradas/{{$salida->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$salida->id}}" class="btn btn-info">Agregar / Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$salida->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$salida->id}}" class="btn btn-danger">Borrar</button></td>
+                  <td><a href="/salidas/{{$salida->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$salida->id}}" class="btn btn-info">Agregar / Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$salida->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$salida->id}}" class="btn btn-danger">Borrar</button></td>
                 </tr>                    
               @endforeach                
             </tbody>            

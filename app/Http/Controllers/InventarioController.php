@@ -23,7 +23,10 @@ class InventarioController extends Controller
     }
     public function index(){         
         $categoriaproductos = Categoriaproducto::all();       
-        $productos = Producto::orderBy('stock','desc')->get();
+        $productos = DB::table('productos')
+            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','categoriaproductos.nombre as nomcategoria')
+            ->leftJoin('categoriaproductos', 'categoriaproductos.id', '=', 'productos.categoria')
+            ->get();  
         return view('inventario.index', compact('productos','categoriaproductos'));     
     }
 

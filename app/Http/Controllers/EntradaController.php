@@ -27,7 +27,7 @@ class EntradaController extends Controller
         $proveedores    = Proveedor::all();
         //$entradas       = Entrada::all();
         $entradas       = DB::table('entradas')
-            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
+            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
             ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
             ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
             ->get();
