@@ -80,10 +80,10 @@
                 </div>
                 <div class="form-group has-success col-md-6">
                     <label class="control-label" for="inputSuccess1">Referencia / Orden de compra</label>
-                    <input id="referencia" type="text" class="form-control" name="referencia"  required  autofocus>
+                    <input id="referencia" type="text" class="form-control" name="referencia"  required  autofocus value="N/A">
                 </div>
                 <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Categoria</label>
+                    <label class="control-label" for="inputWarning1">Almacen</label>
                     <select id="categoria" name="categoria" class="form-control">
                         <option>Seleccione un almacen</option>
                         @foreach($almacenes as $almacen)
@@ -93,7 +93,7 @@
                 </div>
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Observaciones</label>
-                    <input id="observaciones" type="text" class="form-control" name="observaciones"  required  autofocus>
+                    <input id="observaciones" type="text" class="form-control" name="observaciones"  required  autofocus value="NINGUNO">
                 </div>
             </form>
          </div>

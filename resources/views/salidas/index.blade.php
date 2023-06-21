@@ -6,19 +6,19 @@
       <div class="box">
           <div class="box-header">
             <h3 class="box-title"><button type="button" class="btn btn-warning"> Registro de salidas</button> </h3> 
-            <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregar"> Agregar salida</button>
+            <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregar"> Venta de uniforme</button>
+            <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregaralmacen"> Salida de almacen</button>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
              <table id="example1" class="table table-bordered table-striped">           
             <thead>                  
               <tr>                    
-                <th scope="col">Id</th>                    
-                <th scope="col">No. de Factura</th>                    
-                <th scope="col">Proveedor</th>   
+                <th scope="col">Folio Requerimiento</th>                    
                 <th scope="col">Fecha</th>                    
+                <th scope="col">Solicitante</th>   
                 <th scope="col">Almacen</th>                    
-                <th scope="col">Orden / Referencia</th>                    
+                <th scope="col">Status</th>                    
                 <th scope="col">Acción</th>                    
                 <th scope="col"></th>
                 <th scope="col"></th>               
@@ -30,13 +30,9 @@
                   <td>{{ $salida->folioreq }}</td>                            
                   <td>{{ $salida->fecha }}</td>                            
                   <td>{{ $salida->solicitante }}</td>
-                  <td>{{ $salida->cajapago}}</td>                            
-                  <td>{{ $salida->observaciones }}</td>                            
-                  <td>${{ $salida->status }} MXN</td>                                              
-                  <td><a href="/entradas/{{$salida->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$salida->id}}" class="btn btn-info">Agregar / Ver</button></a></td>
-                  <td>                                
-                    <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$salida->id}}" data-toggle="modal" data-target="#modal-default">Editar</button></td>                            
-                  <td><button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$salida->id}}" class="btn btn-danger">Borrar</button></td>
+                  <td>{{ $salida->almacen}}</td>                                                     
+                  <td>@if($salida->status=='finalizado')<button type="button" class="btn bg-olive btn-flat margin" style="width:150px;">{{ $salida->status }}</button>@else <button type="button" class="btn bg-navy btn-flat margin" style="width:150px;">{{ $salida->status }}</button> @endif </td>                                              
+                  <td><a href="/entradas/{{$salida->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$salida->id}}" class="btn btn-info">Agregar / Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$salida->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$salida->id}}" class="btn btn-danger">Borrar</button></td>
                 </tr>                    
               @endforeach                
             </tbody>            
@@ -54,7 +50,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Registro de salidas</h4>
+        <h4 class="modal-title">Registro de salidas uniformes</h4>
       </div>
       <div class="modal-body">
          <div class="row">
@@ -106,6 +102,60 @@
 </div>
 <!-- /.modal -->
 
+<div class="modal fade" id="modal-agregaralmacen">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Registro de salidas</h4>
+      </div>
+      <div class="modal-body">
+         <div class="row">
+           <form id="formmodal">
+              <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+                
+                <div class="form-group has-success col-md-4">
+                    <label class="control-label" for="inputSuccess1">Folio requerimiento</label>                     
+                    <input id="folioreqalm" type="text" class="form-control" name="folioreqalm"  required  autofocus>
+                </div>
+                <div class="form-group has-success col-md-8">
+                    <label class="control-label" for="inputSuccess1">Nombre del solicitante / Departamento</label>                     
+                    <input id="solicitantealm" type="text" class="form-control" name="solicitantealm"  required  autofocus>
+                </div>
+                <div class="form-group has-success col-md-4">
+                    <label class="control-label" for="inputSuccess1">Fecha</label>                     
+                    <input id="fechaalm" type="date" class="form-control" name="fechaalm"  required  value="{{ $date }}">
+                </div>                
+                <div class="form-group has-warning col-md-4" style="display: none !important;">
+                    <label class="control-label" for="inputWarning1">¿Donde pago?</label>
+                    <input type="text" id="cajapagoalm" name="cajapagoalm" value="n/a">
+                </div>
+                <div id="contnnotaventa" class="form-group has-error col-md-4" style="display: none !important;">
+                    <label class="control-label" for="inputError1">Nota de venta</label>
+                    <input type="text" id="nnotaventaalm" name="nnotaventaalm" value="n/a">
+                </div>
+                <div id="contfventa" class="form-group has-success col-md-4" style="display: none !important;">
+                    <label class="control-label" for="inputSuccess1">Folio de pago de cajaa</label>
+                    <input type="text" id="fventaalm" name="fventaalm" value="n/a">
+                </div>
+                <div class="form-group has-warning col-md-8">
+                    <label class="control-label" for="inputWarning1">Observaciones</label>
+                    <input id="observacionesalm" type="text" class="form-control" name="observacionesalm"  required  autofocus>
+                </div>
+            </form>
+         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
+        <button id="btn_guardaregistroalm" name="btn_guardaregistroalm" type="button" class="btn btn-primary">Registrar salida</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 <div class="modal fade" id="modal-default">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -244,6 +294,43 @@
     var nnotaventa    = $('#nnotaventa').val();
     var fventa        = $('#fventa').val();
     var observaciones = $('#observaciones').val();
+    var status        = 'captura';
+    var id_usuario    = 1;
+
+      $.ajax({
+          url: "/salidas",
+          type: "POST",
+          data: {
+              _token: $("#csrf").val(),
+              type: 1,
+              folioreq:     folioreq,
+              solicitante:  solicitante,
+              fecha:        fecha,            
+              almacen:      almacen,
+              cajapago:     cajapago,
+              nnotaventa:   nnotaventa,
+              fventa:       fventa,
+              observaciones:observaciones,
+              status:       status,
+              id_usuario:   id_usuario
+          },
+          cache: false,
+          success: function(dataResult){
+            window.location.href = '/salidas/'+dataResult.data;             
+          }
+      });   
+  });
+
+  $('#btn_guardaregistroalm').click(function() {    
+    
+    var folioreq      = $('#folioreqalm').val();
+    var solicitante   = $('#solicitantealm').val();    
+    var fecha         = $('#fechaalm').val();
+    var almacen       = 'cajagral';
+    var cajapago      = $('#cajapagoalm').val();
+    var nnotaventa    = $('#nnotaventaalm').val();
+    var fventa        = $('#fventaalm').val();
+    var observaciones = $('#observacionesalm').val();
     var status        = 'captura';
     var id_usuario    = 1;
 

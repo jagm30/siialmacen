@@ -2,6 +2,39 @@
 @section('contenidoprincipal') 
    <div class="row">
     <div class="col-xs-12">
+      <div class="box-header with-border">
+          <h3 class="box-title">Inventario <b></b></h3>          
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">           
+            <div class="col-md-2">              
+              <div class="form-group">
+                <label class="control-label" for="inputWarning1">Almacen</label>
+                <select id="proveedor" name="proveedor" class="form-control" value="">
+                    <option value="1">Todo</option>
+                    <option value="1">Almacen General</option>
+                    <option value="2">Cafeteria</option>
+                    <option value="3">Uniformes</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label class="control-label" for="inputError1">Exportar</label>
+                <button class="form-control">PDF</button>
+              </div>             
+            </div> 
+            <div class="col-md-2">
+              <div class="form-group">
+                <label class="control-label" for="inputError1">Exportar</label>
+                <button class="form-control">EXCEL</button>
+              </div>             
+            </div>            
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
       <div class="box">
           <div class="box-header">
             <h3 class="box-title">
