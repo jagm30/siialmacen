@@ -1,7 +1,5 @@
 @extends('layouts.app') 
 @section('contenidoprincipal') 
-
-<div class="container">  
 <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
@@ -198,7 +196,7 @@
  
 </div>
 .modal -->
-</div>
+
 @endsection('contenidoprincipal')
 @section("scriptpie")
 <script type="text/javascript">
@@ -231,6 +229,7 @@
       searching: true,
       autoWidth: false
       });
+    $("#menuentradas").addClass("important active");
 });
  $(document).on("click", "#btneditar", function () {
     //alert("accediendo a la edicion..."+$(this).attr('data-id'));

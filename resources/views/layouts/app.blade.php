@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="ES">
+<html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SII Almacen</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
+  <title>SISTEMA DE ALMACÉN</title>
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="{{ asset("bower_components/bootstrap/dist/css/bootstrap.min.css") }}">
   <!-- Font Awesome -->
@@ -30,145 +27,190 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+
   <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-  <style type="text/css" media="screen">
-    .content-wrapper{background-image: url(/images/fondo.jpg);}  
-    .flotante {
-      display:scroll;
-          position:fixed;
-          bottom: 0px;
-          right:0px;
-  }
-  </style>
-  
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
 </head>
-<!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
-<body class="hold-transition skin-blue layout-top-nav">
+<body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
-    <nav class="navbar navbar-static-top" style="background-color:  lightslategray">
-      <div class="container">
-        <div class="navbar-header">
-          <a href="{{ url('/') }}" class="navbar-brand"><b>SIIAlmacen</b></a>
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-            <i class="fa fa-bars"></i>
-          </button>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
-          @guest
+    <!-- Logo -->
+    <a href="{{ url('/') }}" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>SII</b>A</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>ALMACEN</b>SII</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
 
-          @else
-          <ul class="nav navbar-nav">
-            <li><a href="/productos/">Catalogo de articulos</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entradas<span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="/entradas/">Registrar entrada</a></li>
-                <li><a href="#">Reportes</a></li>            
-              </ul>
-            </li>            
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Salida<span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="/salidas/">Registrar salida</a></li>
-                <li><a href="#">Reportes</a></li>            
-              </ul>
-            </li>
-            <li><a href="/inventario">Inventario</a></li>
-            <li><a href="/usuarios/">Usuarios</a></li>
-            <li><a href="{{ route('logout') }}" class="btn btn-primary" onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">Salir</a></li>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-           </ul>  
-          @endguest
-        </div>
-        <!-- /.navbar-collapse -->
-        <!-- Navbar Right Menu -->
-        <div class="navbar-custom-menu">
-          <ul class="nav navbar-nav">
-            <!-- Messages: style can be found in dropdown.less-->
-
-            <!-- User Account Menu -->
-            <li class="dropdown user user-menu">
-              <!-- Menu Toggle Button -->
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <!-- The user image in the navbar-->
-                @guest
-                    <img src="{{ asset("dist/img/user2-160x160.jpg") }}" class="user-image" alt="User Image">
-                  @else
-                    <img src="{{ asset("dist/img/user2-160x160.jpg") }}" class="user-image" align="middle" alt="User Image">
-                @endguest
-                <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs">
-                    @guest
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- Messages: style can be found in dropdown.less-->
+          
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src="../../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <span class="hidden-xs">@guest
                         @if (Route::has('login'))                           
                           <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                         @endif
                     @else
                         {{ Auth::user()->name }}                        
-                    @endguest                                            
-                </span>
-              </a>
-              <ul class="dropdown-menu">
-                <!-- The user image in the menu -->
-                <li class="user-header">
-                  @guest
-                      <img src="{{ asset("dist/img/user2-160x160.jpg") }}" class="img-circle" alt="User Image">
-                    @else
-                      <img src="{{ asset("dist/img/user2-160x160.jpg") }}" class="img-circle" alt="User Image">
-                  @endguest
-                  
+                    @endguest  </span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header">
+                <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
-                  <p>
-                    @guest
+                <p>
+                  @guest
                         @if (Route::has('login'))                           
                           <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                         @endif
-                      @else
-                        {{ Auth::user()->name }}
-                    @endguest
-                  </p>
-                </li>
-              </ul>
-            </li>         
-          </ul>
-        </div>
-        <!-- /.navbar-custom-menu -->
+                    @else
+                        {{ Auth::user()->name }}                        
+                    @endguest  
+                </p>
+              </li>
+              <!-- Menu Body -->
+
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-right">
+                  <a href="{{ route('logout') }}" class="btn btn-warning btn-flat" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar sesión</a>
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
+                </div>
+              </li>
+            </ul>
+          </li>
+
+        </ul>
       </div>
-      <!-- /.container-fluid -->
     </nav>
   </header>
-  <!-- Full Width Column -->
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+          @guest
+                @if (Route::has('login'))                           
+                  <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                @endif
+            @else
+              <p>
+                {{ Auth::user()->name }}
+                <br>
+                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+              </p>
+            @endguest  
+        </div>
+      </div>
+
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">MENU DE NAVEGACION</li>
+        @guest
+
+        @else
+        
+        <li id="menuinicio">
+          <a href="/home">
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+          </a>
+        </li>
+        <li id="menuproductos">
+          <a href="/productos/">
+            <i class="fa fa-th"></i> <span>Productos</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-green">new</small>
+            </span>
+          </a>
+        </li>
+        <li id="menuentradas">
+          <a href="/entradas/">
+            <i class="fa fa-share"></i> <span>Entradas</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-green">new</small>
+            </span>
+          </a>
+        </li>
+        <li id="menusalida">
+          <a href="/salidas/">
+            <i class="fa fa-reply"></i> <span>Salidas</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-green">new</small>
+            </span>
+          </a>
+        </li>
+        <li id="menuinventario">
+          <a href="/inventario/">
+            <i class="fa fa-pie-chart"></i> <span>Inventario</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-green">new</small>
+            </span>
+          </a>
+        </li>
+        <li id="menuusuario">
+          <a href="/usuarios/">
+            <i class="fa fa-user"></i> <span>Usuarios</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-green">new</small>
+            </span>
+          </a>
+        </li>
+       
+        @endguest
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <div class="container">
-      <!-- Content Header (Page header) -->
-      <!-- Main content -->
-      <section class="content">
-        @yield("contenidoprincipal")
-      </section>
-      <!-- /.content -->
-    </div>
-    <!-- /.container -->
+    <!-- Content Header (Page header) -->
+
+
+    <!-- Main content -->
+    <section class="content">
+      @yield("contenidoprincipal")    
+        
+    </section>
+    <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <div class="container">
-      <div class="pull-right hidden-xs">
-        <b>Version</b> 1.0
-      </div>
-      <strong>Copyright &copy; 2019-2020 
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 2.4.13
     </div>
-    <!-- /.container -->
+    <strong>Copyright &copy; 2023 <a href="https://adminlte.io">AdminLTE</a>.</strong> All rights
+    reserved.
   </footer>
+
+
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
-<!-- jQuery 3 -->
-<!-- Select2 -->
 
 <!-- jQuery 3 -->
 <script src="{{ asset("bower_components/jquery/dist/jquery.min.js") }}"></script>
@@ -195,18 +237,6 @@
 <!-- DataTables -->
 <script src="{{ asset("bower_components/datatables.net/js/jquery.dataTables.min.js") }}"></script>
 <script src="{{ asset("bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js") }}"></script>
-<!-- Select2 
-https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css
-https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js
-https://cdn.datatables.net/buttons/1.4.0/js/dataTables.buttons.min.js
-https://cdn.datatables.net/buttons/1.4.0/js/buttons.flash.min.js
-https://cdn.datatables.net/buttons/1.4.0/js/buttons.html5.min.js
-https://cdn.datatables.net/buttons/1.4.0/js/buttons.print.min.js
-https://cdn.datatables.net/buttons/1.4.0/css/buttons.dataTables.min.css
-https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js
-https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js
-https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js
--->
 
 @yield("scriptpie")
 <style>
@@ -214,7 +244,6 @@ https://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js
   background-color: gray;
 }
 </style>
-
 
 </body>
 </html>

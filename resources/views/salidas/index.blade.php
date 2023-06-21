@@ -1,6 +1,6 @@
 @extends('layouts.app') 
 @section('contenidoprincipal') 
-<div class="container">     
+   
    <div class="row">
     <div class="col-xs-12">
       <div class="box">
@@ -20,7 +20,8 @@
                 <th scope="col">Almacen</th>                    
                 <th scope="col">Orden / Referencia</th>                    
                 <th scope="col">Acción</th>                    
-                <th scope="col"></th>                  
+                <th scope="col"></th>
+                <th scope="col"></th>               
                 </tr>                
             </thead>                
             <tbody>                    
@@ -160,7 +161,7 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-</div>
+
 @endsection
 @section("scriptpie")
 <script>
@@ -188,6 +189,7 @@
         $('#searchBox').css("width", "400px").focus();
       }
     })
+     $("#menusalida").addClass("important active");
   })
 
  $(document).on("click", "#btneditar", function () {
