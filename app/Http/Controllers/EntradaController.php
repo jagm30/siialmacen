@@ -10,6 +10,7 @@ use App\Models\Proveedor;
 use App\Models\CatAlmacen;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EntradaController extends Controller
 {
@@ -134,5 +135,12 @@ class EntradaController extends Controller
         $entrada->id_usuario        = 1;
         $entrada->save();
         return response()->json(['data' => "Cambios guardados correctamente..."]);      
+    }
+    public function reportepdf($id)
+    {
+        $today = Carbon::now()->format('d/m/Y');
+        $pdf = \PDF::loadView('entradas/reportepdf', compact('today'));
+        return $pdf->stream();
+
     }
 }

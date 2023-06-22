@@ -28,8 +28,8 @@
                   <td>{{ $salida->folioreq }}</td>                            
                   <td>{{ $salida->fecha }}</td>                            
                   <td>{{ $salida->solicitante }}</td>
-                  <td>{{ $salida->almacen}}</td>                                                     
-                  <td>@if($salida->status=='finalizado')<button type="button" class="btn btn-block btn-success">{{ $entrada->status }}</button>@else <button type="button" class="btn btn-block btn-primary">{{ $entrada->status }}</button>@endif </td>                                              
+                  <td>{{ $salida->nomalmacen}}</td>                                                     
+                  <td>@if($salida->status=='finalizado')<button type="button" class="btn btn-block btn-success">{{ $salida->status }}</button>@else <button type="button" class="btn btn-block btn-primary">{{ $salida->status }}</button>@endif </td>                                              
                   <td><a href="/salidas/{{$salida->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$salida->id}}" class="btn btn-info">Agregar / Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$salida->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$salida->id}}" class="btn btn-danger">Borrar</button></td>
                 </tr>                    
               @endforeach                
@@ -121,7 +121,7 @@
                     <label class="control-label" for="inputSuccess1">Nombre del solicitante / Departamento</label>                     
                     <input id="solicitantealm" type="text" class="form-control" name="solicitantealm"  required  autofocus>
                 </div>
-                <div class="form-group has-success col-md-4">
+                <div class="form-group has-success col-md-6">
                     <label class="control-label" for="inputSuccess1">Fecha</label>                     
                     <input id="fechaalm" type="date" class="form-control" name="fechaalm"  required  value="{{ $date }}">
                 </div>                
@@ -137,7 +137,16 @@
                     <label class="control-label" for="inputSuccess1">Folio de pago de cajaa</label>
                     <input type="text" id="fventaalm" name="fventaalm" value="n/a">
                 </div>
-                <div class="form-group has-warning col-md-8">
+                <div class="form-group has-warning col-md-6">
+                    <label class="control-label" for="inputWarning1">Almacen</label>
+                    <select id="alamcenalm" name="alamcenalm" class="form-control">
+                        <option>Seleccione un almacen</option>
+                        @foreach($almacenes as $almacen)
+                          <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group has-warning col-md-12">
                     <label class="control-label" for="inputWarning1">Observaciones</label>
                     <input id="observacionesalm" type="text" class="form-control" name="observacionesalm"  required  autofocus>
                 </div>
@@ -287,7 +296,7 @@
     var folioreq      = $('#folioreq').val();
     var solicitante   = $('#solicitante').val();    
     var fecha         = $('#fecha').val();
-    var almacen       = 'uniformes';
+    var almacen       = $('#alamcenalm').val();
     var cajapago      = $('#cajapago').val();
     var nnotaventa    = $('#nnotaventa').val();
     var fventa        = $('#fventa').val();

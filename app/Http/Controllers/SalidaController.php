@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Salida;
 use App\Models\Producto;
+use App\Models\CatAlmacen;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,8 +21,12 @@ class SalidaController extends Controller
         $date = Carbon::now();
         $date = $date->format('Y-m-d');                
         //$entradas       = Entrada::all();
-        $salidas       = Salida::all();
-        return view('salidas.index',compact('salidas','date'));
+        $salidas       = DB::table('salidas')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
+            ->get();
+        $almacenes      = CatAlmacen::all();
+        return view('salidas.index',compact('salidas','date','almacenes'));
     }
 
     /**

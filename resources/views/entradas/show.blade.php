@@ -35,7 +35,7 @@
                 <input id="fecha" type="date" class="form-control" name="fecha"  readonly value="{{$entrada->fecha}}">
               </div>             
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
               <!-- /.form-group -->
               <div class="form-group">
                 <label class="control-label" for="inputSuccess1">Referencia / Orden de compra</label>
@@ -43,7 +43,7 @@
               </div>
               <!-- /.form-group -->
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
               <!-- /.form-group -->
               <div class="form-group">
                 <label class="control-label" for="inputSuccess1">Observaciones</label>
@@ -51,6 +51,12 @@
               </div>
               <!-- /.form-group -->
             </div>
+            <dir class="col-md-2">
+              <div class="form-group">
+                <a href="/entradas/reportepdf/1" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a>
+                <a href="#"><img src="/images/excel.png" width="50" height="50"></a>
+              </div>
+            </dir>
             <!-- /.col -->
           </div>
           <!-- /.row -->

@@ -18,7 +18,7 @@ class CreateSalidasTable extends Migration
             $table->integer('folioreq');
             $table->string('solicitante',100);
             $table->date('fecha');
-            $table->string('almacen',30);
+            $table->integer('almacen');
             $table->string('cajapago',30)->nullable();
             $table->string('nnotaventa',20)->nullable();
             $table->string('fventa',20)->nullable();

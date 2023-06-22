@@ -37,6 +37,7 @@ Route::resource('/usuarios', UsuarioController::class);
 Route::get('entradas/edicion/{id_entrada}/{proveedor}/{fecha}/{nfactura}/{referencia}/{categoria}/{observaciones}',[App\Http\Controllers\EntradaController::class,'edicion'])->name('edicionEntrada');
 Route::get('entradas/delete/{id}', [App\Http\Controllers\EntradaController::class,'destroy'])->name('eliminaent');
 Route::get('entradas/finalizarentrada/{id}', [App\Http\Controllers\EntradaController::class,'finalizarentrada'])->name('finalizarentrada');
+Route::get('entradas/reportepdf/{id}', [App\Http\Controllers\EntradaController::class,'reportepdf'])->name('reportepdf');
 Route::resource('/entradas', EntradaController::class);
 
 Route::get('entradaproductos/delete/{id}', [App\Http\Controllers\EntradaProductoController::class,'destroy'])->name('destroyentpro');
