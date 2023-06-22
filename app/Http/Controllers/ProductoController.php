@@ -24,11 +24,15 @@ class ProductoController extends Controller
 	   	return view('producto.index', compact('productos','categoriaproductos'));     
 	}
 	public function store(Request $request)
-    {              
-        Producto::create($request->all());
-        return json_encode(array(
-            "Estado"=>"Agregado correctamente"
-        ));
+    { 
+        try {              
+            Producto::create($request->all());
+            return response()->json(['data' => "Registrado correctamente."]);  
+
+        } catch (\Exception $e) {
+            
+            return response()->json(['data' => $e->getMessage()]);  
+        }                        
     }
     public function show(Request $request, $id)
     {              

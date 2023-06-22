@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-group has-success col-md-4">
                     <label class="control-label" for="inputSuccess1">Fecha</label>                     
-                    <input id="fecha" type="date" class="form-control" name="fecha"  required  value="{{ $date }}">
+                    <input id="fecha" type="date" class="form-control" name="fecha"  required  value="{{$date}}">
                 </div>                
                 <div class="form-group has-warning col-md-4">
                     <label class="control-label" for="inputWarning1">¿Donde pago?</label>
@@ -82,7 +82,16 @@
                     <label class="control-label" for="inputSuccess1">Folio de pago de cajaa</label>
                     <input id="fventa" type="text" class="form-control" name="fventa"  value="N/A" required  autofocus>
                 </div>
-                <div class="form-group has-warning col-md-12">
+                <div class="form-group has-warning col-md-3">
+                    <label class="control-label" for="inputWarning1">Almacen</label>
+                    <select id="almacen" name="almacen" class="form-control">
+                        <option>Seleccione un almacen</option>
+                        @foreach($almacenes as $almacen)
+                          <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group has-warning col-md-9">
                     <label class="control-label" for="inputWarning1">Observaciones</label>
                     <input id="observaciones" type="text" class="form-control" name="observaciones"  required  autofocus>
                 </div>
@@ -139,7 +148,7 @@
                 </div>
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Almacen</label>
-                    <select id="alamcenalm" name="alamcenalm" class="form-control">
+                    <select id="almacenalm" name="almacenalm" class="form-control">
                         <option>Seleccione un almacen</option>
                         @foreach($almacenes as $almacen)
                           <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
@@ -296,14 +305,14 @@
     var folioreq      = $('#folioreq').val();
     var solicitante   = $('#solicitante').val();    
     var fecha         = $('#fecha').val();
-    var almacen       = $('#alamcenalm').val();
+    var almacen       = $('#almacen').val();
     var cajapago      = $('#cajapago').val();
     var nnotaventa    = $('#nnotaventa').val();
     var fventa        = $('#fventa').val();
     var observaciones = $('#observaciones').val();
     var status        = 'captura';
     var id_usuario    = 1;
-
+    alert(fecha);
       $.ajax({
           url: "/salidas",
           type: "POST",
@@ -323,6 +332,7 @@
           },
           cache: false,
           success: function(dataResult){
+            alert(dataResult.data);
             window.location.href = '/salidas/'+dataResult.data;             
           }
       });   
@@ -333,7 +343,7 @@
     var folioreq      = $('#folioreqalm').val();
     var solicitante   = $('#solicitantealm').val();    
     var fecha         = $('#fechaalm').val();
-    var almacen       = 'ALMACEN GENERAL';
+    var almacen       = $('#almacenalm').val();
     var cajapago      = $('#cajapagoalm').val();
     var nnotaventa    = $('#nnotaventaalm').val();
     var fventa        = $('#fventaalm').val();

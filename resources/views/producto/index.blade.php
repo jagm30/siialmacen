@@ -225,11 +225,12 @@
     var nombre          = $('#nombre').val();
     var descripcion     = $('#descripcion').val();    
     var categoria       = $('#categoria').val();
+    var claveproducto   = 'n/a';
     var precio          = $('#precio').val();
     var precioPromocion = $('#precioPromocion').val();
     var stock           = 0;
     var id_usuario      = 1;
-    alert("ok");
+    //alert("ok");
       $.ajax({
           url: "/productos",
           type: "POST",
@@ -239,6 +240,7 @@
               nombre:         nombre,
               descripcion:    descripcion,
               categoria:      categoria,
+              claveproducto:  claveproducto,
               precio:         precio,
               precioPromocion:precioPromocion,
               stock:          stock,
@@ -246,7 +248,7 @@
           },
           cache: false,
           success: function(dataResult){
-            alert(dataResult);     
+            alert(dataResult.data);     
             $("#formmodal")[0].reset();
             $('#modal-agregar').modal('toggle');
             location.reload();             

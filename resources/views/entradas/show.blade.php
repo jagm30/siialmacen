@@ -53,7 +53,7 @@
             </div>
             <dir class="col-md-2">
               <div class="form-group">
-                <a href="/entradas/reportepdf/1" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a>
+                <a href="https://siialmacen.chiapanetcomputo.com/entradas/reportepdf/1" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a>
                 <a href="#"><img src="/images/excel.png" width="50" height="50"></a>
               </div>
             </dir>
