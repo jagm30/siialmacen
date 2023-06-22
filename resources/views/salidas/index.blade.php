@@ -29,7 +29,7 @@
                   <td>{{ $salida->fecha }}</td>                            
                   <td>{{ $salida->solicitante }}</td>
                   <td>{{ $salida->almacen}}</td>                                                     
-                  <td>@if($salida->status=='finalizado')<button type="button" class="btn bg-olive btn-flat margin" style="width:150px;">{{ $salida->status }}</button>@else <button type="button" class="btn bg-navy btn-flat margin" style="width:150px;">{{ $salida->status }}</button> @endif </td>                                              
+                  <td>@if($salida->status=='finalizado')<button type="button" class="btn btn-block btn-success">{{ $entrada->status }}</button>@else <button type="button" class="btn btn-block btn-primary">{{ $entrada->status }}</button>@endif </td>                                              
                   <td><a href="/salidas/{{$salida->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$salida->id}}" class="btn btn-info">Agregar / Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$salida->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$salida->id}}" class="btn btn-danger">Borrar</button></td>
                 </tr>                    
               @endforeach                
@@ -324,7 +324,7 @@
     var folioreq      = $('#folioreqalm').val();
     var solicitante   = $('#solicitantealm').val();    
     var fecha         = $('#fechaalm').val();
-    var almacen       = 'cajagral';
+    var almacen       = 'ALMACEN GENERAL';
     var cajapago      = $('#cajapagoalm').val();
     var nnotaventa    = $('#nnotaventaalm').val();
     var fventa        = $('#fventaalm').val();

@@ -30,13 +30,13 @@
                   <td>{{ $entrada->nombreproveedor }}</td>
                   <td>{{ $entrada->fecha}}</td>                            
                   <td>{{ $entrada->nomalmacen }}</td>                            
-                  <td>@if($entrada->status=='finalizado')<button type="button" class="btn bg-olive btn-flat margin" style="width:150px;">{{ $entrada->status }}</button>@else <button type="button" class="btn bg-navy btn-flat margin" style="width:150px;">{{ $entrada->status }}</button> @endif </td>                                              
+                  <td>@if($entrada->status=='finalizado')<button type="button" class="btn btn-block btn-success">{{ $entrada->status }}</button>@else <button type="button" class="btn btn-block btn-primary">{{ $entrada->status }}</button> @endif </td>                                              
                   <td><a href="/entradas/{{$entrada->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$entrada->id}}" class="btn btn-info">Agregar / Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$entrada->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$entrada->id}}" class="btn btn-danger">Borrar</button></td>
                 </tr>                    
               @endforeach                
             </tbody>            
            </table>                
-          <!-- /.box-body -->
+          <!-- /.box-body -->          
         </div>
     </div>
   </div>
