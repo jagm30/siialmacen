@@ -92,21 +92,30 @@
 <body>
 <!-- Defina bloques de encabezado y pie de página antes de su contenido -->
 <header>
-    <h3> Reporte de entradas - No. de factura: {{$entrada->nfactura}} | {{ $entrada->fecha }}</h3> 
+    <h3> Reporte de Salidas - | {{ $salida->fecha }}</h3> 
 </header>
 <!-- Envuelva el contenido de su PDF dentro de una etiqueta principal -->
 <main>
 <h2></h2>
 <table >
-    <tr style="background-color: #E6F9FF; color:black;">
-        <th style="background-color: white; border: 0px; color:black; font-size: 10pt;">{{$entrada->nomalmacen}}</th>
-        <th style="background-color: white; border: 0px; color:black; font-size: 10pt;">Proveedor: {{$entrada->nombreproveedor}}</th>
-        <th style="background-color: white; border: 0px; color:black; font-size: 10pt;">Referencia: {{$entrada->referencia}}</th>
-    </tr>
-    <tr>
-        <th style="background-color: white; border: 0px; color:black; font-size: 10pt;" colspan="3">Observaciones:{{$entrada->observaciones}}</th>
-        
-    </tr>
+    @if($salida->almacen == 2)
+        <tr>
+            <th style="background-color: white; border: 0px; color:black; font-size: 10pt;">{{$salida->nomalmacen}}</th>
+        </tr>
+        <tr>
+            <th style="background-color: white; border: 0px; color:black; font-size: 10pt;" colspan="3">Observaciones:{{$salida->observaciones}}</th>
+            
+        </tr>
+    @else
+        <tr>
+            <th style="background-color: white; border: 0px; color:black; font-size: 10pt;">{{$salida->nomalmacen}}</th>
+            <th style="background-color: white; border: 0px; color:black; font-size: 10pt;">Solicitante: {{$salida->solicitante}}</th>
+        </tr>
+        <tr>
+            <th style="background-color: white; border: 0px; color:black; font-size: 10pt;" colspan="3">Observaciones:{{$salida->observaciones}}</th>
+            
+        </tr>
+    @endif    
 </table>
 <br>
     <div id="contenido" class="contenido">
@@ -118,7 +127,7 @@
                     <th>Precio</th>
                     <th>Subtotal</th>                    
                 </tr>                                            
-                @foreach($entradadetalle as $detalle)
+                @foreach($salidadetalle as $detalle)
                 <?php 
                     //$originalDate = $alumn->periodo_vencimiento;
                     //$newDate = date("d-m-Y", strtotime($originalDate));
@@ -144,7 +153,7 @@
     position: relative;
     width: 50%;
     /*border: steelblue solid 1px;*/
-    height: auto;"><p style="text-align: center; margin-top:-50px;">Recibió <br>____________________________<br>José Gijon<br>Encargado de almacén</p> </div>
+    height: auto;"><p style="text-align: center; margin-top:-50px;">Entregó <br>____________________________<br>José Gijon<br>Encargado de almacén</p> </div>
     <div style="padding-top: 10px;
     padding-left: 0px;
     margin-left: 0px;
@@ -152,7 +161,7 @@
     float: left;
     width: 50%;
     /*border: steelblue solid 1px;*/
-    height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Vo. Bo. <br>____________________________<br>José Gijon<br>Recursos materiales</p> </div>
+    height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Solicitante <br>____________________________<br>{{ $salida->solicitante }}<br>Recursos materiales</p> </div>
 </div>
 <footer>
 SII ALMACEN - SISTEMA DE GESTIÓN DE ALMACÉN © <?php echo date("Y");?>

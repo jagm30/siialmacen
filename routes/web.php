@@ -48,6 +48,8 @@ Route::resource('/proveedores', ProveedorController::class);
 Route::resource('/inventario', InventarioController::class);
 
 Route::get('salidas/finalizarsalida/{id}', [App\Http\Controllers\SalidaController::class,'finalizarsalida'])->name('finalizarsalida');
+Route::get('salidas/delete/{id}', [App\Http\Controllers\SalidaController::class,'destroy'])->name('eliminasal');
+Route::get('salidas/reportepdf/{id}', [App\Http\Controllers\SalidaController::class,'reportepdf'])->name('reportepdfsalida');
 Route::resource('/salidas', SalidaController::class);
 Route::get('salidaproductos/delete/{id}', [App\Http\Controllers\SalidaproductoController::class,'destroy'])->name('destroysalprod');
 Route::get('salidaproductos/listarxsalida/{id}',[App\Http\Controllers\SalidaproductoController::class,'listarxsalida'])->name('listarxsalida');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Salida;
+use App\Models\Salidaproducto;
 use App\Models\Producto;
 use App\Models\CatAlmacen;
 use Illuminate\Support\Facades\DB;
@@ -107,9 +108,17 @@ class SalidaController extends Controller
      * @param  \App\Models\Salida  $salida
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Salida $salida)
+    public function destroy($id)
     {
-        //
+        $salida   = Salida::findOrFail($id);
+        if($salida->status =='captura'){
+            $salida->delete();
+            Salidaproducto::where('id_salida', $id)->delete();
+            return response()->json(['data' => "Eliminado correctamente..."]);
+        }else{
+            return response()->json(['data' => "El registro no se puede borrar, estatus: finalizado"]);
+        }
+        
     }
     public function finalizarsalida($id)
     {
@@ -118,5 +127,22 @@ class SalidaController extends Controller
         $salida->id_usuario        = 1;
         $salida->save();
         return response()->json(['data' => "Cambios guardados correctamente..."]);      
+    }
+    public function reportepdf($id)
+    {
+        $salida       = DB::table('salidas')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
+            ->where('salidas.id', '=', $id)
+            ->first();
+        $salidadetalle       = DB::table('salidaproductos')
+            ->select('salidaproductos.id','salidaproductos.id_salida','salidaproductos.id_producto','salidaproductos.cantidad','salidaproductos.precio','salidaproductos.status','productos.nombre','productos.descripcion')
+            ->leftJoin('productos', 'salidaproductos.id_producto', '=', 'productos.id')            
+            ->where('salidaproductos.id_salida', '=', $id)
+            ->get();
+        $today = Carbon::now()->format('d/m/Y');        
+        $pdf = \PDF::loadView('salidas/reportePDF', compact('today','salida','salidadetalle'))->setPaper(array(0,0,612.00,792.00));
+        return $pdf->stream();
+
     }
 }

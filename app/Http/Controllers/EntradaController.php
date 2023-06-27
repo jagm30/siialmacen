@@ -126,8 +126,13 @@ class EntradaController extends Controller
     public function destroy($id)
     {
         $entrada   = Entrada::findOrFail($id);
-        $entrada->delete();
-        return response()->json(['data' => "Eliminado correctamente..."]);
+        if($entrada->status =='captura'){
+            $entrada->delete();
+            EntradaProducto::where('id_entrada', $id)->delete();
+            return response()->json(['data' => "Eliminado correctamente..."]);
+        }else{
+            return response()->json(['data' => "El registro no se puede borrar, estatus: finalizado"]);
+        }                
     }
     public function finalizarentrada($id)
     {
@@ -150,8 +155,8 @@ class EntradaController extends Controller
             ->leftJoin('productos', 'entrada_productos.id_producto', '=', 'productos.id')            
             ->where('entrada_productos.id_entrada', '=', $id)
             ->get();
-        $today = Carbon::now()->format('d/m/Y');
-        $pdf = \PDF::loadView('entradas/reportePDF', compact('today','entrada','entradadetalle'));
+        $today = Carbon::now()->format('d/m/Y');        
+        $pdf = \PDF::loadView('entradas/reportePDF', compact('today','entrada','entradadetalle'))->setPaper(array(0,0,612.00,792.00));
         return $pdf->stream();
 
     }

@@ -31,7 +31,9 @@
                   <td>{{ $entrada->fecha}}</td>                            
                   <td>{{ $entrada->nomalmacen }}</td>                            
                   <td>@if($entrada->status=='finalizado')<button type="button" class="btn btn-block btn-success">{{ $entrada->status }}</button>@else <button type="button" class="btn btn-block btn-primary">{{ $entrada->status }}</button> @endif </td>                                              
-                  <td><a href="/entradas/{{$entrada->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$entrada->id}}" class="btn btn-info">Agregar / Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$entrada->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$entrada->id}}" class="btn btn-danger">Borrar</button></td>
+                  <td><a href="/entradas/{{$entrada->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$entrada->id}}" class="btn btn-info">Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$entrada->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$entrada->id}}" class="btn btn-danger">Borrar</button>
+                <a href="/entradas/reportepdf/{{ $entrada->id }}" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>                
+            </div></td>
                 </tr>                    
               @endforeach                
             </tbody>            

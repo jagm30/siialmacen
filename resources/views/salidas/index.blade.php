@@ -30,7 +30,7 @@
                   <td>{{ $salida->solicitante }}</td>
                   <td>{{ $salida->nomalmacen}}</td>                                                     
                   <td>@if($salida->status=='finalizado')<button type="button" class="btn btn-block btn-success">{{ $salida->status }}</button>@else <button type="button" class="btn btn-block btn-primary">{{ $salida->status }}</button>@endif </td>                                              
-                  <td><a href="/salidas/{{$salida->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$salida->id}}" class="btn btn-info">Agregar / Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$salida->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$salida->id}}" class="btn btn-danger">Borrar</button></td>
+                  <td><a href="/salidas/{{$salida->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$salida->id}}" class="btn btn-info">Agregar / Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$salida->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$salida->id}}" class="btn btn-danger">Borrar</button>@if($salida->status=='finalizado')<a href="/salidas/reportepdf/{{ $salida->id }}" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>@endif</td>
                 </tr>                    
               @endforeach                
             </tbody>            
@@ -379,10 +379,10 @@
 
   $(document).on("click", "#btn-eliminar", function () {
     var id_entrada = $(this).attr('data-id');
-    if (confirm("Desea eliminar el registro!"+id_entrada) == true) {
+    if (confirm("Desea eliminar el registro? "+id_entrada) == true) {
       $.ajax({
             type: "get",
-            url: "{{ url('entradas/delete') }}"+'/'+ id_entrada,
+            url: "{{ url('salidas/delete') }}"+'/'+ id_entrada,
             success: function (data) {
               alert(data.data);
               location.reload();
