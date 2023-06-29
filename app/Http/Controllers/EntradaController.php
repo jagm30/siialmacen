@@ -105,7 +105,8 @@ class EntradaController extends Controller
     }
 
     public function edicion(Request $request, $id_entrada ,$proveedor ,$fecha ,$nfactura ,$referencia ,$categoria, $observaciones)
-    {         
+    {       
+        try {              
             $entrada = Entrada::find($id_entrada);
             $entrada->proveedor         = $proveedor;
             $entrada->fecha             = $fecha;
@@ -115,7 +116,12 @@ class EntradaController extends Controller
             $entrada->observaciones     = $observaciones;
             $entrada->id_usuario        = 1;
             $entrada->save();
-            return response()->json(['data' => "Cambios guardados correctamente..."]);                     
+            return response()->json(['data' => "Cambios guardados correctamente..."]);
+
+        } catch (\Exception $e) {
+            
+            return response()->json(['data' => $e->getMessage()]);  
+        }              
     }
     /**
      * Remove the specified resource from storage.

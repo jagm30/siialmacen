@@ -65,7 +65,7 @@
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Proveedor</label>
                     <select id="proveedor" name="proveedor" class="form-control">
-                      <option>Seleccione un proveedor</option>
+                      <option value="">Seleccione un proveedor</option>
                         @foreach($proveedores as $proveedor)
                           <option value="{{$proveedor->id}}">{{$proveedor->nombre}}</option>
                         @endforeach
@@ -77,12 +77,12 @@
                 </div>
                 <div class="form-group has-success col-md-6">
                     <label class="control-label" for="inputSuccess1">Referencia / Orden de compra</label>
-                    <input id="referencia" type="text" class="form-control" name="referencia"  required  autofocus value="N/A">
+                    <input id="referencia" type="text" class="form-control" name="referencia"  required  autofocus value="NA">
                 </div>
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Almacen</label>
                     <select id="categoria" name="categoria" class="form-control">
-                        <option>Seleccione un almacen</option>
+                        <option value="">Seleccione un almacen</option>
                         @foreach($almacenes as $almacen)
                           <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
                         @endforeach
@@ -91,6 +91,9 @@
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Observaciones</label>
                     <input id="observaciones" type="text" class="form-control" name="observaciones"  required  autofocus value="NINGUNO">
+                </div>
+                <div class="form-group has-error col-md-12" id="cajaerror">
+                    
                 </div>
             </form>
          </div>
@@ -125,7 +128,7 @@
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Proveedor</label>
                     <select id="proveedor-e" name="proveedor-e" class="form-control">
-                        <option>Seleccione un proveedor</option>
+                        <option value="">Seleccione un proveedor</option>
                         @foreach($proveedores as $proveedor)
                           <option value="{{$proveedor->id}}">{{$proveedor->nombre}}</option>
                         @endforeach
@@ -142,7 +145,7 @@
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Categoria</label>
                     <select id="categoria-e" name="categoria-e" class="form-control">
-                        <option>Seleccione un almacen</option>
+                        <option value="">Seleccione un almacen</option>
                         @foreach($almacenes as $almacen)
                           <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
                         @endforeach
@@ -151,6 +154,9 @@
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Observaciones</label>
                     <input id="observaciones-e" type="text" class="form-control" name="observaciones-e"  required  autofocus>
+                </div>
+                <div class="form-group has-error col-md-12" id="cajaerror-e">
+                    
                 </div>
             </form>
          </div>
@@ -221,9 +227,25 @@
     var proveedor     = $("#proveedor-e").val();
     var fecha         = $("#fecha-e").val();
     var nfactura      = $("#nfactura-e").val();
-    var referencia    = $("#referencia-e").val();
+    var referencia    = String($("#referencia-e").val());
     var categoria     = $("#categoria-e").val();
     var observaciones = $("#observaciones-e").val(); 
+    //alert(referencia);
+    if (nfactura == '' || nfactura.length == 0 ) {
+      document.getElementById("nfactura-e").focus();
+      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese el No. de factura.</div>';
+      return false;
+    } 
+    if (proveedor == '' || proveedor.length == 0 ) {
+      document.getElementById("proveedor-e").focus();
+      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Seleccione un proveedor.</div>';
+      return false;
+    }
+    if (categoria == '' || categoria.length == 0 ) {
+      document.getElementById("categoria-e").focus();
+      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Seleccione un almacén.</div>';
+      return false;
+    } 
 
       $.ajax({
          url:"/entradas/edicion/"+id_entrada+"/"+proveedor+"/"+fecha+"/"+nfactura+"/"+referencia+"/"+categoria+"/"+observaciones,
@@ -249,6 +271,21 @@
     var status          = 'captura';
     var id_usuario      = 1;
 
+    if (nfactura == '' || nfactura.length == 0 ) {
+      document.getElementById("nfactura").focus();
+      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese el No. de factura.</div>';
+      return false;
+    } 
+    if (proveedor == '' || proveedor.length == 0 ) {
+      document.getElementById("proveedor").focus();
+      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Seleccione un proveedor.</div>';
+      return false;
+    }
+    if (categoria == '' || categoria.length == 0 ) {
+      document.getElementById("categoria").focus();
+      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Seleccione un almacén.</div>';
+      return false;
+    } 
       $.ajax({
           url: "/entradas",
           type: "POST",

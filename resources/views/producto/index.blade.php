@@ -65,8 +65,8 @@
               <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
                 <input id="id_producto" type="hidden" class="form-control" name="id_producto">
                 <div class="form-group has-success col-md-6">
-                    <label class="control-label" for="inputSuccess1">Nombre</label>                     
-                    <input id="nombre" type="text" class="form-control" name="nombre"  required  autofocus>
+                    <label class="control-label" for="inputSuccess1">Descripcion corta</label>                     
+                    <input id="nombre" type="text" class="form-control" name="nombre"  required  autofocus oninput="actualizarValor()">
                 </div>
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Descripcion</label>
@@ -88,12 +88,14 @@
                     <label class="control-label" for="inputError1">Precio Mayoreo</label>
                     <input id="precioPromocion" type="text" class="form-control" name="precioPromocion"  required  autofocus value="0">
                 </div>
+                <div class="form-group has-error col-md-6" id="cajaerror">                    
+                </div>
             </form>
          </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-        <button id="btn_guardaregistro" name="btn_guardaregistro" type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
+        <button id="btn_guardaregistro" name="btn_guardaregistro" type="button" class="btn btn-primary">Guardar cambios</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -137,6 +139,8 @@
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Precio Mayoreo</label>
                     <input id="precioPromocion-e" type="text" class="form-control" name="precioPromocion-e"  required  autofocus>
+                </div>
+                <div class="form-group has-error col-md-6" id="cajaerror-e">                    
                 </div>
             </form>
          </div>
@@ -207,6 +211,28 @@
     var categoria = $("#categoria-e").val();
     var precio = $("#precio-e").val();
     var precioPromocion = $("#precioPromocion-e").val(); 
+
+    if (nombre == '' || nombre.length == 0 ) {
+      document.getElementById("nombre-e").focus();
+      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese el nombre.</div>';
+      return false;
+    } 
+    if (descripcion == '' || descripcion.length == 0 ) {
+      document.getElementById("descripcion-e").focus();
+      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese la descripcion.</div>';
+      return false;
+    }
+    if (precio == '' || precio.length == 0 ) {
+      document.getElementById("precio-e").focus();
+      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Si no maneja precio, deje el campo con el valor 0</div>';
+      return false;
+    } 
+    if (precioPromocion == '' || precioPromocion.length == 0 ) {
+      document.getElementById("precioPromocion-e").focus();
+      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Si no maneja precio, deje el campo con el valor 0</div>';
+      return false;
+    } 
+
       $.ajax({
          url:"/productos/edicion/"+id_producto+"/"+nombre+"/"+descripcion+"/"+categoria+"/"+precio+"/"+precioPromocion,
          dataType:"json",
@@ -230,7 +256,29 @@
     var precioPromocion = $('#precioPromocion').val();
     var stock           = 0;
     var id_usuario      = 1;
-    //alert("ok");
+    
+    if (nombre == '' || nombre.length == 0 ) {
+      document.getElementById("nombre").focus();
+      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese el nombre.</div>';
+      return false;
+    } 
+    if (descripcion == '' || descripcion.length == 0 ) {
+      document.getElementById("descripcion").focus();
+      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese la descripcion.</div>';
+      return false;
+    }
+    if (precio == '' || precio.length == 0 ) {
+      document.getElementById("precio").focus();
+      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Si no maneja precio, deje el campo con el valor 0</div>';
+      return false;
+    } 
+    if (precioPromocion == '' || precioPromocion.length == 0 ) {
+      document.getElementById("precioPromocion").focus();
+      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Si no maneja precio, deje el campo con el valor 0</div>';
+      return false;
+    } 
+    
+
       $.ajax({
           url: "/productos",
           type: "POST",
@@ -274,5 +322,9 @@
     }
   });
 
+  function actualizarValor(){
+    let nombre = document.getElementById("nombre").value;
+    document.getElementById("descripcion").value = nombre;
+  }
 </script>
 @endsection

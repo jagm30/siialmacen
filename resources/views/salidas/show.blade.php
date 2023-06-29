@@ -231,8 +231,8 @@
     
     var id_salida     = $('#id_salida').val();
     var id_producto   = $('#id_producto').val();    
-    var cantidad      = $('#cantidad').val();
-    var stock         = $('#stock').val();
+    var cantidad      = parseInt($('#cantidad').val());
+    var stock         = parseInt($('#stock').val());
     var precio        = $('#precio').val();
     var status        = 'captura';
     var id_usuario    = 1;

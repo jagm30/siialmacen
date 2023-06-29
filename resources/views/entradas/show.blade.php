@@ -23,6 +23,7 @@
               <div class="form-group">
                 <label class="control-label" for="inputWarning1">Proveedor</label>
                 <select id="proveedor" name="proveedor" class="form-control" value="{{$entrada->proveedor}}">
+                    <option value="">Seleccione un proveedor</option>
                     <option value="1">SIGMA</option>
                     <option value="2">MCA COMPUTO</option>
                     <option value="3">COCA COLA</option>
