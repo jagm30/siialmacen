@@ -3,7 +3,7 @@
 <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Datos Generales || Categoria: <b>{{$entrada->categoria}}</b></h3>
+          <h3 class="box-title">Datos Generales || Almacén: <b>{{$entrada->nomalmacen}}</b></h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -22,11 +22,11 @@
             <div class="col-md-2">              
               <div class="form-group">
                 <label class="control-label" for="inputWarning1">Proveedor</label>
-                <select id="proveedor" name="proveedor" class="form-control" value="{{$entrada->proveedor}}">
+                <select id="proveedor" name="proveedor" class="form-control">
                     <option value="">Seleccione un proveedor</option>
-                    <option value="1">SIGMA</option>
-                    <option value="2">MCA COMPUTO</option>
-                    <option value="3">COCA COLA</option>
+                    @foreach($proveedores as $proveedor)
+                      <option value="{{ $proveedor->id }}" @if($proveedor->id == $entrada->proveedor) selected="true" @endif>{{ $proveedor->nombre }}</option>
+                    @endforeach                    
                 </select>
               </div>
             </div>
@@ -54,8 +54,8 @@
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <a href="/entradas/reportepdf/{{ $entrada->id }}" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a>
-                <a href="#"><img src="/images/excel.png" width="50" height="50"></a>
+                @if($entrada->status=='finalizado')<a href="/entradas/reportepdf/{{ $entrada->id }}" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a>@endif
+                <!--<a href="#"><img src="/images/excel.png" width="50" height="50"></a>-->
               </div>
             </div>
             <!-- /.col -->
@@ -116,22 +116,19 @@
                     </select>
                 </div>
 
-                <div class="form-group has-error col-md-3">
+                <div class="form-group has-error col-md-4">
                     <label class="control-label" for="inputError1">Cantidad</label>
                     <input id="cantidad" type="text" class="form-control" name="cantidad"  required  autofocus>
                 </div>
-                <div class="form-group has-success col-md-3">
+                <div class="form-group has-success col-md-4">
                     <label class="control-label" for="inputSuccess1">Precio</label>
                     <input id="precio" type="text" class="form-control" name="precio"  required  autofocus>
                 </div>
-                <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Categoria</label>
-                    <select id="categoria" name="categoria" class="form-control">
-                        <option value="1">ALMACEN GRAL</option>
-                        <option value="2">ALMACEN 2</option>
-                        <option value="3">ALMACEN 3</option>
-                    </select>
-                </div>                
+                <div class="form-group has-success col-md-4">
+                  <label class="control-label" for="inputSuccess1">Guardar</label>
+                  <button id="btn_guardaregistro" name="btn_guardaregistro" type="button" class="btn btn-primary">Guardar cambios</button>
+                </div>
+                <input type="hidden" id="categoria" name="categoria" value="{{ $entrada->categoria }}">                
             </form>
          </div>
       </div>

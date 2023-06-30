@@ -75,10 +75,16 @@ class EntradaController extends Controller
             return json_encode($entrada);
         }
         $id_entrada = $id;
-        $entrada    =Entrada::findOrFail($id);
-        $entradas   = Entrada::all();
+        $almacenes      = CatAlmacen::all();
+        $proveedores    = Proveedor::all();
+        $entrada       = DB::table('entradas')
+            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
+            ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
+            ->where('entradas.id','=', $id)
+            ->first();
         $productos  = Producto::all();
-        return view('entradas.show',compact('entradas','entrada','productos','id_entrada'));
+        return view('entradas.show',compact('entrada','productos','id_entrada','almacenes','proveedores'));
     }
 
     /**

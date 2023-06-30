@@ -30,7 +30,7 @@
                   <td>{{ $salida->solicitante }}</td>
                   <td>{{ $salida->nomalmacen}}</td>                                                     
                   <td>@if($salida->status=='finalizado')<button type="button" class="btn btn-block btn-success">{{ $salida->status }}</button>@else <button type="button" class="btn btn-block btn-primary">{{ $salida->status }}</button>@endif </td>                                              
-                  <td><a href="/salidas/{{$salida->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$salida->id}}" class="btn btn-info">Agregar / Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$salida->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$salida->id}}" class="btn btn-danger">Borrar</button>@if($salida->status=='finalizado')<a href="/salidas/reportepdf/{{ $salida->id }}" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>@endif</td>
+                  <td><a href="/salidas/{{$salida->id}}"><button type="button" id="btn-agregar" name="btn-agregar" data-id="{{$salida->id}}" class="btn btn-info">Agregar / Ver</button></a> | <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$salida->id}}" data-toggle="modal" data-target="#modal-default">Editar</button> | @if($salida->status=='finalizado')<a href="/salidas/reportepdf/{{ $salida->id }}" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>@else <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$salida->id}}" class="btn btn-danger">Borrar</button>@endif</td>
                 </tr>                    
               @endforeach                
             </tbody>            
@@ -120,7 +120,7 @@
       <div class="modal-body">
          <div class="row">
            <form id="formmodal">
-              <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+              <input type="hidden" name="_token" id="csrfalm" value="{{Session::token()}}">
                 
                 <div class="form-group has-success col-md-4">
                     <label class="control-label" for="inputSuccess1">Folio requerimiento</label>                     
@@ -149,7 +149,7 @@
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Almacen</label>
                     <select id="almacenalm" name="almacenalm" class="form-control">
-                        <option>Seleccione un almacen</option>
+                        <option value="">Seleccione un almacen</option>
                         @foreach($almacenes as $almacen)
                           <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
                         @endforeach
@@ -157,7 +157,10 @@
                 </div>
                 <div class="form-group has-warning col-md-12">
                     <label class="control-label" for="inputWarning1">Observaciones</label>
-                    <input id="observacionesalm" type="text" class="form-control" name="observacionesalm"  required  autofocus>
+                    <input id="observacionesalm" type="text" class="form-control" name="observacionesalm"  required  autofocus value="ninguno">
+                </div>
+                <div class="form-group has-error col-md-12" id="cajaerror">
+                    
                 </div>
             </form>
          </div>
@@ -351,11 +354,28 @@
     var status        = 'captura';
     var id_usuario    = 1;
 
+    if (folioreq == '' || folioreq.length == 0 ) {
+      document.getElementById("folioreqalm").focus();
+      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese el No. de requisicion.</div>';
+      return false;
+    } 
+    if (solicitante == '' || solicitante.length == 0 ) {
+      document.getElementById("solicitantealm").focus();
+      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese el nombre del solicitantre</div>';
+      return false;
+    }
+    if (almacen == '' || almacen.length == 0 ) {
+      document.getElementById("almacenalm").focus();
+      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Seleccione un almacén.</div>';
+      return false;
+    } 
+
+alert("ok");
       $.ajax({
           url: "/salidas",
           type: "POST",
           data: {
-              _token: $("#csrf").val(),
+              _token: $("#csrfalm").val(),
               type: 1,
               folioreq:     folioreq,
               solicitante:  solicitante,
@@ -370,6 +390,7 @@
           },
           cache: false,
           success: function(dataResult){
+            //alert(data.data);
             window.location.href = '/salidas/'+dataResult.data;             
           }
       });   

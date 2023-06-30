@@ -73,7 +73,12 @@ class SalidaController extends Controller
             return json_encode($salida);
         }
         $id_salida  = $id;
-        $salida     = Salida::findOrFail($id);
+        //$salida     = Salida::findOrFail($id);
+        $salida     = DB::table('salidas')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
+            ->where('salidas.id','=',$id)
+            ->first();
         $salidas    = Salida::all();
         $productos  = Producto::where('stock','>','0')->get();
         return view('salidas.show',compact('salidas','salida','productos','id_salida'));

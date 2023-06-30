@@ -38,7 +38,7 @@
               </button>
                   </td>                            
                   <td>                                
-                    <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$producto->id}}" class="btn btn-danger">Borrar</button>                            
+                  <!--  <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$producto->id}}" class="btn btn-danger">Borrar</button>-->
                   </td>                        
                 </tr>                    
               @endforeach                
