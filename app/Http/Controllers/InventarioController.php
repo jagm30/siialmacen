@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Producto;
+use App\Models\CatAlmacen;
 use App\Models\categoriaproducto;
 
 
@@ -21,13 +22,22 @@ class InventarioController extends Controller
     {
         $this->middleware('auth');
     }
-    public function index(){         
+    public function index(Request $request){
+        if ($request->ajax()) {
+        // $data = Entradaproducto::all();
+            return datatables()->of(DB::table('productos')
+            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','categoriaproductos.nombre as nomcategoria')
+            ->leftJoin('categoriaproductos', 'categoriaproductos.id', '=', 'productos.categoria')
+            ->get())
+            ->make(true);
+        }
+        $almacenes      = CatAlmacen::all();         
         $categoriaproductos = Categoriaproducto::all();       
         $productos = DB::table('productos')
             ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','categoriaproductos.nombre as nomcategoria')
             ->leftJoin('categoriaproductos', 'categoriaproductos.id', '=', 'productos.categoria')
             ->get();  
-        return view('inventario.index', compact('productos','categoriaproductos'));     
+        return view('inventario.index', compact('productos','categoriaproductos','almacenes'));     
     }
 
     /**
@@ -57,9 +67,18 @@ class InventarioController extends Controller
      * @param  \App\Models\Inventario  $inventario
      * @return \Illuminate\Http\Response
      */
-    public function show(Inventario $inventario)
+    public function show(Request $request, $id)
     {
         //
+        if ($request->ajax()) {
+        // $data = Entradaproducto::all();
+            return datatables()->of(DB::table('productos')
+            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','categoriaproductos.nombre as nomcategoria')
+            ->leftJoin('categoriaproductos', 'categoriaproductos.id', '=', 'productos.categoria')
+            ->where('productos.categoria', '=', $id)
+            ->get())
+            ->make(true);
+        }
     }
 
     /**

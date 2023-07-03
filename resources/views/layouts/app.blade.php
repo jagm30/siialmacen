@@ -235,8 +235,15 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset("dist/js/demo.js") }}"></script>
 <!-- DataTables -->
+<!-- plugins para descargar los aricvos Excel, PDF y mas -->
 <script src="{{ asset("bower_components/datatables.net/js/jquery.dataTables.min.js") }}"></script>
-<script src="{{ asset("bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js") }}"></script>
+<script src="{{ asset("bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js") }}"></script>>
+<script src="{{ asset("https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js") }}"></script>>
+<script src="{{ asset("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js") }}"></script>>
+<script src="{{ asset("https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js") }}"></script>>
+<script src="{{ asset("https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js") }}"></script>>
+<script src="{{ asset("https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js") }}"></script>>
+<script src="{{ asset("https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js") }}"></script>>
 
 @yield("scriptpie")
 <style>

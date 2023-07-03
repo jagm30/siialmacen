@@ -370,7 +370,7 @@
       return false;
     } 
 
-alert("ok");
+//alert("ok");
       $.ajax({
           url: "/salidas",
           type: "POST",

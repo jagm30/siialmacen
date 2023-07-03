@@ -16,7 +16,7 @@
                 <th scope="col">Id</th>                    
                 <th scope="col">Nombre</th>                    
                 <th scope="col">Descripción</th>   
-                <th scope="col">Categoria</th>                    
+                <th scope="col">Almacen</th>                    
                 <th scope="col">Precio</th>                    
                 <th scope="col">Precio con descuento</th>                    
                 <th scope="col">Acción</th>                    
@@ -29,7 +29,7 @@
                   <td>{{ $producto->id }}</td>                            
                   <td>{{ $producto->nombre }}</td>                            
                   <td>{{ $producto->descripcion }}</td>
-                  <td>{{ $producto->nomcategoria}}</td>                            
+                  <td>{{ $producto->nomalmacen}}</td>                            
                   <td>$ {{ $producto->precio }}</td>                            
                   <td>$ {{ $producto->precioPromocion }}</td>                            
                   <td>                                
@@ -73,10 +73,10 @@
                     <input id="descripcion" name="descripcion" type="text" class="form-control">
                 </div>
                 <div class="form-group has-error col-md-6">
-                    <label class="control-label" for="inputError1">Categoria</label>
+                    <label class="control-label" for="inputError1">Almacén</label>
                     <select id="categoria" name="categoria" class="form-control">
-                        @foreach($categoriaproductos as $categoria)
-                            <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
+                        @foreach($almacenes as $almacene)
+                            <option value="{{$almacene->id}}">{{$almacene->nombre}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -127,8 +127,8 @@
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Categoria</label>
                     <select id="categoria-e" name="categoria-e" class="form-control">
-                        @foreach($categoriaproductos as $categoria)
-                            <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
+                        @foreach($almacenes as $almacene)
+                            <option value="{{$almacene->id}}">{{$almacene->nombre}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -180,7 +180,11 @@
       "fnDrawCallback":function(){
         $("input[type='search']").attr("id", "searchBox");            
         $('#searchBox').css("width", "400px").focus();
-      }
+      },
+      dom: 'Bfrtip',
+      buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
     })
     $("#menuproductos").addClass("important active");
   })

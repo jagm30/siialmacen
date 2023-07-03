@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Producto;
 use App\Models\categoriaproducto;
+use App\Models\CatAlmacen;
 class ProductoController extends Controller
 {
     //    
@@ -16,12 +17,13 @@ class ProductoController extends Controller
     }
     public function index(){         
     	$productos = DB::table('productos')
-            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','categoriaproductos.nombre as nomcategoria')
-            ->leftJoin('categoriaproductos', 'categoriaproductos.id', '=', 'productos.categoria')
+            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'productos.categoria', '=', 'cat_almacens.id')
             ->get();    
 
+        $almacenes          = CatAlmacen::all();
 		$categoriaproductos = Categoriaproducto::all();
-	   	return view('producto.index', compact('productos','categoriaproductos'));     
+	   	return view('producto.index', compact('productos','categoriaproductos','almacenes'));     
 	}
 	public function store(Request $request)
     { 
