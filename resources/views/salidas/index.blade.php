@@ -314,7 +314,7 @@
     var fventa        = $('#fventa').val();
     var observaciones = $('#observaciones').val();
     var status        = 'captura';
-    var id_usuario    = 1;
+    var id_usuario    = {{ Auth::user()->id }};
     alert(fecha);
       $.ajax({
           url: "/salidas",
@@ -352,7 +352,7 @@
     var fventa        = $('#fventaalm').val();
     var observaciones = $('#observacionesalm').val();
     var status        = 'captura';
-    var id_usuario    = 1;
+    var id_usuario    = {{ Auth::user()->id }};
 
     if (folioreq == '' || folioreq.length == 0 ) {
       document.getElementById("folioreqalm").focus();

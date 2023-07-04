@@ -26,16 +26,16 @@ class InventarioController extends Controller
         if ($request->ajax()) {
         // $data = Entradaproducto::all();
             return datatables()->of(DB::table('productos')
-            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','categoriaproductos.nombre as nomcategoria')
-            ->leftJoin('categoriaproductos', 'categoriaproductos.id', '=', 'productos.categoria')
+            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
             ->get())
             ->make(true);
         }
         $almacenes      = CatAlmacen::all();         
         $categoriaproductos = Categoriaproducto::all();       
         $productos = DB::table('productos')
-            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','categoriaproductos.nombre as nomcategoria')
-            ->leftJoin('categoriaproductos', 'categoriaproductos.id', '=', 'productos.categoria')
+            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
             ->get();  
         return view('inventario.index', compact('productos','categoriaproductos','almacenes'));     
     }
@@ -73,8 +73,8 @@ class InventarioController extends Controller
         if ($request->ajax()) {
         // $data = Entradaproducto::all();
             return datatables()->of(DB::table('productos')
-            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','categoriaproductos.nombre as nomcategoria')
-            ->leftJoin('categoriaproductos', 'categoriaproductos.id', '=', 'productos.categoria')
+            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
             ->where('productos.categoria', '=', $id)
             ->get())
             ->make(true);

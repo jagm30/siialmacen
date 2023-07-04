@@ -7,7 +7,7 @@
     }
     /** Defina ahora los márgenes reales de cada página en el PDF **/
     body {
-        margin-top: 1.5cm;
+        margin-top: 4cm;
         margin-left: 1cm;
         margin-right: 1cm;
         margin-bottom: 2cm;
@@ -86,31 +86,50 @@
         line-height: .5cm;
         width: 100%
     }
+    /** 
+            * Define the width, height, margins and position of the watermark.
+            **/
+            #watermark {
+                position: fixed;
+                bottom:   0px;
+                left:     0px;
+                top:     0px;
+                /** The width and height may change 
+                    according to the dimensions of your letterhead
+                **/
+                width:    21cm;
+                height:   28cm;
+
+                /** Your watermark should be behind every content**/
+                z-index:  -1000;
+            }
 }
 </style>
 </head>
 <body>
+<div id="watermark">
+ <img src="{{ public_path().'/images/formato.jpg' }}" width="100%" height="100%">
+</div>
+
 <!-- Defina bloques de encabezado y pie de página antes de su contenido -->
-<header>
-    <h3> Reporte de entradas - No. de factura: {{$entrada->nfactura}} | {{ $entrada->fecha }}</h3> 
-</header>
+
 <!-- Envuelva el contenido de su PDF dentro de una etiqueta principal -->
 <main>
-<h2></h2>
-<table >
-    <tr style="background-color: #E6F9FF; color:black;">
-        <th style="background-color: white; border: 0px; color:black; font-size: 10pt;">{{$entrada->nomalmacen}}</th>
-        <th style="background-color: white; border: 0px; color:black; font-size: 10pt;">Proveedor: {{$entrada->nombreproveedor}}</th>
-        <th style="background-color: white; border: 0px; color:black; font-size: 10pt;">Referencia: {{$entrada->referencia}}</th>
+
+<table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border-radius: 10px 10px;">
+    <tr style="background-color: #E6F9FF; color:black; ">
+        <th style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">{{$entrada->nomalmacen}}</th>
+        <th style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">Proveedor: {{$entrada->nombreproveedor}}</th>
+        <th style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">Referencia: {{$entrada->referencia}}</th>
     </tr>
     <tr>
-        <th style="background-color: white; border: 0px; color:black; font-size: 10pt;" colspan="3">Observaciones:{{$entrada->observaciones}}</th>
+        <th style="background-color: white; border: 1px solid gray; color:black; font-size: 10pt;" colspan="3">Observaciones:{{$entrada->observaciones}}</th>
         
     </tr>
 </table>
-<br>
+<br><br>
     <div id="contenido" class="contenido">
-            <table width="100%" style="width:100%" style="font-size: 10pt;   font-family: Arial, Helvetica, sans-serif;">             
+            <table width="100%" style="width:100% !important" style="font-size: 10pt;   font-family: Arial, Helvetica, sans-serif;">             
                 <tr>                    
                     <th>Cantidad</th>
                     <th>Nombre</th>

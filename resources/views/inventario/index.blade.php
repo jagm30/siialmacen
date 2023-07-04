@@ -17,7 +17,7 @@
     <div class="col-xs-12">
       <!-- /.box-header -->
       <div class="box">
-          <div class="box-header">            
+          <div class="box-header" style="background-color: lightsteelblue !important;">            
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-2 control-label">Filtrar por almacén</label>
               <div class="col-sm-2">
@@ -71,8 +71,8 @@
             name: 'descripcion'
           },
           {
-            data: 'nomcategoria',
-            name: 'nomcategoria'
+            data: 'nomalmacen',
+            name: 'nomalmacen'
           },       
           {
             data: 'precio',
@@ -143,8 +143,8 @@
                   name: 'descripcion'
                 },
                 {
-                  data: 'nomcategoria',
-                  name: 'nomcategoria'
+                  data: 'nomalmacen',
+                  name: 'nomalmacen'
                 },       
                 {
                   data: 'precio',

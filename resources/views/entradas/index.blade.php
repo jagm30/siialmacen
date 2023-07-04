@@ -230,6 +230,7 @@
     var referencia    = String($("#referencia-e").val());
     var categoria     = $("#categoria-e").val();
     var observaciones = $("#observaciones-e").val(); 
+    var id_usuario      = {{ Auth::user()->id }};
     //alert(referencia);
     if (nfactura == '' || nfactura.length == 0 ) {
       document.getElementById("nfactura-e").focus();
@@ -269,7 +270,7 @@
     var categoria       = $('#categoria').val();
     var observaciones   = $('#observaciones').val();
     var status          = 'captura';
-    var id_usuario      = 1;
+    var id_usuario      = {{ Auth::user()->id }};
 
     if (nfactura == '' || nfactura.length == 0 ) {
       document.getElementById("nfactura").focus();

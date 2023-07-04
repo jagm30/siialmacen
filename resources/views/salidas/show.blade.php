@@ -235,7 +235,7 @@
     var stock         = parseInt($('#stock').val());
     var precio        = $('#precio').val();
     var status        = 'captura';
-    var id_usuario    = 1;
+    var id_usuario    = {{ Auth::user()->id }};
 
    
     if (cantidad > stock) {

@@ -264,7 +264,7 @@
     var precio        = $('#precio').val();
     var categoria     = $('#categoria').val();
     var status        = "captura";
-    var id_usuario    = 1;
+    var id_usuario    = {{ Auth::user()->id }};
     //alert(id_entrada + "- "+ id_producto + "- "+ cantidad + "- "+ precio + "- "+ categoria + "- "+ id_usuario);
       $.ajax({
           url: "/entradaproductos",
