@@ -20,7 +20,7 @@
           <div class="box-header" style="background-color: lightsteelblue !important;">            
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-2 control-label">Filtrar por almacén</label>
-              <div class="col-sm-2">
+              <div class="col-sm-4">
                 <select id="categoria" name="categoria" class="form-control">
                   <option value="todos">Todos</option>
                     @foreach($almacenes as $almacen)

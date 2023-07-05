@@ -117,13 +117,17 @@
 <main>
 
 <table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border-radius: 10px 10px;">
+    <tr style="background-color: #E6F9FF; color:black;" >
+        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: #051F62; text-align: left;" >REPORTE DE ENTRADAS</th>       
+        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: #051F62; text-align: right;" colspan="2">Fecha de registro: {{ $entrada->fecha }} </th> 
+    </tr>
     <tr style="background-color: #E6F9FF; color:black; ">
         <th style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">{{$entrada->nomalmacen}}</th>
         <th style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">Proveedor: {{$entrada->nombreproveedor}}</th>
         <th style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">Referencia: {{$entrada->referencia}}</th>
     </tr>
     <tr>
-        <th style="background-color: white; border: 1px solid gray; color:black; font-size: 10pt;" colspan="3">Observaciones:{{$entrada->observaciones}}</th>
+        <th style="background-color: white; border: 1px solid gray;color: #051F62;font-size: 10pt;" colspan="3">Observaciones: {{$entrada->observaciones}}</th>
         
     </tr>
 </table>

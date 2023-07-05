@@ -69,16 +69,23 @@ class InventarioController extends Controller
      */
     public function show(Request $request, $id)
     {
-        //
+        //Filtro de inventarios segun el almacen seleccionado
         if ($request->ajax()) {
-        // $data = Entradaproducto::all();
-            return datatables()->of(DB::table('productos')
-            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
-            ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
-            ->where('productos.categoria', '=', $id)
-            ->get())
-            ->make(true);
-        }
+            if($id=='todos'){
+                return datatables()->of(DB::table('productos')
+                    ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
+                    ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
+                    ->get())
+                    ->make(true);            
+            }else{
+                return datatables()->of(DB::table('productos')
+                    ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
+                    ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
+                    ->where('productos.categoria', '=', $id)
+                    ->get())
+                    ->make(true);                
+            }           
+        } 
     }
 
     /**

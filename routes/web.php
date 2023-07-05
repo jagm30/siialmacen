@@ -12,6 +12,7 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\SalidaController;
 use App\Http\Controllers\SalidaproductoController;
+use App\Http\Controllers\KardexController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,6 +47,7 @@ Route::resource('/entradaproductos', EntradaProductoController::class);
 Route::resource('/almacenes', CatAlmacenController::class);
 Route::resource('/proveedores', ProveedorController::class);
 Route::resource('/inventario', InventarioController::class);
+Route::resource('/kardex', KardexController::class);
 
 Route::get('salidas/finalizarsalida/{id}', [App\Http\Controllers\SalidaController::class,'finalizarsalida'])->name('finalizarsalida');
 Route::get('salidas/delete/{id}', [App\Http\Controllers\SalidaController::class,'destroy'])->name('eliminasal');

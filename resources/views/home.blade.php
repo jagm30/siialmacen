@@ -23,7 +23,7 @@
             <div class="inner">
               <h3>3<sup style="font-size: 20px"></sup></h3>
 
-              <p>Salidas Almacen Gral</p>
+              <p>Salidas Almacen General</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
@@ -38,7 +38,7 @@
             <div class="inner">
               <h3>4</h3>
 
-              <p>Salidas Almacen 2</p>
+              <p>Ventas de Uniformes</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
@@ -53,7 +53,7 @@
             <div class="inner">
               <h3>1</h3>
 
-              <p>Salidas Almacen 3</p>
+              <p>Inventario actual</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
