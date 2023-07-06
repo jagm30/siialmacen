@@ -20,9 +20,17 @@ class EntradaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        if ($request->ajax()) {
+                return datatables()->of(DB::table('entradas')
+            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
+            ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
+            ->get())
+                    ->make(true);                
+        } 
         $date = Carbon::now();
         $date = $date->format('Y-m-d');
         $almacenes      = CatAlmacen::all();

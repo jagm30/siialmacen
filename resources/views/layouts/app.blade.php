@@ -31,7 +31,19 @@
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-
+<style type="text/css">
+  table.dataTable thead{
+    background-color: rgb(17,17,111);
+    color: azure;
+  }
+  .page-item.active .page.link{
+    background-color: rgb(17,17,111) !important;
+    color: azure !important;
+  }
+  .page-link{
+    color: black !important
+  }
+</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">

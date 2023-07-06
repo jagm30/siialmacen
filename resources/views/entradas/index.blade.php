@@ -4,9 +4,20 @@
    <div class="row">
     <div class="col-xs-12">
       <div class="box">
-          <div class="box-header">
-            <h3 class="box-title"><button type="button" class="btn btn-warning"> Registro de entradas</button> </h3> 
-            <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregar"> Agregar entrada</button>
+          <div class="box-header">  
+              <div class="col-sm-2">
+                <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregar"> Registrar entrada</button>
+              </div>            
+              <label for="inputEmail3" class="col-sm-1 control-label">Filtrar por fecha</label>
+              <div class="col-sm-2">
+                <input type="date" class="form-control" name="fecha1" id="fecha1">
+              </div>
+              <div class="col-sm-2">
+                <input type="date" class="form-control" name="fecha1" id="fecha1">
+              </div> 
+              <div class="col-sm-2">
+                <input type="button" class="form-control btn-primary" name="btnfiltrofecha" id="btnfiltrofecha" value="Filtrar">
+              </div> 
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -22,7 +33,7 @@
                 <th scope="col" style="width: 300px">Acción</th>                      
                 </tr>                
             </thead>                
-            <tbody>                    
+          <!--  <tbody>                    
               @foreach ($entradas as $entrada)                        
                 <tr>                            
                   <td>{{ $entrada->id }}</td>                            
@@ -36,7 +47,7 @@
             </div></td>
                 </tr>                    
               @endforeach                
-            </tbody>            
+            </tbody>            -->
            </table>                
           <!-- /.box-body -->          
         </div>
@@ -177,6 +188,42 @@
 <script>
   $(function () {
     $('#example1').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: "/entradas/",
+        columns:[
+          {
+            data: 'id',
+            name: 'id'
+          },
+          {
+            data: 'nfactura',
+            name: 'nfactura'
+          },
+          {
+            data: 'nombreproveedor',
+            name: 'nombreproveedor'
+          },
+          {
+            data: 'fecha',
+            name: 'fecha'
+          },       
+          {
+            data: 'nomalmacen',
+            name: 'nomalmacen'
+          },          
+          {
+            data: 'status',
+            name: 'status'
+          },
+          {
+            "data": null,
+            "bSortable": false,
+            "mRender": function(data, type, value) {
+                return '<a href="/entradas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button>';
+            }
+          }      
+        ],
       language: {
         "decimal": "",
         "emptyTable": "No hay información",

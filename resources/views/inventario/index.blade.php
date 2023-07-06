@@ -1,18 +1,6 @@
 @extends('layouts.app') 
 @section('contenidoprincipal') 
-<style type="text/css">
-  table.dataTable thead{
-    background-color: rgb(17,17,111);
-    color: azure;
-  }
-  .page-item.active .page.link{
-    background-color: rgb(17,17,111) !important;
-    color: azure !important;
-  }
-  .page-link{
-    color: black !important
-  }
-</style>
+
    <div class="row">
     <div class="col-xs-12">
       <!-- /.box-header -->
