@@ -173,6 +173,14 @@
             </span>
           </a>
         </li>
+        <li id="menuventauniforme">
+          <a href="/salidas/ventauniforme/">
+            <i class="fa fa-reply"></i> <span>Venta de uniformes</span>
+            <span class="pull-right-container">
+              <small class="label pull-right bg-green">new</small>
+            </span>
+          </a>
+        </li>
         <li id="menuinventario">
           <a href="/inventario/">
             <i class="fa fa-pie-chart"></i> <span>Inventario</span>

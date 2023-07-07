@@ -21,7 +21,7 @@ class SalidaController extends Controller
     {
         $date = Carbon::now();
         $date = $date->format('Y-m-d');                
-        //$entradas       = Entrada::all();
+        //$salidas       = Entrada::all();
         $salidas       = DB::table('salidas')
             ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
             ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
@@ -150,4 +150,53 @@ class SalidaController extends Controller
         return $pdf->stream();
 
     }
+    public function ventauniforme(Request $request){
+       $date = Carbon::now();
+        $date = $date->format('Y-m-d');                
+        //$salidas       = Entrada::all();
+        $salidas       = DB::table('salidas')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
+            ->get();
+        $almacenes      = CatAlmacen::all();
+        return view('salidas.ventauniforme',compact('salidas','date','almacenes'));
+    }
+    public function ventaxalmacen(Request $request, $almacen){
+        if ($request->ajax()) {
+                return datatables()->of(DB::table('salidas')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
+            ->where('salidas.almacen','=',$almacen)
+            ->get())->make(true);                
+        } 
+        return DB::table('salidas')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
+            ->where('salidas.almacen','=',$almacen)
+            ->get();
+    }
+
+    public function edicionsalida(Request $request, $id_salida ,$folioreq ,$solicitante ,$fecha ,$almacen ,$cajapago, $nnotaventa,$fventa ,$status ,$observaciones, $id_usuario)
+    {       
+        try {              
+            $salida = Salida::find($id_salida);
+            $salida->folioreq       = $folioreq;
+            $salida->solicitante    = $solicitante;
+            $salida->fecha          = $fecha;
+            $salida->almacen        = $almacen;
+            $salida->cajapago       = $cajapago;
+            $salida->nnotaventa     = $nnotaventa;
+            $salida->fventa         = $fventa;
+            $salida->status         = $status;
+            $salida->observaciones  = $observaciones;
+            $salida->id_usuario     = $id_usuario;
+            $salida->save();
+            return response()->json(['data' => "Cambios guardados correctamente..."]);
+
+        } catch (\Exception $e) {
+            
+            return response()->json(['data' => $e->getMessage()]);  
+        }              
+    }
+
 }

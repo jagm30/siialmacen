@@ -39,7 +39,7 @@
             <div class="col-md-2">
               <!-- /.form-group -->
               <div class="form-group">
-                <label class="control-label" for="inputSuccess1">Referencia / Orden de compra</label>
+                <label class="control-label" for="inputSuccess1">Orden de compra</label>
                 <input id="referencia" type="text" class="form-control" name="referencia"  readonly value="{{$entrada->referencia}}">
               </div>
               <!-- /.form-group -->
@@ -53,8 +53,8 @@
               <!-- /.form-group -->
             </div>
             <div class="col-md-2">
-              <div class="form-group">
-                @if($entrada->status=='finalizado')<a href="/entradas/reportepdf/{{ $entrada->id }}" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a>@endif
+              <div class="form-group">Reporte
+                @if($entrada->status=='finalizado')<a href="/entradas/reportepdf/{{ $entrada->id }}" target="_blank"><img src="/images/pdf.png" width="60" height="60"></a>@endif
                 <!--<a href="#"><img src="/images/excel.png" width="50" height="50"></a>-->
               </div>
             </div>

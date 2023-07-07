@@ -180,4 +180,18 @@ class EntradaController extends Controller
         return $pdf->stream();
 
     }
+
+    
+    public function filtrofecha(Request $request, $fecha1, $fecha2)
+    {
+        if ($request->ajax()) {
+            return datatables()->of(DB::table('entradas')
+            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
+            ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
+            ->where('entradas.fecha','>=',$fecha1)
+            ->where('entradas.fecha','<=',$fecha2)
+            ->get())->make(true); 
+        }
+    }
 }

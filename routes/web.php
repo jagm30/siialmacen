@@ -39,6 +39,7 @@ Route::get('entradas/edicion/{id_entrada}/{proveedor}/{fecha}/{nfactura}/{refere
 Route::get('entradas/delete/{id}', [App\Http\Controllers\EntradaController::class,'destroy'])->name('eliminaent');
 Route::get('entradas/finalizarentrada/{id}', [App\Http\Controllers\EntradaController::class,'finalizarentrada'])->name('finalizarentrada');
 Route::get('entradas/reportepdf/{id}', [App\Http\Controllers\EntradaController::class,'reportepdf'])->name('reportepdf');
+Route::get('entradas/filtrofecha/{fecha1}/{fecha2}', [App\Http\Controllers\EntradaController::class,'filtrofecha'])->name('filtrofecha');
 Route::resource('/entradas', EntradaController::class);
 
 Route::get('entradaproductos/delete/{id}', [App\Http\Controllers\EntradaProductoController::class,'destroy'])->name('destroyentpro');
@@ -52,6 +53,9 @@ Route::resource('/kardex', KardexController::class);
 Route::get('salidas/finalizarsalida/{id}', [App\Http\Controllers\SalidaController::class,'finalizarsalida'])->name('finalizarsalida');
 Route::get('salidas/delete/{id}', [App\Http\Controllers\SalidaController::class,'destroy'])->name('eliminasal');
 Route::get('salidas/reportepdf/{id}', [App\Http\Controllers\SalidaController::class,'reportepdf'])->name('reportepdfsalida');
+Route::get('salidas/ventauniforme/', [App\Http\Controllers\SalidaController::class,'ventauniforme'])->name('ventauniforme');
+Route::get('salidas/ventaxalmacen/{almacen}', [App\Http\Controllers\SalidaController::class,'ventaxalmacen'])->name('ventaxalmacen');
+Route::get('salidas/edicion/{id_salida}/{folioreq}/{solicitante}/{fecha}/{almacen}/{cajapago}/{nnotaventa}/{fventa}/{status}/{observaciones}/{id_usuario}',[App\Http\Controllers\SalidaController::class,'edicionsalida'])->name('edicionsalida');
 Route::resource('/salidas', SalidaController::class);
 Route::get('salidaproductos/delete/{id}', [App\Http\Controllers\SalidaproductoController::class,'destroy'])->name('destroysalprod');
 Route::get('salidaproductos/listarxsalida/{id}',[App\Http\Controllers\SalidaproductoController::class,'listarxsalida'])->name('listarxsalida');
