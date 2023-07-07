@@ -5,7 +5,7 @@
 <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Datos Generales || Almacen: <b>{{$salida->nomalmacen}}</b></h3>
+          <h3 class="box-title">Venta de uniformes || Almacen: <b>{{$salida->nomalmacen}}</b></h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -21,7 +21,7 @@
                 <input id="nfactura" type="text" class="form-control" name="nfactura"  readonly value="{{$salida->folioreq}}">                
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
               <div class="form-group">
                 <label class="control-label" for="inputSuccess1">Solicitante</label>                     
                 <input id="solicitante" type="text" class="form-control" name="solicitante"  readonly value="{{$salida->solicitante}}">                
@@ -33,7 +33,15 @@
                 <input id="fecha" type="date" class="form-control" name="fecha"  readonly value="{{$salida->fecha}}">
               </div>             
             </div>
-             
+            <div class="col-md-2">              
+              <div class="form-group">
+                <label class="control-label" for="inputWarning1">Pago en:</label>
+                <select id="proveedor" name="proveedor" class="form-control" value="{{$salida->almacen}}">
+                    <option value="1">Almacen</option>
+                    <option value="2">Caja Gral</option>
+                </select>
+              </div>
+            </div>            
             <div class="col-md-4">
               <!-- /.form-group -->
               <div class="form-group">
@@ -215,7 +223,7 @@
       searching: true,
       autoWidth: false
       });
-     $("#menusalida").addClass("important active");
+     $("#menuventauniforme").addClass("important active");
 });
 
 //Agregar producto

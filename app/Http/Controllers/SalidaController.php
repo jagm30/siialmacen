@@ -83,7 +83,25 @@ class SalidaController extends Controller
         $productos  = Producto::where('stock','>','0')->get();
         return view('salidas.show',compact('salidas','salida','productos','id_salida'));
     }
-
+    public function showventauniforme(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $salida = DB::table('salidas')
+                    ->where('salidas.id',$id)
+                    ->first();
+            return json_encode($salida);
+        }
+        $id_salida  = $id;
+        //$salida     = Salida::findOrFail($id);
+        $salida     = DB::table('salidas')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
+            ->where('salidas.id','=',$id)
+            ->first();
+        $salidas    = Salida::all();
+        $productos  = Producto::where('stock','>','0')->get();
+        return view('salidas.showventauniforme',compact('salidas','salida','productos','id_salida'));
+    }
     /**
      * Show the form for editing the specified resource.
      *

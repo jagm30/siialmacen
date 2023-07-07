@@ -54,6 +54,7 @@ Route::get('salidas/finalizarsalida/{id}', [App\Http\Controllers\SalidaControlle
 Route::get('salidas/delete/{id}', [App\Http\Controllers\SalidaController::class,'destroy'])->name('eliminasal');
 Route::get('salidas/reportepdf/{id}', [App\Http\Controllers\SalidaController::class,'reportepdf'])->name('reportepdfsalida');
 Route::get('salidas/ventauniforme/', [App\Http\Controllers\SalidaController::class,'ventauniforme'])->name('ventauniforme');
+Route::get('salidas/showventauniforme/{id}', [App\Http\Controllers\SalidaController::class,'showventauniforme'])->name('showventauniforme');
 Route::get('salidas/ventaxalmacen/{almacen}', [App\Http\Controllers\SalidaController::class,'ventaxalmacen'])->name('ventaxalmacen');
 Route::get('salidas/edicion/{id_salida}/{folioreq}/{solicitante}/{fecha}/{almacen}/{cajapago}/{nnotaventa}/{fventa}/{status}/{observaciones}/{id_usuario}',[App\Http\Controllers\SalidaController::class,'edicionsalida'])->name('edicionsalida');
 Route::resource('/salidas', SalidaController::class);

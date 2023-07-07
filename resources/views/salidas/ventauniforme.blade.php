@@ -419,7 +419,7 @@
           cache: false,
           success: function(dataResult){
             alert(dataResult.data);
-            window.location.href = '/salidas/'+dataResult.data;             
+            window.location.href = '/salidas/showventauniforme/'+dataResult.data;             
           }
       });   
   });

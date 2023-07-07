@@ -17,7 +17,7 @@
                 <th scope="col">Solicitante</th>   
                 <th scope="col">Almacen</th>                    
                 <th scope="col" style="width: 100px;">Status</th>                   
-                <th scope="col" style="width: 350px;">Acción</th>                    
+                <th scope="col" style="width: 200px;">Acción</th>                    
                 </tr>                
             </thead>                     
            </table>                
