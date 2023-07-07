@@ -25,7 +25,7 @@
               <tr>                                     
                 <th scope="col" style="width: 20%;">Nombre</th>                    
                 <th scope="col" style="width: 30%;">Descripción</th>   
-                <th scope="col" style="width: 20%;">Categoria</th>
+                <th scope="col" style="width: 20%;">Almacen</th>
                 <th scope="col" style="width: 20%;">Precio</th>                                     
                 <th scope="col" style="width: 10%;">Stock</th>                                     
                 </tr>                

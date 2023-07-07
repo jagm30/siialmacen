@@ -57,6 +57,7 @@ Route::get('salidas/ventauniforme/', [App\Http\Controllers\SalidaController::cla
 Route::get('salidas/showventauniforme/{id}', [App\Http\Controllers\SalidaController::class,'showventauniforme'])->name('showventauniforme');
 Route::get('salidas/ventaxalmacen/{almacen}', [App\Http\Controllers\SalidaController::class,'ventaxalmacen'])->name('ventaxalmacen');
 Route::get('salidas/edicion/{id_salida}/{folioreq}/{solicitante}/{fecha}/{almacen}/{cajapago}/{nnotaventa}/{fventa}/{status}/{observaciones}/{id_usuario}',[App\Http\Controllers\SalidaController::class,'edicionsalida'])->name('edicionsalida');
+Route::get('salidas/filtrofecha/{fecha1}/{fecha2}', [App\Http\Controllers\SalidaController::class,'filtrofecha'])->name('filtrofechasalida');
 Route::resource('/salidas', SalidaController::class);
 Route::get('salidaproductos/delete/{id}', [App\Http\Controllers\SalidaproductoController::class,'destroy'])->name('destroysalprod');
 Route::get('salidaproductos/listarxsalida/{id}',[App\Http\Controllers\SalidaproductoController::class,'listarxsalida'])->name('listarxsalida');

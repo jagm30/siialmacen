@@ -4,17 +4,28 @@
    <div class="row">
     <div class="col-xs-12">
       <div class="box">
-          <div class="box-header">
-            <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregar"> Venta de uniforme</button>
+          <div class="box-header">  
+              <div class="col-sm-2">
+                <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregar"> Venta de uniforme</button>
+              </div>            
+              <label for="inputEmail3" class="col-sm-1 control-label">Filtrar por fecha</label>
+              <div class="col-sm-2">
+                <input type="date" class="form-control" name="fecha1" id="fecha1" value="{{$date}}">
+              </div>
+              <div class="col-sm-2">
+                <input type="date" class="form-control" name="fecha2" id="fecha2" value="{{$date}}">
+              </div> 
+              <div class="col-sm-2">
+                <input type="button" class="form-control btn-primary" name="btnfiltrofecha" id="btnfiltrofecha" value="Filtrar">
+              </div> 
           </div>
           <!-- /.box-header -->
           <div class="box-body">
              <table id="example1" class="table table-bordered table-striped">           
             <thead>                  
-              <tr>                    
-                <th scope="col">Folio Requerimiento</th>                    
+              <tr>                              
                 <th scope="col">Fecha</th>                    
-                <th scope="col">Solicitante</th>   
+                <th scope="col">Cliente</th>   
                 <th scope="col">Almacen</th>                    
                 <th scope="col" style="width: 100px;">Status</th>                   
                 <th scope="col" style="width: 350px;">Acción</th>                    
@@ -39,14 +50,10 @@
          <div class="row">
            <form id="formmodal">
               <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
-                
-                <div class="form-group has-success col-md-4">
-                    <label class="control-label" for="inputSuccess1">Folio requerimiento</label>                     
-                    <input id="folioreq" type="text" class="form-control" name="folioreq"  required  autofocus>
-                </div>
-                <div class="form-group has-success col-md-8">
-                    <label class="control-label" for="inputSuccess1">Nombre del solicitante / Departamento</label>                     
-                    <input id="solicitante" type="text" class="form-control" name="solicitante"  required  autofocus>
+              <input id="folioreq" type="hidden" class="form-control" name="folioreq"  required  value="NA">
+                <div class="form-group has-success col-md-12">
+                    <label class="control-label" for="inputSuccess1">Nombre del cliente</label>                     
+                    <input id="solicitante" type="text" class="form-control" name="solicitante"  required  autofocus value="PUBLICO GENERAL">
                 </div>
                 <div class="form-group has-success col-md-4">
                     <label class="control-label" for="inputSuccess1">Fecha</label>                     
@@ -67,18 +74,17 @@
                     <label class="control-label" for="inputSuccess1">Folio de pago de cajaa</label>
                     <input id="fventa" type="text" class="form-control" name="fventa"  value="N/A" required  autofocus>
                 </div>
-                <div class="form-group has-warning col-md-3">
+                <div class="form-group has-warning col-md-4">
                     <label class="control-label" for="inputWarning1">Almacen</label>
                     <select id="almacen" name="almacen" class="form-control">
-                        <option>Seleccione un almacen</option>
                         @foreach($almacenes as $almacen)
                           <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group has-warning col-md-9">
+                <div class="form-group has-warning col-md-8">
                     <label class="control-label" for="inputWarning1">Observaciones</label>
-                    <input id="observaciones" type="text" class="form-control" name="observaciones"  required  autofocus>
+                    <input id="observaciones" type="text" class="form-control" name="observaciones"  required  autofocus value="-">
                 </div>
             </form>
          </div>
@@ -227,10 +233,6 @@
       ajax: "/salidas/ventaxalmacen/2",
         columns:[
           {
-            data: 'folioreq',
-            name: 'folioreq'
-          },
-          {
             data: 'fecha',
             name: 'fecha'
           },
@@ -323,64 +325,60 @@
           $('#modal-default').modal('toggle');
           $('#example1').DataTable().clear().destroy();
             $('#example1').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "/salidas/ventaxalmacen/1",
-              columns:[
-                {
-                  data: 'folioreq',
-                  name: 'folioreq'
-                },
-                {
-                  data: 'fecha',
-                  name: 'fecha'
-                },
-                {
-                  data: 'solicitante',
-                  name: 'solicitante'
-                },
-                {
-                  data: 'solicitante',
-                  name: 'solicitante'
-                },       
-                {
-                  data: 'status',
-                  name: 'status'
-                },          
-                {
-                  "data": null,
-                  "bSortable": false,
-                  "mRender": function(data, type, value) {
-                      if(value["status"]=='finalizado'){
-                        return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/reportepdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
-                      }else{
-                        return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
-                      }                
-                  }
-                }      
-              ],
-            language: {
-              "decimal": "",
-              "emptyTable": "No hay información",
-              "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-              "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-              "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-              "infoPostFix": "",
-              "thousands": ",",
-              "lengthMenu": "Mostrar _MENU_ Entradas",
-              "loadingRecords": "Cargando...",
-              "processing": "Procesando...",
-              "search": "Buscar:",
-              "zeroRecords": "Sin resultados encontrados"        
-            },
-            "search": {
-                  "addClass": 'form-control input-lg col-xs-12'
-            },
-            "fnDrawCallback":function(){
-              $("input[type='search']").attr("id", "searchBox");            
-              $('#searchBox').css("width", "400px").focus();
+      processing: true,
+      serverSide: true,
+      ajax: "/salidas/ventaxalmacen/2",
+        columns:[
+          {
+            data: 'fecha',
+            name: 'fecha'
+          },
+          {
+            data: 'solicitante',
+            name: 'solicitante'
+          },
+          {
+            data: 'solicitante',
+            name: 'solicitante'
+          },       
+          {
+            data: 'status',
+            name: 'status'
+          },          
+          {
+            "data": null,
+            "bSortable": false,
+            "mRender": function(data, type, value) {
+                if(value["status"]=='finalizado'){
+                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/reportepdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
+                }else{
+                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
+                }                
             }
-          })
+          }      
+        ],
+      language: {
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Buscar:",
+        "zeroRecords": "Sin resultados encontrados"        
+      },
+      "search": {
+            "addClass": 'form-control input-lg col-xs-12'
+      },
+      "fnDrawCallback":function(){
+        $("input[type='search']").attr("id", "searchBox");            
+        $('#searchBox').css("width", "400px").focus();
+      }
+    })
          }
       })
     }); 
@@ -418,7 +416,6 @@
           },
           cache: false,
           success: function(dataResult){
-            alert(dataResult.data);
             window.location.href = '/salidas/showventauniforme/'+dataResult.data;             
           }
       });   
@@ -510,6 +507,67 @@
       //almacen
     });
 
-
+  $(document).on("click", "#btnfiltrofecha", function () {
+    var fecha1       = $('#fecha1').val();
+    var fecha2       = $('#fecha2').val();
+  //  alert(fecha1);
+    //alert(fecha2);
+    $('#example1').DataTable().clear().destroy();
+    $('#example1').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: "/salidas/filtrofecha/"+fecha1+'/'+fecha2,
+        columns:[
+          {
+            data: 'fecha',
+            name: 'fecha'
+          },
+          {
+            data: 'solicitante',
+            name: 'solicitante'
+          },
+          {
+            data: 'solicitante',
+            name: 'solicitante'
+          },       
+          {
+            data: 'status',
+            name: 'status'
+          },          
+          {
+            "data": null,
+            "bSortable": false,
+            "mRender": function(data, type, value) {
+                if(value["status"]=='finalizado'){
+                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/reportepdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
+                }else{
+                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
+                }                
+            }
+          }      
+        ],
+      language: {
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Buscar:",
+        "zeroRecords": "Sin resultados encontrados"        
+      },
+      "search": {
+            "addClass": 'form-control input-lg col-xs-12'
+      },
+      "fnDrawCallback":function(){
+        $("input[type='search']").attr("id", "searchBox");            
+        $('#searchBox').css("width", "400px").focus();
+      }
+    })
+  });
 </script>
 @endsection

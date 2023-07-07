@@ -15,21 +15,15 @@
         <!-- /.box-header -->
         <div class="box-body">
           <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
               <div class="form-group">
-                <label class="control-label" for="inputSuccess1">Folio de Requerimiento</label>                     
-                <input id="nfactura" type="text" class="form-control" name="nfactura"  readonly value="{{$salida->folioreq}}">                
-              </div>
-            </div>
-            <div class="col-md-2">
-              <div class="form-group">
-                <label class="control-label" for="inputSuccess1">Solicitante</label>                     
+                <label class="control-label" for="inputSuccess1">Cliente</label>                     
                 <input id="solicitante" type="text" class="form-control" name="solicitante"  readonly value="{{$salida->solicitante}}">                
               </div>
             </div>
             <div class="col-md-2">
               <div class="form-group">
-                <label class="control-label" for="inputError1">Fecha de recepción</label>
+                <label class="control-label" for="inputError1">Fecha de venta</label>
                 <input id="fecha" type="date" class="form-control" name="fecha"  readonly value="{{$salida->fecha}}">
               </div>             
             </div>
@@ -42,13 +36,17 @@
                 </select>
               </div>
             </div>            
-            <div class="col-md-4">
+            <div class="col-md-3">
               <!-- /.form-group -->
               <div class="form-group">
                 <label class="control-label" for="inputSuccess1">Observaciones</label>
                 <input id="referencia" type="text" class="form-control" name="referencia" readonly value="{{$salida->observaciones}}">
               </div>
               <!-- /.form-group -->
+            </div>
+            <div class="col-md-2">
+                Reporte:
+               @if($salida->status=='finalizado')<a href="/salidas/reportepdf/{{ $salida->id }}" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a> @endif
             </div>
             <!-- /.col -->
           </div>

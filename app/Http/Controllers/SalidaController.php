@@ -217,4 +217,17 @@ class SalidaController extends Controller
         }              
     }
 
+    public function filtrofecha(Request $request, $fecha1, $fecha2)
+    {
+        if ($request->ajax()) {
+            return datatables()->of(DB::table('salidas')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')                        
+            ->where('salidas.fecha','>=',$fecha1)
+            ->where('salidas.fecha','<=',$fecha2)
+            ->get())->make(true); 
+        }
+
+    }
+
 }

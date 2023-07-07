@@ -4,8 +4,20 @@
    <div class="row">
     <div class="col-xs-12">
       <div class="box">
-          <div class="box-header">
-            <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregaralmacen">Registar salida de almacen</button>
+          <div class="box-header">  
+              <div class="col-sm-2">
+                <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregaralmacen">Registar salida de almacen</button>
+              </div>            
+              <label for="inputEmail3" class="col-sm-1 control-label">Filtrar por fecha</label>
+              <div class="col-sm-2">
+                <input type="date" class="form-control" name="fecha1" id="fecha1" value="{{$date}}">
+              </div>
+              <div class="col-sm-2">
+                <input type="date" class="form-control" name="fecha2" id="fecha2" value="{{$date}}">
+              </div> 
+              <div class="col-sm-2">
+                <input type="button" class="form-control btn-primary" name="btnfiltrofecha" id="btnfiltrofecha" value="Filtrar">
+              </div> 
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -239,8 +251,8 @@
             name: 'solicitante'
           },
           {
-            data: 'solicitante',
-            name: 'solicitante'
+            data: 'nomalmacen',
+            name: 'nomalmacen'
           },       
           {
             data: 'status',
@@ -510,6 +522,71 @@
       //almacen
     });
 
-
+  $(document).on("click", "#btnfiltrofecha", function () {
+    var fecha1       = $('#fecha1').val();
+    var fecha2       = $('#fecha2').val();
+  //  alert(fecha1);
+    //alert(fecha2);
+    $('#example1').DataTable().clear().destroy();
+    $('#example1').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: "/salidas/filtrofecha/"+fecha1+'/'+fecha2,
+        columns:[
+          {
+            data: 'folioreq',
+            name: 'folioreq'
+          },
+          {
+            data: 'fecha',
+            name: 'fecha'
+          },
+          {
+            data: 'solicitante',
+            name: 'solicitante'
+          },
+          {
+            data: 'nomalmacen',
+            name: 'nomalmacen'
+          },       
+          {
+            data: 'status',
+            name: 'status'
+          },
+          {
+            "data": null,
+            "bSortable": false,
+            "mRender": function(data, type, value) {
+                if(value["status"]=='finalizado'){
+                  return '<a href="/entradas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/entradas/reportepdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
+                }else{
+                  return '<a href="/entradas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
+                }                
+            }
+          }      
+        ],
+      language: {
+        "decimal": "",
+        "emptyTable": "No hay información",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ Entradas",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Buscar:",
+        "zeroRecords": "Sin resultados encontrados"        
+      },
+      "search": {
+            "addClass": 'form-control input-lg col-xs-12'
+      },
+      "fnDrawCallback":function(){
+        $("input[type='search']").attr("id", "searchBox");            
+        $('#searchBox').css("width", "400px").focus();
+      }
+    })
+  });
 </script>
 @endsection
