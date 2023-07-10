@@ -116,17 +116,11 @@
 <main>
 <table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border-radius: 10px 10px;">
     <tr style="background-color: #E6F9FF; color:black;" >
-        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: #051F62; text-align: left;" >REPORTE DE SALIDAS</th>       
-        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: #051F62; text-align: left;" >FOLIO REQUISICIÓN</th>       
-        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: #051F62; text-align: right;">Fecha de registro: {{ $salida->fecha }} </th> 
+        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: #051F62; text-align: left;">VENTAS</th>        
     </tr>
     <tr style="background-color: #E6F9FF; color:black; ">
-        <th style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">{{$salida->nomalmacen}}</th>
-        <th colspan="3" style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">Solicitante: {{$salida->solicitante}}</th>
-    </tr>
-    <tr>
-        <th colspan="3" style="background-color: white; border: 1px solid gray;color: #051F62;font-size: 10pt;">Observaciones: {{$salida->observaciones}}</th>      
-    </tr>
+        <th  style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">Cliente: {{$salida->solicitante}}</th>
+    </tr>    
 </table>
 <br><br>
     <div id="contenido" class="contenido">

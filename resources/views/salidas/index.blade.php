@@ -10,6 +10,14 @@
               </div>            
               <label for="inputEmail3" class="col-sm-1 control-label">Filtrar por fecha</label>
               <div class="col-sm-2">
+                <select id="filtroalmacen" name="filtroalmacen" class="form-control">
+                  <option value="todos">Todos</option>
+                  @foreach($almacenes as $almacen)
+                    <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="col-sm-2">
                 <input type="date" class="form-control" name="fecha1" id="fecha1" value="{{$date}}">
               </div>
               <div class="col-sm-2">
@@ -525,13 +533,14 @@
   $(document).on("click", "#btnfiltrofecha", function () {
     var fecha1       = $('#fecha1').val();
     var fecha2       = $('#fecha2').val();
+    var almacen      = $('#filtroalmacen').val();
   //  alert(fecha1);
     //alert(fecha2);
     $('#example1').DataTable().clear().destroy();
     $('#example1').DataTable({
       processing: true,
       serverSide: true,
-      ajax: "/salidas/filtrofecha/"+fecha1+'/'+fecha2,
+      ajax: "/salidas/filtroalmacenfecha/"+almacen+'/'+fecha1+'/'+fecha2,
         columns:[
           {
             data: 'folioreq',
@@ -558,9 +567,9 @@
             "bSortable": false,
             "mRender": function(data, type, value) {
                 if(value["status"]=='finalizado'){
-                  return '<a href="/entradas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/entradas/reportepdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
+                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/reportepdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
                 }else{
-                  return '<a href="/entradas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
+                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
                 }                
             }
           }      

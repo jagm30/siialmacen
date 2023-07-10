@@ -168,6 +168,23 @@ class SalidaController extends Controller
         return $pdf->stream();
 
     }
+    public function ventapdf($id)
+    {
+        $salida       = DB::table('salidas')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
+            ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
+            ->where('salidas.id', '=', $id)
+            ->first();
+        $salidadetalle       = DB::table('salidaproductos')
+            ->select('salidaproductos.id','salidaproductos.id_salida','salidaproductos.id_producto','salidaproductos.cantidad','salidaproductos.precio','salidaproductos.status','productos.nombre','productos.descripcion')
+            ->leftJoin('productos', 'salidaproductos.id_producto', '=', 'productos.id')            
+            ->where('salidaproductos.id_salida', '=', $id)
+            ->get();
+        $today = Carbon::now()->format('d/m/Y');        
+        $pdf = \PDF::loadView('salidas/ventaPDF', compact('today','salida','salidadetalle'))->setPaper(array(0,0,612.00,792.00));
+        return $pdf->stream();
+
+    }
     public function ventauniforme(Request $request){
        $date = Carbon::now();
         $date = $date->format('Y-m-d');                
@@ -226,6 +243,31 @@ class SalidaController extends Controller
             ->where('salidas.fecha','>=',$fecha1)
             ->where('salidas.fecha','<=',$fecha2)
             ->get())->make(true); 
+        }
+
+    }
+    public function filtroalmacenfecha(Request $request,$almacen,$fecha1, $fecha2)
+    {
+        if($almacen=='todos'){
+            if ($request->ajax()) {
+                return datatables()->of(DB::table('salidas')
+                ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
+                ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')                        
+                ->where('salidas.almacen','!=','2')
+                ->where('salidas.fecha','>=',$fecha1)
+                ->where('salidas.fecha','<=',$fecha2)
+                ->get())->make(true); 
+            }
+        }else{
+            if ($request->ajax()) {
+                return datatables()->of(DB::table('salidas')
+                ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
+                ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')                        
+                ->where('salidas.almacen','=',$almacen)
+                ->where('salidas.fecha','>=',$fecha1)
+                ->where('salidas.fecha','<=',$fecha2)
+                ->get())->make(true); 
+            }
         }
 
     }

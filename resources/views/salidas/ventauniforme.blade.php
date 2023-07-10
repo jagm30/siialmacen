@@ -253,9 +253,9 @@
             "bSortable": false,
             "mRender": function(data, type, value) {
                 if(value["status"]=='finalizado'){
-                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/reportepdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
+                  return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
                 }else{
-                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
+                  return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
                 }                
             }
           }      
@@ -350,7 +350,7 @@
             "bSortable": false,
             "mRender": function(data, type, value) {
                 if(value["status"]=='finalizado'){
-                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/reportepdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
+                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
                 }else{
                   return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
                 }                
@@ -516,7 +516,7 @@
     $('#example1').DataTable({
       processing: true,
       serverSide: true,
-      ajax: "/salidas/filtrofecha/"+fecha1+'/'+fecha2,
+      ajax: "/salidas/filtroalmacenfecha/2/"+fecha1+'/'+fecha2,
         columns:[
           {
             data: 'fecha',
@@ -539,9 +539,9 @@
             "bSortable": false,
             "mRender": function(data, type, value) {
                 if(value["status"]=='finalizado'){
-                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/reportepdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
+                  return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
                 }else{
-                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
+                  return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
                 }                
             }
           }      
