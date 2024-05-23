@@ -116,17 +116,13 @@
                     </select>
                 </div>
 
-                <div class="form-group has-error col-md-4">
+                <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Cantidad</label>
                     <input id="cantidad" type="text" class="form-control" name="cantidad"  required  autofocus>
                 </div>
-                <div class="form-group has-success col-md-4">
+                <div class="form-group has-success col-md-6">
                     <label class="control-label" for="inputSuccess1">Precio</label>
                     <input id="precio" type="text" class="form-control" name="precio"  required  autofocus>
-                </div>
-                <div class="form-group has-success col-md-4">
-                  <label class="control-label" for="inputSuccess1">Guardar</label>
-                  <button id="btn_guardaregistro" name="btn_guardaregistro" type="button" class="btn btn-primary">Guardar cambios</button>
                 </div>
                 <input type="hidden" id="categoria" name="categoria" value="{{ $entrada->categoria }}">                
             </form>
@@ -313,10 +309,10 @@
     if (confirm("Desea finalizar la captura") == true) {
       $.ajax({
             type: "get",
-            url: "{{ url('entradas/finalizarentrada') }}"+'/'+ id_entrada,
+            url: "{{ url('entradas/finalizarentrada') }}"+'/'+id_entrada,
             success: function (data) {
-              location.reload();
-              //alert(data.data);
+             // location.reload();
+              alert(data.data);
               //$('#alumnos_table').DataTable().ajax.reload();
             }
         });

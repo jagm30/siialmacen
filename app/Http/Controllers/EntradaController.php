@@ -154,13 +154,18 @@ class EntradaController extends Controller
             return response()->json(['data' => "El registro no se puede borrar, estatus: finalizado"]);
         }                
     }
-    public function finalizarentrada($id)
+    public function finalizarentrada(Request $request, $id)
     {
-        $entrada = Entrada::find($id);
-        $entrada->status            = 'finalizado';
-        $entrada->id_usuario        = 1;
-        $entrada->save();
-        return response()->json(['data' => "Cambios guardados correctamente..."]);      
+        try {
+            $entrada = Entrada::find($id);
+            $entrada->status            = 'finalizado';
+            $entrada->id_usuario        = 100;
+            $entrada->save();
+
+            return response()->json(['data' => "Cambios guardados correctamente...".$entrada]);         
+        } catch (Exception $e) {
+            return response()->json(['data' => "Error:"]);                     
+        }
     }
     public function reportepdf($id)
     {

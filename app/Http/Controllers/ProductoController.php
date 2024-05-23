@@ -46,10 +46,11 @@ class ProductoController extends Controller
         }
 
     }
-    public function edicion(Request $request ,$id_producto ,$nombre ,$descripcion ,$categoria ,$precio ,$precioPromocion)
+    public function edicion(Request $request ,$id_producto ,$nombre,$claveproducto ,$descripcion ,$categoria ,$precio ,$precioPromocion)
     {              
         $producto = Producto::find($id_producto);
         $producto->nombre           = $nombre;
+        $producto->claveproducto    = $claveproducto;
         $producto->descripcion      = $descripcion;
         $producto->categoria        = $categoria;
         $producto->precio           = $precio;

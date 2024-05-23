@@ -151,49 +151,43 @@
         </li>
         <li id="menuproductos">
           <a href="/productos/">
-            <i class="fa fa-th"></i> <span>Productos</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">new</small>
+            <i class="fa fa-th"></i> <span>Catálogo de Productos</span>
+            <span class="pull-right-container">              
             </span>
           </a>
         </li>
         <li id="menuentradas">
           <a href="/entradas/">
             <i class="fa fa-share"></i> <span>Entradas</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">new</small>
+            <span class="pull-right-container">              
             </span>
           </a>
         </li>
         <li id="menusalida">
           <a href="/salidas/">
             <i class="fa fa-reply"></i> <span>Salidas</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">new</small>
+            <span class="pull-right-container">              
             </span>
           </a>
         </li>
         <li id="menuventauniforme">
           <a href="/salidas/ventauniforme/">
             <i class="fa fa-reply"></i> <span>Venta de uniformes</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">new</small>
+            <span class="pull-right-container">              
             </span>
           </a>
         </li>
         <li id="menuinventario">
           <a href="/inventario/">
             <i class="fa fa-pie-chart"></i> <span>Inventario</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">new</small>
+            <span class="pull-right-container">              
             </span>
           </a>
         </li>
         <li id="menuusuario">
           <a href="/usuarios/">
             <i class="fa fa-user"></i> <span>Usuarios</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-green">new</small>
+            <span class="pull-right-container">              
             </span>
           </a>
         </li>

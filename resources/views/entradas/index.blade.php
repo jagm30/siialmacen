@@ -76,7 +76,7 @@
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Proveedor</label>
                     <select id="proveedor" name="proveedor" class="form-control">
-                      <option value="">Seleccione un proveedor</option>
+                      
                         @foreach($proveedores as $proveedor)
                           <option value="{{$proveedor->id}}">{{$proveedor->nombre}}</option>
                         @endforeach
@@ -92,8 +92,7 @@
                 </div>
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Almacen</label>
-                    <select id="categoria" name="categoria" class="form-control">
-                        <option value="">Seleccione un almacen</option>
+                    <select id="categoria" name="categoria" class="form-control">                        
                         @foreach($almacenes as $almacen)
                           <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
                         @endforeach

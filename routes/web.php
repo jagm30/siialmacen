@@ -27,7 +27,7 @@ use App\Http\Controllers\KardexController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('productos/edicion/{id_producto}/{nombre}/{descripcion}/{categoria}/{precio}/{precioPromocion}',[App\Http\Controllers\ProductoController::class,'edicion'])->name('edicion');
+Route::get('productos/edicion/{id_producto}/{nombre}/{claveproducto}/{descripcion}/{categoria}/{precio}/{precioPromocion}',[App\Http\Controllers\ProductoController::class,'edicion'])->name('edicion');
 Route::get('productos/delete/{id}', [App\Http\Controllers\ProductoController::class,'destroy'])->name('destroy');
 Route::resource('/productos', ProductoController::class);
 Route::resource('/medicos', MedicoController::class);

@@ -64,13 +64,13 @@
            <form id="formmodal">
               <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
                 <input id="id_producto" type="hidden" class="form-control" name="id_producto">
-                <div class="form-group has-success col-md-6">
-                    <label class="control-label" for="inputSuccess1">Descripcion corta</label>                     
+                <div class="form-group has-success col-md-12">
+                    <label class="control-label" for="inputSuccess1">Descripción</label>                     
                     <input id="nombre" type="text" class="form-control" name="nombre"  required  autofocus oninput="actualizarValor()">
                 </div>
                 <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Descripcion</label>
-                    <input id="descripcion" name="descripcion" type="text" class="form-control">
+                    <label class="control-label" for="inputWarning1">Clave</label>
+                    <input type="text" name="claveproducto" id="claveproducto" class="form-control" value="N/A">
                 </div>
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Almacén</label>
@@ -116,13 +116,13 @@
          <div class="row">
            <form id="formmodal" method="POST" action="/clientes">
                 <input id="id_producto" type="hidden" class="form-control" name="id_producto">
-                <div class="form-group has-success col-md-6">
+                <div class="form-group has-success col-md-12">
                     <label class="control-label" for="inputSuccess1">Nombre</label>                     
                     <input id="nombre-e" type="text" class="form-control" name="nombre-e"  required  autofocus>
                 </div>
                 <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Descripcion</label>
-                    <input id="descripcion-e" name="descripcion-e" type="text" class="form-control">
+                    <label class="control-label" for="inputWarning1">Clave de producto</label>
+                    <input id="claveproducto-e" name="claveproducto-e" type="text" class="form-control">
                 </div>
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Categoria</label>
@@ -200,6 +200,7 @@
            success:function(html){                
               $("#id_producto").val(html.id);
               $("#nombre-e").val(html.nombre);
+              $("#claveproducto-e").val(html.claveproducto);
               $("#descripcion-e").val(html.descripcion);
               $("#categoria-e option[value='"+ html.categoria +"']").attr("selected",true);              
               $("#precio-e").val(html.precio);
@@ -209,11 +210,12 @@
   });
 
   $('#btn_guardarcambio').click(function() {    
-    var id_producto = $("#id_producto").val();
-    var nombre = $("#nombre-e").val();
-    var descripcion = $("#descripcion-e").val();
-    var categoria = $("#categoria-e").val();
-    var precio = $("#precio-e").val();
+    var id_producto   = $("#id_producto").val();
+    var nombre        = $("#nombre-e").val();
+    var claveproducto = $("#claveproducto-e").val();
+    var descripcion   = $("#nombre-e").val();
+    var categoria     = $("#categoria-e").val();
+    var precio        = $("#precio-e").val();
     var precioPromocion = $("#precioPromocion-e").val(); 
 
     if (nombre == '' || nombre.length == 0 ) {
@@ -236,9 +238,14 @@
       document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Si no maneja precio, deje el campo con el valor 0</div>';
       return false;
     } 
+    if (claveproducto == '' || claveproducto.length == 0 ) {
+      document.getElementById("claveproducto-e").focus();
+      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Coloque "n/a" si no maneja clave de producto.</div>';
+      return false;
+    } 
 
       $.ajax({
-         url:"/productos/edicion/"+id_producto+"/"+nombre+"/"+descripcion+"/"+categoria+"/"+precio+"/"+precioPromocion,
+         url:"/productos/edicion/"+id_producto+"/"+nombre+"/"+claveproducto+"/"+descripcion+"/"+categoria+"/"+precio+"/"+precioPromocion,
          dataType:"json",
          success:function(html){
           alert(html.data);
@@ -253,9 +260,9 @@
   $('#btn_guardaregistro').click(function() {    
     
     var nombre          = $('#nombre').val();
-    var descripcion     = $('#descripcion').val();    
+    var descripcion     = $('#nombre').val();    
     var categoria       = $('#categoria').val();
-    var claveproducto   = 'n/a';
+    var claveproducto   = $('#claveproducto').val();
     var precio          = $('#precio').val();
     var precioPromocion = $('#precioPromocion').val();
     var stock           = 0;
