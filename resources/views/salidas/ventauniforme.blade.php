@@ -6,7 +6,7 @@
       <div class="box">
           <div class="box-header">  
               <div class="col-sm-2">
-                <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregar"> Venta de uniforme</button>
+                <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregar"> Nueva venta</button>
               </div>            
               <label for="inputEmail3" class="col-sm-1 control-label">Filtrar por fecha</label>
               <div class="col-sm-2">
@@ -24,9 +24,9 @@
              <table id="example1" class="table table-bordered table-striped">           
             <thead>                  
               <tr>                              
+                <th scope="col">#</th>                    
                 <th scope="col">Fecha</th>                    
-                <th scope="col">Cliente</th>   
-                <th scope="col">Almacen</th>                    
+                <th scope="col">Cliente</th>                   
                 <th scope="col" style="width: 100px;">Status</th>                   
                 <th scope="col" style="width: 350px;">Acción</th>                    
                 </tr>                
@@ -44,7 +44,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Registro de salidas uniformes</h4>
+        <h4 class="modal-title">Venta de uniformes</h4>
       </div>
       <div class="modal-body">
          <div class="row">
@@ -52,14 +52,14 @@
               <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
               <input id="folioreq" type="hidden" class="form-control" name="folioreq"  required  value="NA">
                 <div class="form-group has-success col-md-12">
-                    <label class="control-label" for="inputSuccess1">Nombre del cliente</label>                     
+                    <label class="control-label" for="inputSuccess1">Cliente</label>                     
                     <input id="solicitante" type="text" class="form-control" name="solicitante"  required  autofocus value="PUBLICO GENERAL">
                 </div>
-                <div class="form-group has-success col-md-4">
+                <div class="form-group has-success col-md-6">
                     <label class="control-label" for="inputSuccess1">Fecha</label>                     
                     <input id="fecha" type="date" class="form-control" name="fecha"  required  value="{{$date}}">
                 </div>                
-                <div class="form-group has-warning col-md-4">
+                <!--<div class="form-group has-warning col-md-4">
                     <label class="control-label" for="inputWarning1">¿Donde pago?</label>
                     <select id="cajapago" name="cajapago" class="form-control">
                       <option value="almacen">Almacen</option>
@@ -73,8 +73,8 @@
                 <div id="contfventa" class="form-group has-success col-md-4" style="display: none !important;">
                     <label class="control-label" for="inputSuccess1">Folio de pago de cajaa</label>
                     <input id="fventa" type="text" class="form-control" name="fventa"  value="N/A" required  autofocus>
-                </div>
-                <div class="form-group has-warning col-md-4">
+                </div>-->
+                <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Almacen</label>
                     <select id="almacen" name="almacen" class="form-control">
                         @foreach($almacenes as $almacen)
@@ -82,9 +82,9 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group has-warning col-md-8">
+                <div class="form-group has-warning col-md-12">
                     <label class="control-label" for="inputWarning1">Observaciones</label>
-                    <input id="observaciones" type="text" class="form-control" name="observaciones"  required  autofocus value="-">
+                    <input id="observaciones" type="text" class="form-control" name="observaciones"  required  autofocus value="Ninguno">
                 </div>
             </form>
          </div>
@@ -178,12 +178,70 @@
          <div class="row">
            <form id="formmodal">
                 <input id="id_salida_e" type="hidden" class="form-control" name="id_salida_e">
-                <div class="form-group has-success col-md-4">
+                <!--<div class="form-group has-success col-md-4">
                     <label class="control-label" for="inputSuccess1">Folio requerimiento</label>                     
                     <input id="folioreq-e" type="text" class="form-control" name="folioreq-e"  required  autofocus>
+                </div>-->
+                <div class="form-group has-success col-md-12">
+                    <label class="control-label" for="inputSuccess1">Cliente</label>                     
+                    <input id="solicitante-e" type="text" class="form-control" name="solicitante-e"  required  autofocus>
                 </div>
-                <div class="form-group has-success col-md-8">
-                    <label class="control-label" for="inputSuccess1">Nombre del solicitante / Departamento</label>                     
+                <div class="form-group has-success col-md-6">
+                    <label class="control-label" for="inputSuccess1">Fecha</label>                     
+                    <input id="fecha-e" type="date" class="form-control" name="fecha-e"  required  value="{{$date}}">
+                </div>                
+
+                <input id="cajapago-e" type="hidden" class="form-control" name="cajapago-e" value="NA" >
+                <input id="nnotaventa" type="hidden" class="form-control" name="nnotaventa" value="NA" >
+                <input id="fventa" type="hidden" class="form-control" name="fventa"  value="NA" required >
+                <input id="status-e" type="hidden" class="form-control" name="status-e"  value="" required >
+
+                <div class="form-group has-warning col-md-6">
+                    <label class="control-label" for="inputWarning1">Almacen</label>
+                    <select id="almacen-e" name="almacen-e" class="form-control">
+                        <option>Seleccione un almacen</option>
+                        @foreach($almacenes as $almacen)
+                          <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group has-warning col-md-12">
+                    <label class="control-label" for="inputWarning1">Observaciones</label>
+                    <input id="observaciones-e" type="text" class="form-control" name="observaciones-e"  required  autofocus>
+                </div>
+            </form>
+         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
+        <button id="btn_guardarcambio" name="btn_guardarcambio" type="button" class="btn btn-primary">Guardar Cambios</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- /.modal cancelar-->
+<div class="modal fade" id="modal-cancelar">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Cancelar</h4>
+      </div>
+      <div class="modal-body">
+         <div class="row">
+           <form id="formmodal">
+                <input id="id_salida_c" type="hidden" class="form-control" name="id_salida_c">
+                <!--<div class="form-group has-success col-md-4">
+                    <label class="control-label" for="inputSuccess1">Folio requerimiento</label>                     
+                    <input id="folioreq-e" type="text" class="form-control" name="folioreq-e"  required  autofocus>
+                </div>-->
+                <div class="form-group has-success col-md-12">
+                    <label class="control-label" for="inputSuccess1">Cliente</label>                     
                     <input id="solicitante-e" type="text" class="form-control" name="solicitante-e"  required  autofocus>
                 </div>
                 <div class="form-group has-success col-md-6">
@@ -230,16 +288,16 @@
     $('#example1').DataTable({
       processing: true,
       serverSide: true,
-      ajax: "/salidas/ventaxalmacen/2",
+      ajax: "/salidas/ventaxalmacen/1",
         columns:[
+          {
+            data: 'id',
+            name: 'id'
+          },
           {
             data: 'fecha',
             name: 'fecha'
-          },
-          {
-            data: 'solicitante',
-            name: 'solicitante'
-          },
+          },          
           {
             data: 'solicitante',
             name: 'solicitante'
@@ -253,13 +311,22 @@
             "bSortable": false,
             "mRender": function(data, type, value) {
                 if(value["status"]=='finalizado'){
-                  return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
+                  return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a> <a href="#"><button type="button" id="btn-cancelarventa" name="btn-cancelarventa" data-id="'+value["id"]+'" class="btn btn-info" data-toggle="modal" data-target="#modal-cancelar">Cancelar</button></a>   ';
                 }else{
                   return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
                 }                
             }
           }      
         ],
+        columnDefs: [{targets: 3,
+                    render: function ( data, type, row ) {
+                      var color = 'black';
+                      if (data == 'captura') {
+                        color = 'orange';
+                      } 
+                      return '<span style="color:' + color + '"><b>' + data + '</b></span>';
+                    }
+               }],
       language: {
         "decimal": "",
         "emptyTable": "No hay información",
@@ -280,7 +347,8 @@
       "fnDrawCallback":function(){
         $("input[type='search']").attr("id", "searchBox");            
         $('#searchBox').css("width", "400px").focus();
-      }
+      },
+      order: [[0, 'desc']]
     })
      $("#menuventauniforme").addClass("important active");
   })
@@ -327,7 +395,7 @@
             $('#example1').DataTable({
       processing: true,
       serverSide: true,
-      ajax: "/salidas/ventaxalmacen/2",
+      ajax: "/salidas/ventaxalmacen/1",
         columns:[
           {
             data: 'fecha',

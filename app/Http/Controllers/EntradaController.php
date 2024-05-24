@@ -28,6 +28,8 @@ class EntradaController extends Controller
             ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
             ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
             ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
+            ->orderBy('id', 'DESC')
+            ->take(10)
             ->get())
                     ->make(true);                
         } 
@@ -162,7 +164,7 @@ class EntradaController extends Controller
             $entrada->id_usuario        = 100;
             $entrada->save();
 
-            return response()->json(['data' => "Cambios guardados correctamente...".$entrada]);         
+            return response()->json(['data' => "Enbtrada guardada correctamente..."]);         
         } catch (Exception $e) {
             return response()->json(['data' => "Error:"]);                     
         }

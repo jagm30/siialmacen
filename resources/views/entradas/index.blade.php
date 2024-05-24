@@ -247,7 +247,8 @@
       "fnDrawCallback":function(){
         $("input[type='search']").attr("id", "searchBox");            
         $('#searchBox').css("width", "400px").focus();
-      }
+      },
+      order: [[0, 'desc']]
     })
     $("#menuentradas").addClass("important active");
   })

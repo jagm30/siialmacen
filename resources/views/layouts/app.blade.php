@@ -158,18 +158,18 @@
         </li>
         <li id="menuentradas">
           <a href="/entradas/">
-            <i class="fa fa-share"></i> <span>Entradas</span>
+            <i class="fa fa-share"></i> <span>Entrada de mercancia</span>
             <span class="pull-right-container">              
             </span>
           </a>
         </li>
-        <li id="menusalida">
+        <!-- <li id="menusalida">
           <a href="/salidas/">
-            <i class="fa fa-reply"></i> <span>Salidas</span>
+            <i class="fa fa-reply"></i> <span>Ventas</span>
             <span class="pull-right-container">              
             </span>
           </a>
-        </li>
+        </li> -->
         <li id="menuventauniforme">
           <a href="/salidas/ventauniforme/">
             <i class="fa fa-reply"></i> <span>Venta de uniformes</span>

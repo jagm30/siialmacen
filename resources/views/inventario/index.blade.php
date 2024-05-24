@@ -27,9 +27,26 @@
                 <th scope="col" style="width: 30%;">Descripción</th>   
                 <th scope="col" style="width: 20%;">Almacen</th>
                 <th scope="col" style="width: 20%;">Precio</th>                                     
-                <th scope="col" style="width: 10%;">Stock</th>                                     
+                <th scope="col" style="width: 10%;">Stock</th>
+                <th scope="col" style="width: 10%;">Accion</th>                                     
                 </tr>                
-            </thead>                
+            </thead>       
+            <tbody>
+              @foreach ($productos as $producto)                        
+                <tr>                                                      
+                  <td>{{ $producto->nombre }}</td>                            
+                  <td>{{ $producto->descripcion }}</td>
+                  <td>{{ $producto->nomalmacen}}</td>                            
+                  <td>$ {{ $producto->precio }}</td>                            
+                  <td>$ {{ $producto->stock }}</td>                            
+                  <td>                                
+                    <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$producto->id}}" data-toggle="modal" data-target="#modal-default">
+                Editar
+              </button>
+                  </td>                                                 
+                </tr>                    
+              @endforeach  
+            </tbody>         
                        
            </table>                
           <!-- /.box-body -->
@@ -46,31 +63,6 @@
 <script>
   $(function () {
     $('#example1').DataTable({
-      processing: true,
-      serverSide: true,
-      ajax: "/inventario/",
-        columns:[
-          {
-            data: 'nombre',
-            name: 'nombre'
-          },
-          {
-            data: 'descripcion',
-            name: 'descripcion'
-          },
-          {
-            data: 'nomalmacen',
-            name: 'nomalmacen'
-          },       
-          {
-            data: 'precio',
-            name: 'precio'
-          },          
-          {
-            data: 'stock',
-            name: 'stock'
-          }   
-        ],
       language: {
         "decimal": "",
         "emptyTable": "No hay información",
@@ -88,7 +80,6 @@
       "search": {
             "addClass": 'form-control input-lg col-xs-12'
       },
-      order: [[4, 'desc']],
       "fnDrawCallback":function(){
         $("input[type='search']").attr("id", "searchBox");            
         $('#searchBox').css("width", "400px").focus();
@@ -96,14 +87,6 @@
       dom: 'Bfrtip',
       buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
-           /* {
-              extend:"excel",
-              text:"Exportar a Excel"
-            },
-            {
-              extend:"pdf",
-              text:"Exportar a PDF"
-            }*/
         ]
     })
     $("#menuinventario").addClass("important active");

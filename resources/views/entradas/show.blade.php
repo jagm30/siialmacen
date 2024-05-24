@@ -99,7 +99,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Registro de articulos</h4>
+        <h4 class="modal-title">Agregar articulo</h4>
       </div>
       <div class="modal-body">
          <div class="row">
@@ -121,8 +121,8 @@
                     <input id="cantidad" type="text" class="form-control" name="cantidad"  required  autofocus>
                 </div>
                 <div class="form-group has-success col-md-6">
-                    <label class="control-label" for="inputSuccess1">Precio</label>
-                    <input id="precio" type="text" class="form-control" name="precio"  required  autofocus>
+                    <label class="control-label" for="inputSuccess1">Precio factura</label>
+                    <input id="precio" type="text" class="form-control" name="precio"  required value="0"  autofocus>
                 </div>
                 <input type="hidden" id="categoria" name="categoria" value="{{ $entrada->categoria }}">                
             </form>
@@ -278,7 +278,7 @@
           },
           cache: false,
           success: function(dataResult){
-            alert("registrado correctamente...");     
+            //alert("registrado correctamente...");     
                 $('#alumnos_table').DataTable().ajax.reload();           
                 $('#formmodal').trigger("reset");
           }
@@ -304,21 +304,19 @@
   });
 
   $(document).on("click", "#btnfinalizar", function () {
-    var id_entrada    = $('#id_entrada').val();
-    
+    var id_entrada    = $('#id_entrada').val();    
     if (confirm("Desea finalizar la captura") == true) {
       $.ajax({
             type: "get",
             url: "{{ url('entradas/finalizarentrada') }}"+'/'+id_entrada,
             success: function (data) {
-             // location.reload();
-              alert(data.data);
-              //$('#alumnos_table').DataTable().ajax.reload();
+              window.open(
+                  '/entradas/reportepdf/{{ $entrada->id }}',
+                  '_blank' 
+                );
             }
         });
     }
   });
-
-
 </script>
 @endsection('scriptpie')

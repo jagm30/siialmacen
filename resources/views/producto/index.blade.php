@@ -1,4 +1,4 @@
-@extends('layouts.app') 
+  @extends('layouts.app') 
 @section('contenidoprincipal') 
 
    <div class="row">
@@ -17,7 +17,7 @@
                 <th scope="col">Nombre</th>                    
                 <th scope="col">Descripción</th>   
                 <th scope="col">Almacen</th>                    
-                <th scope="col">Precio</th>                    
+                <th scope="col">Precio Venta</th>                    
                 <th scope="col">Precio con descuento</th>                    
                 <th scope="col">Acción</th>                    
                 <th scope="col"></th>                  
@@ -81,7 +81,7 @@
                     </select>
                 </div>
                 <div class="form-group has-success col-md-6">
-                    <label class="control-label" for="inputSuccess1">Precio U.</label>
+                    <label class="control-label" for="inputSuccess1">Precio Venta</label>
                     <input id="precio" type="text" class="form-control" name="precio"  required  autofocus value="0">
                 </div>
                 <div class="form-group has-error col-md-6">
@@ -133,7 +133,7 @@
                     </select>
                 </div>
                 <div class="form-group has-success col-md-6">
-                    <label class="control-label" for="inputSuccess1">Precio U.</label>
+                    <label class="control-label" for="inputSuccess1">Precio Venta</label>
                     <input id="precio-e" type="text" class="form-control" name="precio-e"  required  autofocus>
                 </div>
                 <div class="form-group has-error col-md-6">

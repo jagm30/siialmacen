@@ -89,7 +89,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Registro de articulos</h4>
+        <h4 class="modal-title">Agregar articulos</h4>
       </div>
       <div class="modal-body">
          <div class="row">
@@ -105,17 +105,17 @@
                       @endforeach              
                     </select>
                 </div>
-                <div class="form-group has-error col-md-3">
+                <div class="form-group has-error col-md-4">
                     <label class="control-label" for="inputError1">Stock</label>
                     <input id="stock" type="text" class="form-control" name="stock"  readonly>
                 </div>                
-                <div class="form-group has-error col-md-3">
+                <div class="form-group has-error col-md-4">
                     <label class="control-label" for="inputError1">Cantidad</label>
                     <input id="cantidad" type="text" class="form-control" name="cantidad"  required  autofocus>
                 </div>   
-                <div class="form-group has-error col-md-3">
+                <div class="form-group has-error col-md-4">
                     <label class="control-label" for="inputError1">Precio</label>
-                    <input id="precio" type="text" class="form-control" name="precio"  required  autofocus readonly>
+                    <input id="precio" type="text" class="form-control" name="precio"  required  autofocus >
                 </div>                
             </form>
          </div>
@@ -307,7 +307,8 @@
          url:"/productos/"+id_producto,
          async: false,
          dataType:"json",
-         success:function(html){                
+         success:function(html){        
+         //alert(html);        
             $("#stock").val(html.stock);
             $("#precio").val(html.precio);
          }
