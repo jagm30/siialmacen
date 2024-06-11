@@ -136,7 +136,6 @@
             <table width="100%" style="width:100% !important" style="font-size: 10pt;   font-family: Arial, Helvetica, sans-serif;">             
                 <tr>                    
                     <th>Cantidad</th>
-                    <th>Nombre</th>
                     <th>Descripcion</th>
                     <th>Precio</th>
                     <th>Subtotal</th>                    
@@ -148,7 +147,6 @@
                 ?>
                 <tr style="font-size:10pt;">
                     <td>{{ $detalle->cantidad }}</td>
-                    <td>{{$detalle->nombre}} </td>
                     <td>{{$detalle->descripcion}} </td>
                     <td>$ {{$detalle->precio}} </td>
                     <td>$ {{$detalle->precio*$detalle->cantidad}} </td>
@@ -167,7 +165,7 @@
     position: relative;
     width: 50%;
     /*border: steelblue solid 1px;*/
-    height: auto;"><p style="text-align: center; margin-top:-50px;">Recibió <br>____________________________<br>José Gijon<br>Encargado de almacén</p> </div>
+    height: auto;"><p style="text-align: center; margin-top:-50px;">Recibió <br>____________________________<br></p> </div>
     <div style="padding-top: 10px;
     padding-left: 0px;
     margin-left: 0px;
@@ -175,7 +173,7 @@
     float: left;
     width: 50%;
     /*border: steelblue solid 1px;*/
-    height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Vo. Bo. <br>____________________________<br>José Gijon<br>Recursos materiales</p> </div>
+    height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Vo. Bo. <br>____________________________<br></p></div>
 </div>
 <footer>
 SII ALMACEN - SISTEMA DE GESTIÓN DE ALMACÉN © <?php echo date("Y");?>

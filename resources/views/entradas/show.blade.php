@@ -314,6 +314,7 @@
                   '/entradas/reportepdf/{{ $entrada->id }}',
                   '_blank' 
                 );
+              location.reload();
             }
         });
     }

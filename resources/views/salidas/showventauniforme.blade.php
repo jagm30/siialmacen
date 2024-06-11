@@ -47,6 +47,7 @@
             <div class="col-md-2">
                 Reporte:
                @if($salida->status=='finalizado')<a href="/salidas/reportepdf/{{ $salida->id }}" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a> @endif
+               <h2 style="text-align: right;">Total: <span id="total_nota">$5,000</span></h2>
             </div>
             <!-- /.col -->
           </div>
@@ -60,21 +61,30 @@
     <div class="col-xs-12">
       <div class="box">
           <div class="box-header">
-            @if($salida->status=='captura')<button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar"> Agregar Articulo</button>
+            @if($salida->status=='captura')<button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar"> Agregar Articulo</button>            
             <button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > Finalizar captura</button>@endif
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            <table id="alumnos_table" class="table table-bordered table-striped">           
-            <thead>                  
-              <tr>                    
-                <th scope="col">Descripción</th>                    
-                <th scope="col">Cantidad</th>                    
-                <th scope="col">Precio</th>                 
-                <th>Accion</th>
-                </tr>                
-            </thead>                
-           
+            <table id="productos_table" class="table table-bordered table-striped">           
+              <thead>                  
+                <tr>
+                  <th scope="col">Descripción</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Precio Unitario</th>
+                  <th scope="col">Subtotal</th>
+                  <th>Accion</th>
+                  </tr>
+              </thead>   
+              <tfoot>
+                  <tr>
+                      <th></th>
+                      <th></th>
+                      <th>Total:</th>
+                      <th></th>
+                      <th></th>
+                  </tr>
+              </tfoot>        
            </table>                
           <!-- /.box-body -->
         </div>
@@ -194,7 +204,7 @@
 <script type="text/javascript">
   $(function() {
     $('.select2').select2();
-     $('#alumnos_table').DataTable({
+     $('#productos_table').DataTable({
         processing: true,
         serverSide: true,
 
@@ -210,7 +220,20 @@
         },
         {
           data: 'precio',
-          name: 'precio'
+          render: function (data, type, row, meta) {
+                //return '<a href="' + data + '">Download</a>';
+                return '<span>'+'$'+number_format(data, 2, '.', ',')+'</span>';
+            }
+        },
+        {
+          data : 'subtotal',
+          render: function (data, type, row, meta) {
+                //return '<a href="' + data + '">Download</a>';
+                return '<span>'+'$'+number_format(data, 2, '.', ',')+'</span>';
+            }
+          /*render: function ( data, type, row ) {
+              return ( Number(row.cantidad)* Number(row.precio));
+          }*/
         },
         {
         data: 'action',
@@ -218,12 +241,46 @@
         orderable: false
         }
       ],
+      language: {
+          decimal: ',',
+          thousands: '.'
+      },
       searching: true,
-      autoWidth: false
-      });
-     $("#menuventauniforme").addClass("important active");
-});
+      autoWidth: false,
+      "footerCallback": function ( row, data, start, end, display ) {
+        
+            total = this.api()
+                .column(3)//numero de columna a sumar
+                //.column(1, {page: 'current'})//para sumar solo la pagina actual
+                .data()
+                .reduce(function (a, b) {
+                    return parseInt(a) + parseInt(b);
+                }, 0 );
 
+            $(this.api().column(3).footer()).html(total);
+            
+        }
+      });
+
+     $("#menuventauniforme").addClass("important active");
+
+    
+});
+number_format = function (number, decimals, dec_point, thousands_sep) {
+        number = number.toFixed(decimals);
+
+        var nstr = number.toString();
+        nstr += '';
+        x = nstr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? dec_point + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+
+        while (rgx.test(x1))
+            x1 = x1.replace(rgx, '$1' + thousands_sep + '$2');
+
+        return x1 + x2;
+    }
 //Agregar producto
   $('#btn_guardaregistro').click(function() {    
     
@@ -261,10 +318,18 @@
       cache: false,
       success: function(dataResult){
         alert("registrado correctamente...");     
-            $('#alumnos_table').DataTable().ajax.reload();           
+            $('#productos_table').DataTable().ajax.reload();           
             $('#formmodal').trigger("reset");
       }
-    });    
+    });
+
+    var total = 0;
+    $('#productos_table').DataTable().rows().data().each(function(el, index){
+      //Asumiendo que es la columna 5 de cada fila la que quieres agregar a la sumatoria
+      total += el[2];
+    });
+    alert(total);
+
   });
 
 
@@ -277,7 +342,7 @@
             url: "{{ url('salidaproductos/delete') }}"+'/'+ id_salidaproducto,
             success: function (data) {
               alert(data.data);
-              $('#alumnos_table').DataTable().ajax.reload();
+              $('#productos_table').DataTable().ajax.reload();
             }
         });
     }else{
@@ -292,10 +357,14 @@
       $.ajax({
             type: "get",
             url: "{{ url('salidas/finalizarsalida') }}"+'/'+ id_salida,
-            success: function (data) {
-              location.reload();
+            success: function (data) {              
+               window.open(
+                  '/salidas/ventapdf/{{ $salida->id }}',
+                  '_blank' 
+                );
+               location.reload();
               //alert(data.data);
-              //$('#alumnos_table').DataTable().ajax.reload();
+              //$('#productos_table').DataTable().ajax.reload();
             }
         });
     }

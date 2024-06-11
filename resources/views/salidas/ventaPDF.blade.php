@@ -114,12 +114,13 @@
 
 <!-- Envuelva el contenido de su PDF dentro de una etiqueta principal -->
 <main>
-<table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border-radius: 10px 10px;">
+<table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border: 0;">
     <tr style="background-color: #E6F9FF; color:black;" >
-        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: #051F62; text-align: left;">VENTAS</th>        
+        <th style="background-color: white; border:0px solid gray; font-size: 10pt; color: #051F62; text-align: center;">NOTA DE VENTAS</th>        
+        <th style="background-color: white; border:0px solid gray; font-size: 10pt; color: #051F62; text-align: center;">Fecha: {{ $salida->fecha }}</th>        
     </tr>
     <tr style="background-color: #E6F9FF; color:black; ">
-        <th  style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">Cliente: {{$salida->solicitante}}</th>
+        <th colspan="2"  style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;  text-align: center;">Cliente: {{$salida->solicitante}}</th>
     </tr>    
 </table>
 <br><br>
@@ -127,7 +128,6 @@
             <table width="100%" style="width:100%" style="font-size: 10pt;   font-family: Arial, Helvetica, sans-serif;">             
                 <tr>                    
                     <th>Cantidad</th>
-                    <th>Nombre</th>
                     <th>Descripcion</th>
                     <th>Precio</th>
                     <th>Subtotal</th>                    
@@ -139,7 +139,6 @@
                 ?>
                 <tr style="font-size:10pt;">
                     <td>{{ $detalle->cantidad }}</td>
-                    <td>{{$detalle->nombre}} </td>
                     <td>{{$detalle->descripcion}} </td>
                     <td>$ {{$detalle->precio}} </td>
                     <td>$ {{$detalle->precio*$detalle->cantidad}} </td>
@@ -158,7 +157,7 @@
     position: relative;
     width: 50%;
     /*border: steelblue solid 1px;*/
-    height: auto;"><p style="text-align: center; margin-top:-50px;">Entregó <br>____________________________<br>José Gijon<br>Encargado de almacén</p> </div>
+    height: auto;"><p style="text-align: center; margin-top:-50px;">Entregó <br>____________________________<br><br>Encargado de almacén</p> </div>
     <div style="padding-top: 10px;
     padding-left: 0px;
     margin-left: 0px;
@@ -166,7 +165,7 @@
     float: left;
     width: 50%;
     /*border: steelblue solid 1px;*/
-    height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Solicitante <br>____________________________<br>{{ $salida->solicitante }}<br>Recursos materiales</p> </div>
+    height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Cliente<br>____________________________<br>{{ $salida->solicitante }}<br></p> </div>
 </div>
 <footer>
 SII ALMACEN - SISTEMA DE GESTIÓN DE ALMACÉN © <?php echo date("Y");?>
