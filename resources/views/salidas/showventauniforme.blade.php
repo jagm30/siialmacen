@@ -46,8 +46,7 @@
             </div>
             <div class="col-md-2">
                 Reporte:
-               @if($salida->status=='finalizado')<a href="/salidas/reportepdf/{{ $salida->id }}" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a> @endif
-               <h2 style="text-align: right;">Total: <span id="total_nota">$5,000</span></h2>
+               @if($salida->status=='finalizado')<a href="/salidas/reportepdf/{{ $salida->id }}" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a> @endif              
             </div>
             <!-- /.col -->
           </div>
@@ -61,8 +60,8 @@
     <div class="col-xs-12">
       <div class="box">
           <div class="box-header">
-            @if($salida->status=='captura')<button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar"> Agregar Articulo</button>            
-            <button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > Finalizar captura</button>@endif
+            @if($salida->status=='captura')<button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar">AGREGAR PRODUCTO</button>            
+            <button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > FINALIZAR VENTA</button>@endif
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -241,10 +240,6 @@
         orderable: false
         }
       ],
-      language: {
-          decimal: ',',
-          thousands: '.'
-      },
       searching: true,
       autoWidth: false,
       "footerCallback": function ( row, data, start, end, display ) {
@@ -257,7 +252,7 @@
                     return parseInt(a) + parseInt(b);
                 }, 0 );
 
-            $(this.api().column(3).footer()).html(total);
+            $(this.api().column(3).footer()).html('<span style="color:red; font-size:15pt;">'+'$'+number_format(total, 2, '.', ',')+'</span>');
             
         }
       });
@@ -322,13 +317,6 @@ number_format = function (number, decimals, dec_point, thousands_sep) {
             $('#formmodal').trigger("reset");
       }
     });
-
-    var total = 0;
-    $('#productos_table').DataTable().rows().data().each(function(el, index){
-      //Asumiendo que es la columna 5 de cada fila la que quieres agregar a la sumatoria
-      total += el[2];
-    });
-    alert(total);
 
   });
 

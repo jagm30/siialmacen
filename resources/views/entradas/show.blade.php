@@ -319,5 +319,17 @@
         });
     }
   });
+  $("#id_producto" ).change(function() {  
+      var id_producto       = $('#id_producto').val();
+      $.ajax({
+         url:"/productos/"+id_producto,
+         async: false,
+         dataType:"json",
+         success:function(html){        
+         //alert(html);        
+            $("#precio").val(html.precio);
+         }
+      })      
+    });
 </script>
 @endsection('scriptpie')

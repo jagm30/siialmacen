@@ -180,8 +180,17 @@ class SalidaController extends Controller
             ->leftJoin('productos', 'salidaproductos.id_producto', '=', 'productos.id')            
             ->where('salidaproductos.id_salida', '=', $id)
             ->get();
+        $totalpagar       = DB::table('salidaproductos')
+            ->select(DB::raw('SUM(salidaproductos.cantidad*salidaproductos.precio) as totalpagar'))
+            ->where('salidaproductos.id_salida', '=', $id)
+            ->get();
+        $totalarticulos       = DB::table('salidaproductos')
+            ->select(DB::raw('SUM(salidaproductos.cantidad) as totalarticulos'))
+            ->where('salidaproductos.id_salida', '=', $id)
+            ->get();
+
         $today = Carbon::now()->format('d/m/Y');        
-        $pdf = \PDF::loadView('salidas/ventaPDF', compact('today','salida','salidadetalle'))->setPaper(array(0,0,612.00,792.00));
+        $pdf = \PDF::loadView('salidas/ventaPDF', compact('today','salida','salidadetalle','totalpagar','totalarticulos'))->setPaper(array(0,0,612.00,792.00));
         return $pdf->stream();
 
     }
@@ -271,5 +280,12 @@ class SalidaController extends Controller
         }
 
     }
-
+    public function cancelarsalida(Request $request,$id)
+    {
+        $salida = Salida::find($id);
+        $salida->status            = 'cancelado';
+        //$salida->id_usuario        = 1;
+        $salida->save();
+        return response()->json(['data' => "Cancelado correctamente..."]);      
+    }
 }

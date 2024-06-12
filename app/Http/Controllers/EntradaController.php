@@ -174,7 +174,7 @@ class EntradaController extends Controller
         $entrada       = DB::table('entradas')
             ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
             ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
-            ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
+            ->leftJoin('cat_almacens', 'entradas.id_almacen', '=', 'cat_almacens.id')
             ->where('entradas.id', '=', $id)
             ->first();
         $entradadetalle       = DB::table('entrada_productos')

@@ -114,22 +114,23 @@
 
 <!-- Envuelva el contenido de su PDF dentro de una etiqueta principal -->
 <main>
-<table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border: 0;">
+<table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border: solid #051F62;">
     <tr style="background-color: #E6F9FF; color:black;" >
-        <th style="background-color: white; border:0px solid gray; font-size: 10pt; color: #051F62; text-align: center;">NOTA DE VENTAS</th>        
-        <th style="background-color: white; border:0px solid gray; font-size: 10pt; color: #051F62; text-align: center;">Fecha: {{ $salida->fecha }}</th>        
+        <th style="background-color: white; border:solid #051F62; font-size: 10pt; color: #051F62; text-align: left;">NOTA DE VENTAS</th>        
+        <th style="background-color: white; border:solid #051F62; font-size: 10pt; color: #051F62; text-align: center;"> {{ $salida->fecha }}</th>   
+        <th style="background-color: white; border:solid #051F62; font-size: 10pt; color: red; text-align: right;">Folio: <b>{{ $salida->id }}</b> </th>     
     </tr>
     <tr style="background-color: #E6F9FF; color:black; ">
-        <th colspan="2"  style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;  text-align: center;">Cliente: {{$salida->solicitante}}</th>
+        <th colspan="3"  style="background-color: #051F62; border: 1px solid #051F62; font-size: 10pt; color: white;  text-align: left;">CLIENTE: {{$salida->solicitante}}</th>
     </tr>    
 </table>
 <br><br>
     <div id="contenido" class="contenido">
             <table width="100%" style="width:100%" style="font-size: 10pt;   font-family: Arial, Helvetica, sans-serif;">             
                 <tr>                    
-                    <th>Cantidad</th>
-                    <th>Descripcion</th>
-                    <th>Precio</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>                    
+                    <th>Precio U.</th>
                     <th>Subtotal</th>                    
                 </tr>                                            
                 @foreach($salidadetalle as $detalle)
@@ -138,12 +139,20 @@
                     //$newDate = date("d-m-Y", strtotime($originalDate));
                 ?>
                 <tr style="font-size:10pt;">
-                    <td>{{ $detalle->cantidad }}</td>
                     <td>{{$detalle->descripcion}} </td>
+                    <td>{{ $detalle->cantidad }}</td>                    
                     <td>$ {{$detalle->precio}} </td>
-                    <td>$ {{$detalle->precio*$detalle->cantidad}} </td>
+                    <td style="text-align: right;">$ {{$detalle->precio*$detalle->cantidad}} </td>
                 </tr>
                 @endforeach    
+                <tfoot>
+                    <tr>
+                        <th style="text-align: right;">Cantidad de articulos:</th>
+                        <th><b>{{ $totalarticulos[0]->totalarticulos }} </b></th>
+                        <th>Total: </th>
+                        <th style="text-align: right;"><b>$ {{ $totalpagar[0]->totalpagar }}</b></th>
+                    </tr>
+                </tfoot>
             </table>        
         </div>
 </main>
@@ -157,7 +166,7 @@
     position: relative;
     width: 50%;
     /*border: steelblue solid 1px;*/
-    height: auto;"><p style="text-align: center; margin-top:-50px;">Entregó <br>____________________________<br><br>Encargado de almacén</p> </div>
+    height: auto;"><p style="text-align: center; margin-top:-50px;">Total de articulos: </div>
     <div style="padding-top: 10px;
     padding-left: 0px;
     margin-left: 0px;
@@ -165,7 +174,7 @@
     float: left;
     width: 50%;
     /*border: steelblue solid 1px;*/
-    height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Cliente<br>____________________________<br>{{ $salida->solicitante }}<br></p> </div>
+    height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Total a pagar: </p> </div>
 </div>
 <footer>
 SII ALMACEN - SISTEMA DE GESTIÓN DE ALMACÉN © <?php echo date("Y");?>

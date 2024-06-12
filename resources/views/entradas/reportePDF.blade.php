@@ -135,8 +135,8 @@
     <div id="contenido" class="contenido">
             <table width="100%" style="width:100% !important" style="font-size: 10pt;   font-family: Arial, Helvetica, sans-serif;">             
                 <tr>                    
-                    <th>Cantidad</th>
                     <th>Descripcion</th>
+                    <th>Cantidad</th>                    
                     <th>Precio</th>
                     <th>Subtotal</th>                    
                 </tr>                                            
@@ -146,10 +146,10 @@
                     //$newDate = date("d-m-Y", strtotime($originalDate));
                 ?>
                 <tr style="font-size:10pt;">
-                    <td>{{ $detalle->cantidad }}</td>
                     <td>{{$detalle->descripcion}} </td>
+                    <td>{{ $detalle->cantidad }}</td>                    
                     <td>$ {{$detalle->precio}} </td>
-                    <td>$ {{$detalle->precio*$detalle->cantidad}} </td>
+                    <td style="text-align: right;">$ {{$detalle->precio*$detalle->cantidad}} </td>
                 </tr>
                 @endforeach    
             </table>        

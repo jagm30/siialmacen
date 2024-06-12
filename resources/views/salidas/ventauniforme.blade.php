@@ -239,32 +239,9 @@
                 <!--<div class="form-group has-success col-md-4">
                     <label class="control-label" for="inputSuccess1">Folio requerimiento</label>                     
                     <input id="folioreq-e" type="text" class="form-control" name="folioreq-e"  required  autofocus>
-                </div>-->
-                <div class="form-group has-success col-md-12">
-                    <label class="control-label" for="inputSuccess1">Cliente</label>                     
-                    <input id="solicitante-e" type="text" class="form-control" name="solicitante-e"  required  autofocus>
-                </div>
-                <div class="form-group has-success col-md-6">
-                    <label class="control-label" for="inputSuccess1">Fecha</label>                     
-                    <input id="fecha-e" type="date" class="form-control" name="fecha-e"  required  value="{{$date}}">
-                </div>                
-
-                <input id="cajapago-e" type="hidden" class="form-control" name="cajapago-e" value="NA" >
-                <input id="nnotaventa" type="hidden" class="form-control" name="nnotaventa" value="NA" >
-                <input id="fventa" type="hidden" class="form-control" name="fventa"  value="NA" required >
-                <input id="status-e" type="hidden" class="form-control" name="status-e"  value="" required >
-
-                <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Almacen</label>
-                    <select id="almacen-e" name="almacen-e" class="form-control">
-                        <option>Seleccione un almacen</option>
-                        @foreach($almacenes as $almacen)
-                          <option value="{{$almacen->id}}">{{$almacen->nombre}}</option>
-                        @endforeach
-                    </select>
-                </div>
+                </div>-->               
                 <div class="form-group has-warning col-md-12">
-                    <label class="control-label" for="inputWarning1">Observaciones</label>
+                    <label class="control-label" for="inputSuccess1">Motivo:</label>
                     <input id="observaciones-e" type="text" class="form-control" name="observaciones-e"  required  autofocus>
                 </div>
             </form>
@@ -272,7 +249,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
-        <button id="btn_guardarcambio" name="btn_guardarcambio" type="button" class="btn btn-primary">Guardar Cambios</button>
+        <button id="btn_cancelarventa" name="btn_cancelarventa" type="button" class="btn btn-primary">Guardar Cambios</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -311,7 +288,7 @@
             "bSortable": false,
             "mRender": function(data, type, value) {
                 if(value["status"]=='finalizado'){
-                  return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a> <a href="#"><button type="button" id="btn-cancelarventa" name="btn-cancelarventa" data-id="'+value["id"]+'" class="btn btn-info" data-toggle="modal" data-target="#modal-cancelar">Cancelar</button></a>   ';
+                  return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a> <a href="#"><button type="button" id="btn-cancelarventa" name="btn-cancelarventa" data-id="'+value["id"]+'" class="btn btn-warning" data-toggle="modal" data-target="#modal-cancelar">Cancelar</button></a>   ';
                 }else{
                   return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
                 }                
@@ -559,6 +536,29 @@
         });
     }else{
       alert("cancelado");  
+    }
+  });
+  $(document).on("click", "#btn-cancelarventa", function () {
+    //alert("accediendo a la edicion..."+$(this).attr('data-id'));
+    var id_salida = $(this).attr('data-id');    
+    $('#id_salida_c').val(id_salida);
+            
+  });
+  $(document).on("click", "#btn_cancelarventa", function () {
+    var id_salida = $('#id_salida_c').val();
+    alert(id_salida);
+    if (confirm("Desea cancelar la venta ? Folio: "+id_salida) == true) {
+      alert("cancelando...");
+      $.ajax({
+            type: "get",
+            url: "{{ url('salidas/cancelar') }}"+'/'+ id_salida,
+            success: function (data) {
+              alert(data.data);
+              //location.reload();
+            }
+        });
+    }else{
+      alert("Accion cancelada");  
     }
   });
 

@@ -20,7 +20,7 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-             <table id="example1" class="table table-bordered table-striped">           
+             <table id="example2" class="table table-bordered table-striped">           
             <thead>                  
               <tr>                                     
                 <th scope="col" style="width: 20%;">Nombre</th>                    
@@ -38,7 +38,7 @@
                   <td>{{ $producto->descripcion }}</td>
                   <td>{{ $producto->nomalmacen}}</td>                            
                   <td>$ {{ $producto->precio }}</td>                            
-                  <td>$ {{ $producto->stock }}</td>                            
+                  <td>{{ $producto->stock }}</td>                            
                   <td>                                
                     <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$producto->id}}" data-toggle="modal" data-target="#modal-default">
                 Editar
@@ -62,7 +62,8 @@
 @section("scriptpie")
 <script>
   $(function () {
-    $('#example1').DataTable({
+
+    $('#example2').DataTable({
       language: {
         "decimal": "",
         "emptyTable": "No hay información",
@@ -98,9 +99,9 @@
         type: "get",
         url: "/inventario/"+filtro,
         success: function (data) {
-          $('#example1').DataTable().clear().destroy();
+          $('#example2').DataTable().clear().destroy();
           //$('#alumnos_table').DataTable().ajax.load(data);
-          $('#example1').DataTable({
+          $('#example2').DataTable({
             processing: true,
             serverSide: true,
             ajax: "/inventario/"+filtro,
