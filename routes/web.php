@@ -60,11 +60,12 @@ Route::get('salidas/ventaxalmacen/{almacen}', [App\Http\Controllers\SalidaContro
 Route::get('salidas/edicion/{id_salida}/{folioreq}/{solicitante}/{fecha}/{almacen}/{cajapago}/{nnotaventa}/{fventa}/{status}/{observaciones}/{id_usuario}',[App\Http\Controllers\SalidaController::class,'edicionsalida'])->name('edicionsalida');
 Route::get('salidas/filtrofecha/{fecha1}/{fecha2}', [App\Http\Controllers\SalidaController::class,'filtrofecha'])->name('filtrofechasalida');
 Route::get('salidas/filtroalmacenfecha/{almacen}/{fecha1}/{fecha2}', [App\Http\Controllers\SalidaController::class,'filtroalmacenfecha'])->name('filtroalmacenfecha');
-Route::get('salidas/cancelar/{id}', [App\Http\Controllers\SalidaController::class,'cancelarsalida'])->name('cancelarsalida');
+Route::get('salidas/cancelar/{id}/{motivo}', [App\Http\Controllers\SalidaController::class,'cancelarsalida'])->name('cancelarsalida');
 Route::resource('/salidas', SalidaController::class);
 Route::get('salidaproductos/delete/{id}', [App\Http\Controllers\SalidaproductoController::class,'destroy'])->name('destroysalprod');
 Route::get('salidaproductos/listarxsalida/{id}',[App\Http\Controllers\SalidaproductoController::class,'listarxsalida'])->name('listarxsalida');
 Route::resource('/salidaproductos', SalidaproductoController::class);
+Route::resource('/cancelaciones', CancelacionController::class);
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

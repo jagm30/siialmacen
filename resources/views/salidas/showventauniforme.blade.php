@@ -65,8 +65,10 @@
               <thead>
                 <tr>
                   <th><button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar">AGREGAR PRODUCTO</button>      </th>
-                  <th><select class="form-control">
-                        <option>Efectivo</option>
+                  <th>Forma de pago: <select class="form-control" id="formapago" name="formapago">
+                        <option value="1">Efectivo</option>
+                        <option value="2">T. Debito</option>
+                        <option value="3">T. Credito</option>
                       </select>      
                   </th>
                   <th><button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > FINALIZAR VENTA</button>
@@ -151,65 +153,7 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
-<!--
 
-<div class="modal fade" id="modal-default">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Edición</h4>
-      </div>
-      <div class="modal-body">
-         <div class="row">
-           <form id="formmodal">
-                <input id="id_producto-e" type="hidden" class="form-control" name="id_producto-e">
-                <div class="form-group has-success col-md-6">
-                    <label class="control-label" for="inputSuccess1">No. de factura</label>                     
-                    <input id="nfactura-e" type="text" class="form-control" name="nfactura-e"  required  autofocus>
-                </div>
-                <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Proveedor</label>
-                    <select id="proveedor-e" name="proveedor-e" class="form-control">
-                        <option value="1">SIGMA</option>
-                        <option value="2">MCA COMPUTO</option>
-                        <option value="3">COCA COLA</option>
-                    </select>
-                </div>
-                <div class="form-group has-error col-md-6">
-                    <label class="control-label" for="inputError1">Fecha de recepción</label>
-                    <input id="fecha-e" type="date" class="form-control" name="fecha-e"  required  autofocus>
-                </div>
-                <div class="form-group has-success col-md-6">
-                    <label class="control-label" for="inputSuccess1">Referencia / Orden de compra</label>
-                    <input id="referencia-e" type="text" class="form-control" name="referencia-e"  required  autofocus>
-                </div>
-                <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Categoria</label>
-                    <select id="categoria-e" name="categoria-e" class="form-control">
-                        <option value="1">ALMACEN GRAL</option>
-                        <option value="2">ALMACEN 2</option>
-                        <option value="3">ALMACEN 3</option>
-                    </select>
-                </div>
-                <div class="form-group has-error col-md-6">
-                    <label class="control-label" for="inputError1">Observaciones</label>
-                    <input id="observaciones-e" type="text" class="form-control" name="observaciones-e"  required  autofocus>
-                </div>
-            </form>
-         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
-        <button id="btn_guardarcambio" name="btn_guardarcambio" type="button" class="btn btn-primary">Guardar Cambios</button>
-      </div>
-    </div>
-   
-  </div>
- 
-</div>
-.modal -->
 
 @endsection('contenidoprincipal')
 @section("scriptpie")
@@ -264,8 +208,13 @@
                 .reduce(function (a, b) {
                     return parseInt(a) + parseInt(b);
                 }, 0 );
-
-            $(this.api().column(3).footer()).html('<span style="color:red; font-size:15pt;">'+'$'+number_format(total, 2, '.', ',')+'</span>');
+            var formapago = $('#formapago').val();        
+            if (formapago=='3') {
+                total = total*1.8;
+            }else{
+                total = total;
+            }
+            $(this.api().column(3).footer()).html('<span name="totalventa" id="totalventa" style="color:red; font-size:15pt;">'+'$'+number_format(total, 2, '.', ',')+'</span>');
             
         }
       });
@@ -325,7 +274,7 @@ number_format = function (number, decimals, dec_point, thousands_sep) {
       },
       cache: false,
       success: function(dataResult){
-        alert("registrado correctamente...");     
+        //alert("registrado correctamente...");     
             $('#productos_table').DataTable().ajax.reload();           
             $('#formmodal').trigger("reset");
       }
@@ -383,6 +332,21 @@ number_format = function (number, decimals, dec_point, thousands_sep) {
             $("#precio").val(html.precio);
          }
       })      
+    });
+
+  $("#formapago" ).change(function() {  
+    alert("cambio");
+      /*var id_producto       = $('#id_producto').val();
+      $.ajax({
+         url:"/productos/"+id_producto,
+         async: false,
+         dataType:"json",
+         success:function(html){        
+         //alert(html);        
+            $("#stock").val(html.stock);
+            $("#precio").val(html.precio);
+         }
+      })      */
     });
 
 </script>

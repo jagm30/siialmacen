@@ -6,6 +6,7 @@ use App\Models\Salida;
 use App\Models\Salidaproducto;
 use App\Models\Producto;
 use App\Models\CatAlmacen;
+use App\Models\Cancelacion;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -289,12 +290,21 @@ class SalidaController extends Controller
         }
 
     }
-    public function cancelarsalida(Request $request,$id)
+    public function cancelarsalida(Request $request,$id, $motivo)
     {
+        $date = Carbon::now();
+        $date = $date->format('Y-m-d');
         $salida = Salida::find($id);
         $salida->status            = 'cancelado';
         //$salida->id_usuario        = 1;
         $salida->save();
+
+        $cancelacion = new Cancelacion;
+        $cancelacion->id_salida     = $id;
+        $cancelacion->motivo        = $motivo;
+        $cancelacion->fecha         = $date;
+        $cancelacion->id_usuario    = 1;
+        $cancelacion->save();
         return response()->json(['data' => "Cancelado correctamente..."]);      
     }
 }

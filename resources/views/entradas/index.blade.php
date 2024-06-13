@@ -321,6 +321,7 @@
     var categoria       = $('#categoria').val();
     var observaciones   = $('#observaciones').val();
     var status          = 'captura';
+    var id_almacen      = 1;
     var id_usuario      = {{ Auth::user()->id }};
 
     if (nfactura == '' || nfactura.length == 0 ) {
@@ -346,6 +347,7 @@
               type: 1,
               proveedor:      proveedor,
               fecha:          fecha,
+              id_almacen:     id_almacen,
               nfactura:       nfactura,            
               referencia:     referencia,
               categoria:      categoria,

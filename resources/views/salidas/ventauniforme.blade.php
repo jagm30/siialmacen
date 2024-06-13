@@ -244,7 +244,10 @@
                 </div>-->               
                 <div class="form-group has-warning col-md-12">
                     <label class="control-label" for="inputSuccess1">Motivo:</label>
-                    <input id="observaciones-e" type="text" class="form-control" name="observaciones-e"  required  autofocus>
+                    <input id="motivo-c" type="text" class="form-control" name="motivo-c"  required  autofocus>
+                </div>
+                <div class="form-group has-error col-md-12" id="cajaerror-c">
+                    
                 </div>
             </form>
          </div>
@@ -299,17 +302,24 @@
             "mRender": function(data, type, value) {
                 if(value["status"]=='finalizado'){
                   return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a> <a href="#"><button type="button" id="btn-cancelarventa" name="btn-cancelarventa" data-id="'+value["id"]+'" class="btn btn-warning" data-toggle="modal" data-target="#modal-cancelar">Cancelar</button></a>   ';
-                }else{
+                }
+                else if(value["status"]=='cancelado'){
+                  return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>';
+                }
+                else{
                   return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
                 }                
             }
           }      
         ],
-        columnDefs: [{targets: 3,
+        columnDefs: [{targets: 5,
                     render: function ( data, type, row ) {
-                      var color = 'black';
+                      var color = 'green';
                       if (data == 'captura') {
-                        color = 'orange';
+                        color = 'blue';
+                      } 
+                      if (data == 'cancelado') {
+                        color = 'red';
                       } 
                       return '<span style="color:' + color + '"><b>' + data + '</b></span>';
                     }
@@ -540,7 +550,7 @@
             type: "get",
             url: "{{ url('salidas/delete') }}"+'/'+ id_entrada,
             success: function (data) {
-              alert(data.data);
+              //alert(data.data);
               location.reload();
             }
         });
@@ -556,19 +566,23 @@
   });
   $(document).on("click", "#btn_cancelarventa", function () {
     var id_salida = $('#id_salida_c').val();
-    alert(id_salida);
+    var motivo    = $('#motivo-c').val();
+    if (motivo == '' || motivo.length == 0 ) {
+      document.getElementById("motivo-c").focus();
+      document.getElementById("cajaerror-c").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese el motivo de cancelacion.</div>';
+      return false;
+    }
+    //alert(id_salida);
     if (confirm("Desea cancelar la venta ? Folio: "+id_salida) == true) {
-      alert("cancelando...");
+      
       $.ajax({
             type: "get",
-            url: "{{ url('salidas/cancelar') }}"+'/'+ id_salida,
+            url: "{{ url('salidas/cancelar') }}"+'/'+id_salida+'/'+motivo,
             success: function (data) {
               alert(data.data);
-              //location.reload();
+              window.location.href = '/salidas/ventauniforme/';             
             }
         });
-    }else{
-      alert("Accion cancelada");  
     }
   });
 
