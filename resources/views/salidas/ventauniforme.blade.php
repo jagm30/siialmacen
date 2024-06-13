@@ -26,7 +26,9 @@
               <tr>                              
                 <th scope="col">#</th>                    
                 <th scope="col">Fecha</th>                    
-                <th scope="col">Cliente</th>                   
+                <th scope="col">Cliente</th>
+                <th scope="col">Forma de pago</th>
+                <th scope="col">Total</th>                   
                 <th scope="col" style="width: 100px;">Status</th>                   
                 <th scope="col" style="width: 350px;">Acción</th>                    
                 </tr>                
@@ -278,7 +280,15 @@
           {
             data: 'solicitante',
             name: 'solicitante'
-          },       
+          },
+          {
+            data: 'formapago',
+            name: 'formapago'
+          }, 
+          {
+            data: 'totalpago',
+            name: 'totalpago'
+          },        
           {
             data: 'status',
             name: 'status'

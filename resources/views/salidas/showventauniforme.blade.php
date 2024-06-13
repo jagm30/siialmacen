@@ -60,8 +60,21 @@
     <div class="col-xs-12">
       <div class="box">
           <div class="box-header">
-            @if($salida->status=='captura')<button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar">AGREGAR PRODUCTO</button>            
-            <button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > FINALIZAR VENTA</button>@endif
+            @if($salida->status=='captura')
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th><button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar">AGREGAR PRODUCTO</button>      </th>
+                  <th><select class="form-control">
+                        <option>Efectivo</option>
+                      </select>      
+                  </th>
+                  <th><button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > FINALIZAR VENTA</button>
+                  </th>
+                </tr>    
+              </thead>
+            </table>                                      
+            @endif
           </div>
           <!-- /.box-header -->
           <div class="box-body">
