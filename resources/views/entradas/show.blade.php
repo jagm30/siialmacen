@@ -227,7 +227,8 @@
         }
       ],
       searching: true,
-      autoWidth: false
+      autoWidth: false,
+      paging: false
       });
     $("#menuentradas").addClass("important active");
 });
