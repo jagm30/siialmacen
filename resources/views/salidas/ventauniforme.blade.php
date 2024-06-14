@@ -18,6 +18,9 @@
               <div class="col-sm-2">
                 <input type="button" class="form-control btn-primary" name="btnfiltrofecha" id="btnfiltrofecha" value="Filtrar">
               </div> 
+              <div class="col-sm-2">
+                <input type="button" class="form-control btn-primary" name="btnfiltrofechaPDF" id="btnfiltrofechaPDF" value="Exportar PDF">
+              </div> 
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -553,6 +556,15 @@
       //almacen
     });
 
+    $(document).on("click", "#btnfiltrofechaPDF", function () {
+      var fecha1       = $('#fecha1').val();
+      var fecha2       = $('#fecha2').val();      
+      window.open(
+                  '/salidas/salidaxfechaPDF/'+fecha1+'/'+fecha2,
+                  '_blank' 
+                );
+
+    });
   $(document).on("click", "#btnfiltrofecha", function () {
     var fecha1       = $('#fecha1').val();
     var fecha2       = $('#fecha2').val();

@@ -60,7 +60,10 @@
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th style="width: 25%;"><button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar">AGREGAR PRODUCTO</button>      </th>
+                  <th style="width: 25%;">
+                    @if($salida->status=='captura')<button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar">AGREGAR PRODUCTO</button>      
+                    @endif
+                  </th>
                   <th style="width: 25%;"> <select class="form-control" id="formapago" name="formapago" style="width: 100%;">
                         <option value="1" @if($salida->formapago=='1') selected @endif >Efectivo</option>
                         <option value="2" @if($salida->formapago=='2') selected @endif >T. Debito</option>

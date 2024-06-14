@@ -317,4 +317,50 @@ class SalidaController extends Controller
         $cancelacion->save();
         return response()->json(['data' => "Cancelado correctamente..."]);      
     }
+    public function salidaxfechaPDF(Request $request, $fecha1, $fecha2){
+        $salidas  = DB::table('salidas')
+                ->select('salidas.id',DB::raw('SUM(salidaproductos.cantidad*salidaproductos.precio) as totalpago'),'salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante','salidas.total')
+                ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
+                ->leftJoin('salidaproductos', 'salidaproductos.id_salida', '=', 'salidas.id')
+                ->where('salidas.almacen','=','1')
+                ->where('salidas.status','!=','captura')
+                ->where('salidas.fecha','>=',$fecha1)
+                ->where('salidas.fecha','<=',$fecha2)
+                ->groupBy('salidas.id','salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante','salidas.total')
+                ->get();
+        $totalregistro  = DB::table('salidas')
+                ->select(DB::raw('SUM(total) as totalregistro'))                
+                ->where('salidas.status','=','finalizado')
+                ->where('salidas.fecha','>=',$fecha1)
+                ->where('salidas.fecha','<=',$fecha2)
+                ->get();
+
+        $totalefectivo  = DB::table('salidas')
+                ->select(DB::raw('SUM(total) as totalefectivo'))                
+                ->where('salidas.formapago','=',1)
+                ->where('salidas.status','=','finalizado')
+                ->where('salidas.fecha','>=',$fecha1)
+                ->where('salidas.fecha','<=',$fecha2)
+                ->get();
+
+        $totaldebito  = DB::table('salidas')
+                ->select(DB::raw('SUM(total) as totaldebito'))                
+                ->where('salidas.formapago','=',2)
+                ->where('salidas.status','=','finalizado')
+                ->where('salidas.fecha','>=',$fecha1)
+                ->where('salidas.fecha','<=',$fecha2)
+                ->get();
+
+        $totalcredito  = DB::table('salidas')
+                ->select(DB::raw('SUM(total) as totalcredito'))                
+                ->where('salidas.formapago','=',3)
+                ->where('salidas.status','=','finalizado')
+                ->where('salidas.fecha','>=',$fecha1)
+                ->where('salidas.fecha','<=',$fecha2)
+                ->get();
+        
+        $today = Carbon::now()->format('d/m/Y');        
+        $pdf = \PDF::loadView('salidas/salidaxfechaPDF', compact('today','salidas','fecha1','fecha2', 'totalregistro','totalefectivo','totaldebito','totalcredito'))->setPaper(array(0,0,612.00,792.00));
+        return $pdf->stream();
+    }
 }

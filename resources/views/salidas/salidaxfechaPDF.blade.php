@@ -45,7 +45,7 @@
         border-collapse: collapse;
         border:1px solid black;
         width: 100%;
-        border-color: white;
+        border-color: black;
     }
     th, td {
         text-align: left;
@@ -69,7 +69,7 @@
             according to the dimensions of your letterhead
         **/
         width:    21.5cm;
-        height:   27.9cm;
+        height:   28cm;
 
         /** Your watermark should be behind every content**/
         z-index:  -1000;
@@ -107,63 +107,56 @@
 </style>
 </head>
 <body>
-<div id="watermark">
+    <div id="watermark">
  <img src="{{ public_path().'/images/formato.jpg' }}" width="100%" height="100%">
 </div>
-
 <!-- Defina bloques de encabezado y pie de página antes de su contenido -->
 
 <!-- Envuelva el contenido de su PDF dentro de una etiqueta principal -->
 <main>
-
-<table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border-radius: 10px 10px;">
+<table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border: none gray;">
     <tr style="background-color: #E6F9FF; color:black;" >
-        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: black; text-align: left;" >Entrada de mercancia</th>       
-        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: black; text-align: right;" colspan="2">Fecha de registro: {{ $entrada->fecha }} </th> 
+        <th style="background-color: white; border:none gray; font-size: 12pt; color: black; text-align: center;">REPORTE DE VENTAS</th>        
     </tr>
-    <tr style="background-color: #E6F9FF; color:black; ">
-        <th style="background-color: #E6F9FF; border: 1px solid gray; font-size: 10pt; color: black;">No. de factura: {{$entrada->nfactura}} </th>
-        <th style="background-color: #E6F9FF; border: 1px solid gray; font-size: 10pt; color: black;">Proveedor: {{$entrada->nombreproveedor}}</th>
-        <th style="background-color: #E6F9FF; border: 1px solid gray; font-size: 10pt; color: black;">Referencia: {{$entrada->referencia}}</th>
-    </tr>
-    <tr>
-        <th style="background-color: white; border: 1px solid gray;color: black;font-size: 10pt;" colspan="3">Observaciones: {{$entrada->observaciones}}</th>
-        
+    <tr style="background-color: #E6F9FF; color:black;" >
+        <th style="background-color: white; border:none gray; font-size: 12pt; color: black; text-align: center;">DESDE: {{ $fecha1 }} AL {{ $fecha2 }}</th>        
     </tr>
 </table>
 <br><br>
     <div id="contenido" class="contenido">
-            <table width="100%" style="width:100% !important" style="font-size: 10pt;   font-family: Arial, Helvetica, sans-serif;">             
-                <tr style="background-color: #E6F9FF !important; color:black; ">                    
-                    <th>Descripcion</th>
-                    <th>Cantidad</th>                    
-                    <th>Precio</th>
-                    <th>Subtotal</th>                    
+            <table width="100%" style="width:100%" style="font-size: 10pt;   font-family: Arial, Helvetica, sans-serif;">             
+                <tr style="background-color: #E6F9FF; color:black;" >                   
+                    <th>Folio</th>
+                    <th>Fecha</th>                    
+                    <th>Cliente</th>
+                    <th>Forma de pago</th>
+                    <th>Total</th>
+                    <th>Status</th>
                 </tr>                                            
-                @foreach($entradadetalle as $detalle)
-                <?php 
-                    //$originalDate = $alumn->periodo_vencimiento;
-                    //$newDate = date("d-m-Y", strtotime($originalDate));
-                ?>
+                @foreach($salidas as $salida)
                 <tr style="font-size:10pt;">
-                    <td>{{$detalle->descripcion}} </td>
-                    <td>{{ $detalle->cantidad }}</td>                    
-                    <td>$ {{$detalle->precio}} </td>
-                    <td style="text-align: right;">$ {{$detalle->precio*$detalle->cantidad}} </td>
+                    <td>{{$salida->id}} </td>
+                    <td>{{$salida->fecha }}</td>                    
+                    <td>{{$salida->solicitante}} </td>
+                    <td>@if($salida->formapago==1) Efectivo @endif
+                        @if($salida->formapago==2) T. Debito @endif
+                        @if($salida->formapago==3) T. Credito @endif
+                    </td>
+                    <td>{{$salida->total}} </td>
+                    <td @if($salida->status=='cancelado')style="color:red" @endif>{{$salida->status}} </td>
                 </tr>
-                @endforeach    
-                <tfoot>
-                    <tr>                        
-                        <th>Total de articulos</th>
-                        <th>{{ $totalarticulos[0]->totalarticulos }}</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </tfoot>
-            </table>        
+                @endforeach 
         </div>
+        <br>
+            <span>Total  Ventas: $ {{ number_format($totalregistro[0]->totalregistro) }}</span>
+        <br>
+            <span>Total Efectivo: $ {{ number_format($totalefectivo[0]->totalefectivo) }}</span>
+        <br>
+            <span>Total T. Debito: $ {{ number_format($totaldebito[0]->totaldebito) }}</span>
+        <br>
+            <span>Total T. de Credito: $ {{ number_format($totalcredito[0]->totalcredito) }}</span>
 </main>
-
+<!--
 <div id="firmas" style="display: flex;
   align-items: flex-end;">
     <div style="padding-left: 10px;
@@ -173,7 +166,7 @@
     position: relative;
     width: 50%;
     /*border: steelblue solid 1px;*/
-    height: auto;"><p style="text-align: center; margin-top:-50px;">Recibió <br>____________________________<br></p> </div>
+    height: auto;"><p style="text-align: center; margin-top:-50px;">Total de articulos: </div>
     <div style="padding-top: 10px;
     padding-left: 0px;
     margin-left: 0px;
@@ -181,8 +174,8 @@
     float: left;
     width: 50%;
     /*border: steelblue solid 1px;*/
-    height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Vo. Bo. <br>____________________________<br></p></div>
+    height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Total a pagar: </p> </div>
 </div>
-
+-->
 </body>
 </html>
