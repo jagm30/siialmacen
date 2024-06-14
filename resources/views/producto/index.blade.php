@@ -247,7 +247,7 @@
          url:"/productos/edicion/"+id_producto+"/"+nombre+"/"+claveproducto+"/"+descripcion+"/"+categoria+"/"+precio+"/"+precioPromocion,
          dataType:"json",
          success:function(html){
-          alert(html.data);
+          //alert(html.data);
           $("#formmodal")[0].reset();
           $('#modal-default').modal('toggle');
           location.reload();
