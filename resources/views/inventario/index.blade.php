@@ -27,8 +27,7 @@
                 <th scope="col" style="width: 30%;">Descripción</th>   
                 <th scope="col" style="width: 20%;">Almacen</th>
                 <th scope="col" style="width: 20%;">Precio</th>                                     
-                <th scope="col" style="width: 10%;">Stock</th>
-                <th scope="col" style="width: 10%;">Accion</th>                                     
+                <th scope="col" style="width: 10%;">Stock</th>                             
                 </tr>                
             </thead>       
             <tbody>
@@ -38,12 +37,7 @@
                   <td>{{ $producto->descripcion }}</td>
                   <td>{{ $producto->nomalmacen}}</td>                            
                   <td>$ {{ $producto->precio }}</td>                            
-                  <td>{{ $producto->stock }}</td>                            
-                  <td>                                
-                    <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$producto->id}}" data-toggle="modal" data-target="#modal-default">
-                Editar
-              </button>
-                  </td>                                                 
+                  <td>{{ $producto->stock }}</td>                       
                 </tr>                    
               @endforeach  
             </tbody>         
