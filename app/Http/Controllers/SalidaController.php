@@ -144,10 +144,12 @@ class SalidaController extends Controller
         }
         
     }
-    public function finalizarsalida($id)
+    public function finalizarsalida(Request $request, $id, $formapago, $totalventa)
     {
         $salida = Salida::find($id);
         $salida->status            = 'finalizado';
+        $salida->formapago         = $formapago;
+        $salida->total             = $totalventa;
         $salida->id_usuario        = 1;
         $salida->save();
         return response()->json(['data' => "Cambios guardados correctamente..."]);      
@@ -172,7 +174,7 @@ class SalidaController extends Controller
     public function ventapdf($id)
     {
         $salida       = DB::table('salidas')
-            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen','salidas.formapago')
             ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
             ->where('salidas.id', '=', $id)
             ->first();
@@ -196,7 +198,7 @@ class SalidaController extends Controller
 
     }
     public function ventauniforme(Request $request){
-       $date = Carbon::now();
+        $date = Carbon::now();
         $date = $date->format('Y-m-d');                
         //$salidas       = Entrada::all();
         $salidas       = DB::table('salidas')
@@ -207,13 +209,15 @@ class SalidaController extends Controller
         return view('salidas.ventauniforme',compact('salidas','date','almacenes'));
     }
     public function ventaxalmacen(Request $request, $almacen){
-
+        $date = Carbon::now();
+        $date = $date->format('Y-m-d'); 
         if ($request->ajax()) {
-                return datatables()->of(DB::table('salidas')
+            return datatables()->of(DB::table('salidas')
             ->select('salidas.id',DB::raw('SUM(salidaproductos.cantidad*salidaproductos.precio) as totalpago'),'salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante')
             ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
             ->leftJoin('salidaproductos', 'salidaproductos.id_salida', '=', 'salidas.id')
             ->where('salidas.almacen','=',$almacen)
+            ->where('salidas.fecha','=',$date)
             ->groupBy('salidas.id','salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante')
             ->get())->make(true);                
         } 
@@ -223,6 +227,7 @@ class SalidaController extends Controller
             ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
             ->leftJoin('salidaproductos', 'salidaproductos.id_salida', '=', 'salidas.id')
             ->where('salidas.almacen','=',$almacen)
+            ->where('salidas.fecha','=',$date)
             ->groupBy('salidas.id','salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante')
             ->get();
 
@@ -270,21 +275,26 @@ class SalidaController extends Controller
         if($almacen=='todos'){
             if ($request->ajax()) {
                 return datatables()->of(DB::table('salidas')
-                ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
-                ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')                        
-                ->where('salidas.almacen','!=','2')
+                ->select('salidas.id',DB::raw('SUM(salidaproductos.cantidad*salidaproductos.precio) as totalpago'),'salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante')
+                ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
+                ->leftJoin('salidaproductos', 'salidaproductos.id_salida', '=', 'salidas.id')
+                ->where('salidas.almacen','=','1')
                 ->where('salidas.fecha','>=',$fecha1)
                 ->where('salidas.fecha','<=',$fecha2)
-                ->get())->make(true); 
+                ->groupBy('salidas.id','salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante')
+                ->get())->make(true);        
+                
             }
         }else{
             if ($request->ajax()) {
                 return datatables()->of(DB::table('salidas')
-                ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
-                ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')                        
-                ->where('salidas.almacen','=',$almacen)
+                ->select('salidas.id',DB::raw('SUM(salidaproductos.cantidad*salidaproductos.precio) as totalpago'),'salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante')
+                ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
+                ->leftJoin('salidaproductos', 'salidaproductos.id_salida', '=', 'salidas.id')
+                ->where('salidas.almacen','=','1')
                 ->where('salidas.fecha','>=',$fecha1)
                 ->where('salidas.fecha','<=',$fecha2)
+                ->groupBy('salidas.id','salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante')
                 ->get())->make(true); 
             }
         }

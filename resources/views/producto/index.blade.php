@@ -217,7 +217,7 @@
     var categoria     = $("#categoria-e").val();
     var precio        = $("#precio-e").val();
     var precioPromocion = $("#precioPromocion-e").val(); 
-
+    
     if (nombre == '' || nombre.length == 0 ) {
       document.getElementById("nombre-e").focus();
       document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese el nombre.</div>';

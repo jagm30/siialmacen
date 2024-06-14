@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Salida extends Model
 {
     use HasFactory;
-    protected $fillable = ['id','folioreq','solicitante','fecha','almacen','cajapago','nnotaventa','fventa','formapago','observaciones','status','id_usuario'];
+    protected $fillable = ['id','folioreq','solicitante','fecha','almacen','cajapago','nnotaventa','fventa','formapago','observaciones','total','status','id_usuario'];
 }

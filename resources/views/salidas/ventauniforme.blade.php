@@ -285,8 +285,19 @@
             name: 'solicitante'
           },
           {
-            data: 'formapago',
-            name: 'formapago'
+            "data": null,
+            "bSortable": false,
+            "mRender": function(data, type, value) {
+                if(value["formapago"]=='1'){
+                  return 'Efectivo';
+                }
+                else if(value["formapago"]=='2'){
+                  return 'T. Debito';
+                }
+                else{
+                  return 'T. de Credito';
+                }                
+            }
           }, 
           {
             data: 'totalpago',
@@ -386,64 +397,7 @@
          url:"/salidas/edicion/"+id_salida+"/"+folioreq+"/"+solicitante+"/"+fecha+"/"+almacen+"/"+cajapago+"/"+nnotaventa+"/"+fventa+"/"+status+"/"+observaciones+"/"+id_usuario,
          dataType:"json",
          success:function(html){
-          $("#formmodal")[0].reset();
-          $('#modal-default').modal('toggle');
-          $('#example1').DataTable().clear().destroy();
-            $('#example1').DataTable({
-      processing: true,
-      serverSide: true,
-      ajax: "/salidas/ventaxalmacen/1",
-        columns:[
-          {
-            data: 'fecha',
-            name: 'fecha'
-          },
-          {
-            data: 'solicitante',
-            name: 'solicitante'
-          },
-          {
-            data: 'solicitante',
-            name: 'solicitante'
-          },       
-          {
-            data: 'status',
-            name: 'status'
-          },          
-          {
-            "data": null,
-            "bSortable": false,
-            "mRender": function(data, type, value) {
-                if(value["status"]=='finalizado'){
-                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
-                }else{
-                  return '<a href="/salidas/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
-                }                
-            }
-          }      
-        ],
-      language: {
-        "decimal": "",
-        "emptyTable": "No hay información",
-        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-        "infoPostFix": "",
-        "thousands": ",",
-        "lengthMenu": "Mostrar _MENU_ Entradas",
-        "loadingRecords": "Cargando...",
-        "processing": "Procesando...",
-        "search": "Buscar:",
-        "zeroRecords": "Sin resultados encontrados"        
-      },
-      "search": {
-            "addClass": 'form-control input-lg col-xs-12'
-      },
-      "fnDrawCallback":function(){
-        $("input[type='search']").attr("id", "searchBox");            
-        $('#searchBox').css("width", "400px").focus();
-      }
-    })
+          location.reload();
          }
       })
     }); 
@@ -608,20 +562,39 @@
     $('#example1').DataTable({
       processing: true,
       serverSide: true,
-      ajax: "/salidas/filtroalmacenfecha/2/"+fecha1+'/'+fecha2,
+      ajax: "/salidas/filtroalmacenfecha/1/"+fecha1+'/'+fecha2,
         columns:[
+          {
+            data: 'id',
+            name: 'id'
+          },
           {
             data: 'fecha',
             name: 'fecha'
-          },
+          },          
           {
             data: 'solicitante',
             name: 'solicitante'
           },
           {
-            data: 'solicitante',
-            name: 'solicitante'
-          },       
+            "data": null,
+            "bSortable": false,
+            "mRender": function(data, type, value) {
+                if(value["formapago"]=='1'){
+                  return 'Efectivo';
+                }
+                else if(value["formapago"]=='2'){
+                  return 'T. Debito';
+                }
+                else{
+                  return 'T. de Credito';
+                }                
+            }
+          }, 
+          {
+            data: 'totalpago',
+            name: 'totalpago'
+          },        
           {
             data: 'status',
             name: 'status'
@@ -631,13 +604,29 @@
             "bSortable": false,
             "mRender": function(data, type, value) {
                 if(value["status"]=='finalizado'){
-                  return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>    ';
-                }else{
+                  return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a> <a href="#"><button type="button" id="btn-cancelarventa" name="btn-cancelarventa" data-id="'+value["id"]+'" class="btn btn-warning" data-toggle="modal" data-target="#modal-cancelar">Cancelar</button></a>   ';
+                }
+                else if(value["status"]=='cancelado'){
+                  return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a> <a href="/salidas/ventapdf/'+value["id"]+'" target="_blank"><img src="/images/pdf.png" width="36" height="36"></a>';
+                }
+                else{
                   return '<a href="/salidas/showventauniforme/'+value["id"]+'"><button type="button" id="btn-agregar" name="btn-agregar" data-id="'+value["id"]+'" class="btn btn-info">Ver</button></a>  <button type="button" class="btn btn-success" id="btneditar"  data-id="'+value["id"]+'" data-toggle="modal" data-target="#modal-default">Editar</button> <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="'+value["id"]+'" class="btn btn-danger">Borrar</button>';
                 }                
             }
           }      
         ],
+        columnDefs: [{targets: 5,
+                    render: function ( data, type, row ) {
+                      var color = 'green';
+                      if (data == 'captura') {
+                        color = 'blue';
+                      } 
+                      if (data == 'cancelado') {
+                        color = 'red';
+                      } 
+                      return '<span style="color:' + color + '"><b>' + data + '</b></span>';
+                    }
+               }],
       language: {
         "decimal": "",
         "emptyTable": "No hay información",
@@ -658,7 +647,8 @@
       "fnDrawCallback":function(){
         $("input[type='search']").attr("id", "searchBox");            
         $('#searchBox').css("width", "400px").focus();
-      }
+      },
+      order: [[0, 'desc']]
     })
   });
 </script>

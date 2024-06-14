@@ -54,7 +54,7 @@
     }
     /*tr:nth-child(even){background-color: #f2f2f2}*/
     th {
-        background-color: #051F62;
+        background-color: gray;
         color: white;
     }
     /** 
@@ -68,8 +68,8 @@
         /** The width and height may change 
             according to the dimensions of your letterhead
         **/
-        width:    21cm;
-        height:   28cm;
+        width:    21.5cm;
+        height:   27.9cm;
 
         /** Your watermark should be behind every content**/
         z-index:  -1000;
@@ -97,7 +97,7 @@
                 /** The width and height may change 
                     according to the dimensions of your letterhead
                 **/
-                width:    21cm;
+                width:    21.5cm;
                 height:   28cm;
 
                 /** Your watermark should be behind every content**/
@@ -118,23 +118,23 @@
 
 <table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border-radius: 10px 10px;">
     <tr style="background-color: #E6F9FF; color:black;" >
-        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: #051F62; text-align: left;" >Entrada de mercancia</th>       
-        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: #051F62; text-align: right;" colspan="2">Fecha de registro: {{ $entrada->fecha }} </th> 
+        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: black; text-align: left;" >Entrada de mercancia</th>       
+        <th style="background-color: white; border: 1px solid gray; font-size: 10pt; color: black; text-align: right;" colspan="2">Fecha de registro: {{ $entrada->fecha }} </th> 
     </tr>
     <tr style="background-color: #E6F9FF; color:black; ">
-        <th style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">{{$entrada->nomalmacen}} - {{$entrada->nfactura}} </th>
-        <th style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">Proveedor: {{$entrada->nombreproveedor}}</th>
-        <th style="background-color: #051F62; border: 1px solid gray; font-size: 10pt; color: white;">Referencia: {{$entrada->referencia}}</th>
+        <th style="background-color: #E6F9FF; border: 1px solid gray; font-size: 10pt; color: black;">No. de factura: {{$entrada->nfactura}} </th>
+        <th style="background-color: #E6F9FF; border: 1px solid gray; font-size: 10pt; color: black;">Proveedor: {{$entrada->nombreproveedor}}</th>
+        <th style="background-color: #E6F9FF; border: 1px solid gray; font-size: 10pt; color: black;">Referencia: {{$entrada->referencia}}</th>
     </tr>
     <tr>
-        <th style="background-color: white; border: 1px solid gray;color: #051F62;font-size: 10pt;" colspan="3">Observaciones: {{$entrada->observaciones}}</th>
+        <th style="background-color: white; border: 1px solid gray;color: black;font-size: 10pt;" colspan="3">Observaciones: {{$entrada->observaciones}}</th>
         
     </tr>
 </table>
 <br><br>
     <div id="contenido" class="contenido">
             <table width="100%" style="width:100% !important" style="font-size: 10pt;   font-family: Arial, Helvetica, sans-serif;">             
-                <tr>                    
+                <tr style="background-color: #E6F9FF !important; color:black; ">                    
                     <th>Descripcion</th>
                     <th>Cantidad</th>                    
                     <th>Precio</th>
@@ -175,8 +175,6 @@
     /*border: steelblue solid 1px;*/
     height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Vo. Bo. <br>____________________________<br></p></div>
 </div>
-<footer>
-SII ALMACEN - SISTEMA DE GESTIÓN DE ALMACÉN © <?php echo date("Y");?>
-</footer>
+
 </body>
 </html>

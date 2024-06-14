@@ -54,7 +54,7 @@
     }
     /*tr:nth-child(even){background-color: #f2f2f2}*/
     th {
-        background-color: #051F62;
+        background-color: gray;
         color: white;
     }
     /** 
@@ -68,7 +68,7 @@
         /** The width and height may change 
             according to the dimensions of your letterhead
         **/
-        width:    21cm;
+        width:    21.5cm;
         height:   28cm;
 
         /** Your watermark should be behind every content**/
@@ -97,7 +97,7 @@
                 /** The width and height may change 
                     according to the dimensions of your letterhead
                 **/
-                width:    21cm;
+                width:    21.5cm;
                 height:   28cm;
 
                 /** Your watermark should be behind every content**/
@@ -114,20 +114,20 @@
 
 <!-- Envuelva el contenido de su PDF dentro de una etiqueta principal -->
 <main>
-<table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border: solid #051F62;">
+<table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border: solid gray;">
     <tr style="background-color: #E6F9FF; color:black;" >
-        <th style="background-color: white; border:solid #051F62; font-size: 10pt; color: #051F62; text-align: left;">NOTA DE VENTAS</th>        
-        <th style="background-color: white; border:solid #051F62; font-size: 10pt; color: #051F62; text-align: center;"> {{ $salida->fecha }}</th>   
-        <th style="background-color: white; border:solid #051F62; font-size: 10pt; color: red; text-align: right;">Folio: <b>{{ $salida->id }}</b> </th>     
+        <th style="background-color: white; border:solid gray; font-size: 10pt; color: gray; text-align: left;">NOTA DE VENTA</th>        
+        <th style="background-color: white; border:solid gray; font-size: 10pt; color: gray; text-align: center;"> {{ $salida->fecha }}</th>   
+        <th style="background-color: white; border:solid gray; font-size: 10pt; color: red; text-align: right;">Folio: <b>{{ $salida->id }}</b> </th>     
     </tr>
     <tr style="background-color: #E6F9FF; color:black; ">
-        <th colspan="3"  style="background-color: #051F62; border: 1px solid #051F62; font-size: 10pt; color: white;  text-align: left;">CLIENTE: {{$salida->solicitante}}</th>
+        <th colspan="3"  style="background-color: gray; border: 1px solid gray; font-size: 10pt; color: white;  text-align: left;">CLIENTE: {{$salida->solicitante}}</th>
     </tr>    
 </table>
 <br><br>
     <div id="contenido" class="contenido">
             <table width="100%" style="width:100%" style="font-size: 10pt;   font-family: Arial, Helvetica, sans-serif;">             
-                <tr>                    
+                <tr style="background-color: #E6F9FF; color:black;" >                   
                     <th>Descripción</th>
                     <th>Cantidad</th>                    
                     <th>Precio U.</th>
@@ -153,10 +153,18 @@
                         <th style="text-align: right;"><b>$ {{ $totalpagar[0]->totalpagar }}</b></th>
                     </tr>
                 </tfoot>
-            </table>        
+            </table>       
+            <br>
+            <span>Forma de pago:
+                @if($salida->formapago==1) Efectivo
+                @elseif($salida->formapago==2) Tarjeta de Debito 
+                @elseif($salida->formapago==3) Tarjeta de Credito @endif</span> 
+            @if($salida->formapago==3)
+                Total + comisión 0.8% = <b>$ {{ number_format($totalpagar[0]->totalpagar *1.08,2) }} </b>
+            @endif
         </div>
 </main>
-
+<!--
 <div id="firmas" style="display: flex;
   align-items: flex-end;">
     <div style="padding-left: 10px;
@@ -176,8 +184,6 @@
     /*border: steelblue solid 1px;*/
     height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Total a pagar: </p> </div>
 </div>
-<footer>
-SII ALMACEN - SISTEMA DE GESTIÓN DE ALMACÉN © <?php echo date("Y");?>
-</footer>
+-->
 </body>
 </html>

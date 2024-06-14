@@ -50,7 +50,7 @@ Route::resource('/proveedores', ProveedorController::class);
 Route::resource('/inventario', InventarioController::class);
 Route::resource('/kardex', KardexController::class);
 
-Route::get('salidas/finalizarsalida/{id}', [App\Http\Controllers\SalidaController::class,'finalizarsalida'])->name('finalizarsalida');
+Route::get('salidas/finalizarsalida/{id}/{formapago}/{totalventa}', [App\Http\Controllers\SalidaController::class,'finalizarsalida'])->name('finalizarsalida');
 Route::get('salidas/delete/{id}', [App\Http\Controllers\SalidaController::class,'destroy'])->name('eliminasal');
 Route::get('salidas/reportepdf/{id}', [App\Http\Controllers\SalidaController::class,'reportepdf'])->name('reportepdfsalida');
 Route::get('salidas/ventapdf/{id}', [App\Http\Controllers\SalidaController::class,'ventapdf'])->name('ventapdfsalida');

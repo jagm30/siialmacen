@@ -1,7 +1,5 @@
 @extends('layouts.app') 
 @section('contenidoprincipal') 
-
-
 <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
@@ -46,37 +44,39 @@
             </div>
             <div class="col-md-2">
                 Reporte:
-               @if($salida->status=='finalizado')<a href="/salidas/reportepdf/{{ $salida->id }}" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a> @endif              
+               @if($salida->status=='finalizado')<a href="/salidas/ventapdf/{{ $salida->id }}" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a> @endif              
             </div>
             <!-- /.col -->
           </div>
           <!-- /.row -->
         </div>
-        <!-- /.box-body -->
-      
+        <!-- /.box-body -->    
       <!-- /.box --> 
-
    <div class="row">
     <div class="col-xs-12">
       <div class="box">
           <div class="box-header">
-            @if($salida->status=='captura')
+            
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th><button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar">AGREGAR PRODUCTO</button>      </th>
-                  <th>Forma de pago: <select class="form-control" id="formapago" name="formapago">
-                        <option value="1">Efectivo</option>
-                        <option value="2">T. Debito</option>
-                        <option value="3">T. Credito</option>
-                      </select>      
+                  <th style="width: 25%;"><button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar">AGREGAR PRODUCTO</button>      </th>
+                  <th style="width: 25%;"> <select class="form-control" id="formapago" name="formapago" style="width: 100%;">
+                        <option value="1" @if($salida->formapago=='1') selected @endif >Efectivo</option>
+                        <option value="2" @if($salida->formapago=='2') selected @endif >T. Debito</option>
+                        <option value="3" @if($salida->formapago=='3') selected @endif >T. Credito</option>
+                      </select>                            
                   </th>
-                  <th><button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > FINALIZAR VENTA</button>
+                  <th style="width: 25%;">Total a pagar: <span id="totalventaspan" name="totalventaspan" style="color: red; font-size: 14pt;"></span><input type="hidden" class="form-" name="totalventaorigen" id="totalventaorigen"><input type="hidden" class="form-" name="totalventacalc" id="totalventacalc"></th>
+                  <th style="width: 25%;">
+                    @if($salida->status=='captura')
+                      <button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > FINALIZAR VENTA</button>
+                    @endif
                   </th>
                 </tr>    
               </thead>
             </table>                                      
-            @endif
+            
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -145,8 +145,8 @@
          </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
-        <button id="btn_guardaregistro" name="btn_guardaregistro" type="button" class="btn btn-primary">Guardar cambios</button>
+        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">CERRAR VENTANA</button>
+        <button id="btn_guardaregistro" name="btn_guardaregistro" type="button" class="btn btn-primary">AGREGAR</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -159,6 +159,7 @@
 @section("scriptpie")
 <script type="text/javascript">
   $(function() {
+    var total = 0;
     $('.select2').select2();
      $('#productos_table').DataTable({
         processing: true,
@@ -210,18 +211,21 @@
                 }, 0 );
             var formapago = $('#formapago').val();        
             if (formapago=='3') {
-                total = total*1.8;
+                $('#totalventacalc').val(total*1.08);
+                $('#totalventaspan').text("$ "+total*1.08);
             }else{
-                total = total;
+              $('#totalventacalc').val(total);
+              $('#totalventaspan').text("$ "+total);            
             }
+            $('#totalventaorigen').val(total);            
+            //$("#submittername").text("testing");
+
+            
             $(this.api().column(3).footer()).html('<span name="totalventa" id="totalventa" style="color:red; font-size:15pt;">'+'$'+number_format(total, 2, '.', ',')+'</span>');
             
         }
       });
-
      $("#menuventauniforme").addClass("important active");
-
-    
 });
 number_format = function (number, decimals, dec_point, thousands_sep) {
         number = number.toFixed(decimals);
@@ -291,7 +295,7 @@ number_format = function (number, decimals, dec_point, thousands_sep) {
             type: "get",
             url: "{{ url('salidaproductos/delete') }}"+'/'+ id_salidaproducto,
             success: function (data) {
-              alert(data.data);
+              //alert(data.data);
               $('#productos_table').DataTable().ajax.reload();
             }
         });
@@ -301,12 +305,14 @@ number_format = function (number, decimals, dec_point, thousands_sep) {
   });
 
   $(document).on("click", "#btnfinalizar", function () {
-    var id_salida    = $('#id_salida').val();
+    var id_salida       = $('#id_salida').val();
+    var formapago       = $('#formapago').val();
+    var totalventacalc  = $('#totalventacalc').val();
     
     if (confirm("Desea finalizar la captura") == true) {
       $.ajax({
             type: "get",
-            url: "{{ url('salidas/finalizarsalida') }}"+'/'+ id_salida,
+            url: "{{ url('salidas/finalizarsalida') }}"+'/'+id_salida+'/'+formapago+'/'+totalventacalc,
             success: function (data) {              
                window.open(
                   '/salidas/ventapdf/{{ $salida->id }}',
@@ -330,23 +336,27 @@ number_format = function (number, decimals, dec_point, thousands_sep) {
          //alert(html);        
             $("#stock").val(html.stock);
             $("#precio").val(html.precio);
+            $("#cantidad").val(1);
          }
       })      
     });
 
   $("#formapago" ).change(function() {  
-    alert("cambio");
-      /*var id_producto       = $('#id_producto').val();
-      $.ajax({
-         url:"/productos/"+id_producto,
-         async: false,
-         dataType:"json",
-         success:function(html){        
-         //alert(html);        
-            $("#stock").val(html.stock);
-            $("#precio").val(html.precio);
-         }
-      })      */
+    //alert("cambio");
+      var formapago     = $('#formapago').val();
+      var total         = $('#totalventaorigen').val();
+     // alert(total);
+      if (formapago=='3') {
+          total = total*1.08;
+          //alert(total);
+          $('#totalventacalc').val(total);
+          $('#totalventaspan').text("$ "+total);
+      }else{
+        total = total*1;
+          //alert(total);
+          $('#totalventacalc').val(total);
+          $('#totalventaspan').text("$ "+total);
+      }      
     });
 
 </script>
