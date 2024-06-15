@@ -108,7 +108,7 @@
                 <input id="id_entrada" type="hidden" value="{{ $id_entrada }}" class="form-control" name="id_entrada">
                 <div class="form-group has-success col-md-12">
                     <label>Articulo</label>
-                    <select id="id_producto" name="id_producto" class="form-control select2" style="width: 100%;" >
+                    <select id="id_producto" name="id_producto" class="form-control select2" style="width: 100%;" autofocus>
                       <!--<option selected="selected">Alabama</option>-->
                       @foreach($productos as $producto)
                         <option value="{{$producto->id}}">{{$producto->descripcion}}</option>        
@@ -200,6 +200,7 @@
 @endsection('contenidoprincipal')
 @section("scriptpie")
 <script type="text/javascript">
+
   $(function() {
     $('.select2').select2();
      $('#alumnos_table').DataTable({
@@ -234,6 +235,7 @@
 });
  $(document).on("click", "#btneditar", function () {
     //alert("accediendo a la edicion..."+$(this).attr('data-id'));
+
     var id_producto = $(this).attr('data-id');
      // alert(id_producto);
     $.ajax({
@@ -249,6 +251,7 @@
               $("#precioPromocion-e").val(html.precioPromocion);            
            }
         })
+    $("#id_producto").focus();
   });
 
 
