@@ -13,7 +13,7 @@
         <!-- /.box-header -->
         <div class="box-body">
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
               <div class="form-group">
                 <label class="control-label" for="inputSuccess1">Cliente</label>                     
                 <input id="solicitante" type="text" class="form-control" name="solicitante"  readonly value="{{$salida->solicitante}}">                
@@ -25,16 +25,8 @@
                 <input id="fecha" type="date" class="form-control" name="fecha"  readonly value="{{$salida->fecha}}">
               </div>             
             </div>
-            <div class="col-md-2">              
-              <div class="form-group">
-                <label class="control-label" for="inputWarning1">Pago en:</label>
-                <select id="proveedor" name="proveedor" class="form-control" value="{{$salida->almacen}}">
-                    <option value="1">Almacen</option>
-                    <option value="2">Caja Gral</option>
-                </select>
-              </div>
-            </div>            
-            <div class="col-md-3">
+           
+            <div class="col-md-2">
               <!-- /.form-group -->
               <div class="form-group">
                 <label class="control-label" for="inputSuccess1">Observaciones</label>
@@ -45,6 +37,15 @@
             <div class="col-md-2">
                 Reporte:
                @if($salida->status=='finalizado')<a href="/salidas/ventapdf/{{ $salida->id }}" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a> @endif              
+            </div>
+            <div class="col-md-2">
+              @if($salida->status=='captura')<button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar">AGREGAR PRODUCTO</button>      
+                  @endif     
+            </div>
+            <div class="col-md-2">
+                @if($salida->status=='captura')
+                  <button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > FINALIZAR VENTA</button>
+                @endif           
             </div>
             <!-- /.col -->
           </div>
@@ -60,21 +61,35 @@
             <table class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th style="width: 25%;">
-                    @if($salida->status=='captura')<button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar">AGREGAR PRODUCTO</button>      
-                    @endif
+                  <th style="width: 10%;">
+                    Comisión
                   </th>
-                  <th style="width: 25%;"> <select class="form-control" id="formapago" name="formapago" style="width: 100%;">
+                  <th style="width: 10%;">
+                    <input type="text" name="comisiontcredito" id="comisiontcredito" class="form-control" style="width: 100%" value="1.087">
+                  </th>
+                  <th style="width: 15%; text-align: right;" >
+                    FORMA DE PAGO:
+                  </th>
+                  <th style="width: 12%;"> <select class="form-control" id="formapago" name="formapago" style="width: 100%;">
                         <option value="1" @if($salida->formapago=='1') selected @endif >Efectivo</option>
                         <option value="2" @if($salida->formapago=='2') selected @endif >T. Debito</option>
                         <option value="3" @if($salida->formapago=='3') selected @endif >T. Credito</option>
                       </select>                            
                   </th>
-                  <th style="width: 25%;">Total a pagar: <span id="totalventaspan" name="totalventaspan" style="color: red; font-size: 14pt;"></span><input type="hidden" class="form-" name="totalventaorigen" id="totalventaorigen"><input type="hidden" class="form-" name="totalventacalc" id="totalventacalc"></th>
-                  <th style="width: 25%;">
-                    @if($salida->status=='captura')
-                      <button type="button" class="btn btn-warning" style="float: right;" id="btnfinalizar"  > FINALIZAR VENTA</button>
-                    @endif
+                  <th style="width: 18%;">TOTAL A PAGAR: @if($salida->status=='captura')<span id="totalventaspan" name="totalventaspan" style="color: red; font-size: 14pt;">@else <span id="totalventaspan" name="totalventaspan" style="color: red; font-size: 14pt;" value="{{ number_format($salida->total,2) }}"> @endif</span><input type="hidden" class="form-" name="totalventaorigen" id="totalventaorigen"><input type="hidden" class="form-" name="totalventacalc" id="totalventacalc"></th>
+                  <th style="width: 8%;">                    
+                    PAGA CON:
+                  </th>
+                  <th style="width: 10%;">
+                    <input type="text" name="pagacon" id="pagacon" class="form-control">
+                    
+                  </th>
+                  <th style="width: 8%;">                    
+                    CAMBIO:
+                  </th>
+                  <th style="width: 10%;">
+                    <input type="text" name="cambio" id="cambio" class="form-control">
+                    
                   </th>
                 </tr>    
               </thead>
@@ -212,10 +227,12 @@
                 .reduce(function (a, b) {
                     return parseInt(a) + parseInt(b);
                 }, 0 );
-            var formapago = $('#formapago').val();        
+            var formapago = $('#formapago').val();   
+            var comisiontcredito = $('#comisiontcredito').val();         
+            //alert(comisiontcredito);
             if (formapago=='3') {
-                $('#totalventacalc').val(total*1.08);
-                $('#totalventaspan').text("$ "+total*1.08);
+                $('#totalventacalc').val(total*comisiontcredito);
+                $('#totalventaspan').text("$ "+total*comisiontcredito);
             }else{
               $('#totalventacalc').val(total);
               $('#totalventaspan').text("$ "+total);            
@@ -348,9 +365,10 @@ number_format = function (number, decimals, dec_point, thousands_sep) {
     //alert("cambio");
       var formapago     = $('#formapago').val();
       var total         = $('#totalventaorigen').val();
+      var comisiontcredito = $('#comisiontcredito').val(); 
      // alert(total);
       if (formapago=='3') {
-          total = total*1.08;
+          total = total*comisiontcredito;
           //alert(total);
           $('#totalventacalc').val(total);
           $('#totalventaspan').text("$ "+total);
@@ -360,6 +378,35 @@ number_format = function (number, decimals, dec_point, thousands_sep) {
           $('#totalventacalc').val(total);
           $('#totalventaspan').text("$ "+total);
       }      
+    });
+
+    $("#comisiontcredito" ).change(function() {  
+    //alert("cambio");
+      var formapago     = $('#formapago').val();
+      var total         = $('#totalventaorigen').val();
+      var comisiontcredito = $('#comisiontcredito').val(); 
+     // alert(total);
+      if (formapago=='3') {
+          total = total*comisiontcredito;
+          //alert(total);
+          $('#totalventacalc').val(total);
+          $('#totalventaspan').text("$ "+total);
+      }else{
+        total = total*1;
+          //alert(total);
+          $('#totalventacalc').val(total);
+          $('#totalventaspan').text("$ "+total);
+      }      
+    });
+    $("#pagacon" ).change(function() {  
+    //alert("cambio");
+      var total         = $('#totalventacalc').val();
+      var pagacon       = $('#pagacon').val();
+      var cambio        = pagacon-total;
+      alert(pagacon);
+      alert(total);
+      $('#cambio').val(cambio);
+  
     });
 
 </script>

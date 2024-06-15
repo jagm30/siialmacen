@@ -95,7 +95,7 @@ class SalidaController extends Controller
         $id_salida  = $id;
         //$salida     = Salida::findOrFail($id);
         $salida     = DB::table('salidas')
-            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','salidas.formapago','cat_almacens.nombre as nomalmacen')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','salidas.formapago','cat_almacens.nombre as nomalmacen','salidas.total')
             ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
             ->where('salidas.id','=',$id)
             ->first();
@@ -174,7 +174,7 @@ class SalidaController extends Controller
     public function ventapdf($id)
     {
         $salida       = DB::table('salidas')
-            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen','salidas.formapago')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen','salidas.formapago','salidas.total')
             ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
             ->where('salidas.id', '=', $id)
             ->first();

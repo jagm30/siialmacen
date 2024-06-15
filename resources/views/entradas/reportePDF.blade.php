@@ -155,7 +155,7 @@
                 <tfoot>
                     <tr>                        
                         <th>Total de articulos</th>
-                        <th>{{ $totalarticulos[0]->totalarticulos }}</th>
+                        <th>{{ number_format($totalarticulos[0]->totalarticulos,0) }}</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -164,25 +164,7 @@
         </div>
 </main>
 
-<div id="firmas" style="display: flex;
-  align-items: flex-end;">
-    <div style="padding-left: 10px;
-    padding-top: 45px;
-    margin-left: 0px;
-    float: left;
-    position: relative;
-    width: 50%;
-    /*border: steelblue solid 1px;*/
-    height: auto;"><p style="text-align: center; margin-top:-50px;">Recibió <br>____________________________<br></p> </div>
-    <div style="padding-top: 10px;
-    padding-left: 0px;
-    margin-left: 0px;
-    position: relative;
-    float: left;
-    width: 50%;
-    /*border: steelblue solid 1px;*/
-    height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Vo. Bo. <br>____________________________<br></p></div>
-</div>
+
 
 </body>
 </html>

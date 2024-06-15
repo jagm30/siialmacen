@@ -160,7 +160,7 @@
                 @elseif($salida->formapago==2) Tarjeta de Debito 
                 @elseif($salida->formapago==3) Tarjeta de Credito @endif</span> 
             @if($salida->formapago==3)
-                Total + comisión 0.8% = <b>$ {{ number_format($totalpagar[0]->totalpagar *1.08,2) }} </b>
+                Total + comisión= <b>$ {{ number_format($salida->total,2) }} </b>
             @endif
         </div>
 </main>

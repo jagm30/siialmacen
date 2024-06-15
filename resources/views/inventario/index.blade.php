@@ -22,20 +22,16 @@
           <div class="box-body">
              <table id="example2" class="table table-bordered table-striped">           
             <thead>                  
-              <tr>                                     
-                <th scope="col" style="width: 20%;">Nombre</th>                    
+              <tr>                                                                     
                 <th scope="col" style="width: 30%;">Descripción</th>   
-                <th scope="col" style="width: 20%;">Almacen</th>
                 <th scope="col" style="width: 20%;">Precio</th>                                     
                 <th scope="col" style="width: 10%;">Stock</th>                             
                 </tr>                
             </thead>       
             <tbody>
               @foreach ($productos as $producto)                        
-                <tr>                                                      
-                  <td>{{ $producto->nombre }}</td>                            
-                  <td>{{ $producto->descripcion }}</td>
-                  <td>{{ $producto->nomalmacen}}</td>                            
+                <tr>                                                                        
+                  <td>{{ $producto->descripcion }}</td>                         
                   <td>$ {{ $producto->precio }}</td>                            
                   <td>{{ $producto->stock }}</td>                       
                 </tr>                    

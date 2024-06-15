@@ -185,7 +185,7 @@
           </a>
         </li>
         <li id="menuusuario">
-          <a href="/usuarios/">
+          <a href="#">
             <i class="fa fa-user"></i> <span>Usuarios</span>
             <span class="pull-right-container">              
             </span>

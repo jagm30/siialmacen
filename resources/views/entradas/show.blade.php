@@ -251,7 +251,6 @@
               $("#precioPromocion-e").val(html.precioPromocion);            
            }
         })
-    $("#id_producto").focus();
   });
 
 
