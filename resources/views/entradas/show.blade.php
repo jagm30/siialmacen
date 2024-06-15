@@ -279,7 +279,7 @@
           },
           cache: false,
           success: function(dataResult){
-            //alert("registrado correctamente...");     
+            alert("registrado correctamente...");     
                 $('#alumnos_table').DataTable().ajax.reload();           
                 $('#formmodal').trigger("reset");
           }
