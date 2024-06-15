@@ -131,7 +131,7 @@
               <p>
                 {{ Auth::user()->name }}
                 <br>
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                
               </p>
             @endguest  
         </div>
