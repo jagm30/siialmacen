@@ -65,7 +65,7 @@
                     Comisión
                   </th>
                   <th style="width: 10%;">
-                    <input type="text" name="comisiontcredito" id="comisiontcredito" class="form-control" style="width: 100%" value="1.087">
+                    <input type="text" name="comisiontcredito" id="comisiontcredito" class="form-control" style="width: 100%" value="1.0187">
                   </th>
                   <th style="width: 15%; text-align: right;" >
                     FORMA DE PAGO:
@@ -241,7 +241,7 @@
             //$("#submittername").text("testing");
 
             
-            $(this.api().column(3).footer()).html('<span name="totalventa" id="totalventa" style="color:red; font-size:15pt;">'+'$'+number_format(total, 2, '.', ',')+'</span>');
+            $(this.api().column(3).footer()).html('<span name="totalventa" id="totalventa" style="color:red; font-size:15pt;">'+'$'+number_format(total,2, '.', ',')+'</span>');
             
         }
       });
@@ -368,12 +368,12 @@ number_format = function (number, decimals, dec_point, thousands_sep) {
       var comisiontcredito = $('#comisiontcredito').val(); 
      // alert(total);
       if (formapago=='3') {
-          total = total*comisiontcredito;
+          total = number_format(total*comisiontcredito, 2, '.', ',');
           //alert(total);
           $('#totalventacalc').val(total);
           $('#totalventaspan').text("$ "+total);
       }else{
-        total = total*1;
+        total = number_format(total*1, 2, '.', ',');
           //alert(total);
           $('#totalventacalc').val(total);
           $('#totalventaspan').text("$ "+total);
@@ -403,8 +403,8 @@ number_format = function (number, decimals, dec_point, thousands_sep) {
       var total         = $('#totalventacalc').val();
       var pagacon       = $('#pagacon').val();
       var cambio        = pagacon-total;
-      alert(pagacon);
-      alert(total);
+      //alert(pagacon);
+      //alert(total);
       $('#cambio').val(cambio);
   
     });

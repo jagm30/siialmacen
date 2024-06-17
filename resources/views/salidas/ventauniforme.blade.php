@@ -1,14 +1,14 @@
 @extends('layouts.app') 
 @section('contenidoprincipal') 
-   
+   <a href="#" class="btn-flotante" data-toggle="modal" data-target="#modal-agregar">Registrar venta</a>
    <div class="row">
     <div class="col-xs-12">
       <div class="box">
           <div class="box-header">  
               <div class="col-sm-2">
-                <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregar"> Nueva venta</button>
+                <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#modal-agregar">REGISTRAR VENTA</button>
               </div>            
-              <label for="inputEmail3" class="col-sm-1 control-label">Filtrar por fecha</label>
+              <label for="inputEmail3" class="col-sm-1 control-label">Buscar por fecha</label>
               <div class="col-sm-2">
                 <input type="date" class="form-control" name="fecha1" id="fecha1" value="{{$date}}">
               </div>
@@ -16,10 +16,10 @@
                 <input type="date" class="form-control" name="fecha2" id="fecha2" value="{{$date}}">
               </div> 
               <div class="col-sm-2">
-                <input type="button" class="form-control btn-primary" name="btnfiltrofecha" id="btnfiltrofecha" value="Filtrar">
+                <input type="button" class="form-control btn-primary" name="btnfiltrofecha" id="btnfiltrofecha" value="Buscar">
               </div> 
               <div class="col-sm-2">
-                <input type="button" class="form-control btn-primary" name="btnfiltrofechaPDF" id="btnfiltrofechaPDF" value="Exportar PDF">
+                <input type="button" class="form-control btn-primary" name="btnfiltrofechaPDF" id="btnfiltrofechaPDF" value="Exportar a PDF">
               </div> 
           </div>
           <!-- /.box-header -->
