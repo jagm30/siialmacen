@@ -56,6 +56,7 @@ Route::get('salidas/reportepdf/{id}', [App\Http\Controllers\SalidaController::cl
 Route::get('salidas/ventapdf/{id}', [App\Http\Controllers\SalidaController::class,'ventapdf'])->name('ventapdfsalida');
 Route::get('salidas/ventauniforme/', [App\Http\Controllers\SalidaController::class,'ventauniforme'])->name('ventauniforme');
 Route::get('salidas/showventauniforme/{id}', [App\Http\Controllers\SalidaController::class,'showventauniforme'])->name('showventauniforme');
+Route::get('salidas/ventauniformev2/', [App\Http\Controllers\SalidaController::class,'ventauniformev2'])->name('ventauniformev2');
 Route::get('salidas/ventaxalmacen/{almacen}', [App\Http\Controllers\SalidaController::class,'ventaxalmacen'])->name('ventaxalmacen');
 Route::get('salidas/edicion/{id_salida}/{folioreq}/{solicitante}/{fecha}/{almacen}/{cajapago}/{nnotaventa}/{fventa}/{status}/{observaciones}/{id_usuario}',[App\Http\Controllers\SalidaController::class,'edicionsalida'])->name('edicionsalida');
 Route::get('salidas/filtrofecha/{fecha1}/{fecha2}', [App\Http\Controllers\SalidaController::class,'filtrofecha'])->name('filtrofechasalida');

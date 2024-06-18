@@ -363,4 +363,25 @@ class SalidaController extends Controller
         $pdf = \PDF::loadView('salidas/salidaxfechaPDF', compact('today','salidas','fecha1','fecha2', 'totalregistro','totalefectivo','totaldebito','totalcredito'))->setPaper(array(0,0,612.00,792.00));
         return $pdf->stream();
     }
+    // Venta version 2
+    public function ventauniformev2(Request $request)
+    {
+        $id = 1;
+        if ($request->ajax()) {
+            $salida = DB::table('salidas')
+                    ->where('salidas.id',$id)
+                    ->first();
+            return json_encode($salida);
+        }
+        $id_salida  = $id;
+        //$salida     = Salida::findOrFail($id);
+        $salida     = DB::table('salidas')
+            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','salidas.formapago','cat_almacens.nombre as nomalmacen','salidas.total')
+            ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
+            ->where('salidas.id','=',$id)
+            ->first();
+        $salidas    = Salida::all();
+        $productos  = Producto::where('stock','>','0')->get();
+        return view('salidas.ventauniformev2',compact('salidas','salida','productos','id_salida'));
+    }
 }
