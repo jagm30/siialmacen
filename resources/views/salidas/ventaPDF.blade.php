@@ -54,8 +54,8 @@
     }
     /*tr:nth-child(even){background-color: #f2f2f2}*/
     th {
-        background-color: gray;
-        color: white;
+        background-color: #ECE4E4;
+        color: black;
     }
     /** 
     * Define the width, height, margins and position of the watermark.
@@ -76,7 +76,7 @@
     }
     #firmas {
         position: fixed;
-        bottom: 2cm;
+        bottom: 2.5cm;
         left: 0cm;
         right: 0cm;
         height: 2cm;
@@ -114,31 +114,38 @@
 
 <!-- Envuelva el contenido de su PDF dentro de una etiqueta principal -->
 <main>
-<table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border: solid gray;">
+<table style="margin-top: -3cm; margin-left: 3.5cm; width: 82% !important; border: none;">
     <tr style="background-color: #E6F9FF; color:black;" >
-        <th style="background-color: white; border:solid gray; font-size: 10pt; color: gray; text-align: left;">NOTA DE VENTA</th>        
-        <th style="background-color: white; border:solid gray; font-size: 10pt; color: gray; text-align: center;"> {{ $salida->fecha }}</th>   
-        <th style="background-color: white; border:solid gray; font-size: 10pt; color: red; text-align: right;">Folio: <b>{{ $salida->id }}</b> </th>     
+        <th style="background-color: white; border:none; font-size: 9pt; color: black; text-align: left;">Colegio La Salle de Tuxtla, A. C.<br>
+                   Bolvd. La Salle No. 504. Col el Retiro C.P. 29040<br>                        
+                Tuxtla Gutiérrez, Chiapas    <br>
+                RFC: CST7001145E9<br>         
+                Tel. 961 6191943, 961 6141953<br>
+                www.lasalletuxtla.edu.mx</th>        
+        <th style="background-color: white; border:none; font-size: 9pt; color: black; text-align: center;"> </th>   
+        <th style="background-color: white; border:none; font-size: 9pt; color: black; text-align: center;">Folio:<br> <b>{{ $salida->id }}</b> <br>
+                    <br>Fecha:  <br>
+                    {{ $salida->fecha }} </th>     
     </tr>
     <tr style="background-color: #E6F9FF; color:black; ">
-        <th colspan="3"  style="background-color: gray; border: 1px solid gray; font-size: 10pt; color: white;  text-align: left;">CLIENTE: {{$salida->solicitante}}</th>
+        <th colspan="3"  style="background-color: gray; border: 1px solid gray; font-size: 9pt; color: white;  text-align: left;">CLIENTE: {{$salida->solicitante}}</th>
     </tr>    
 </table>
 <br><br>
     <div id="contenido" class="contenido">
-            <table width="100%" style="width:100%" style="font-size: 10pt;   font-family: Arial, Helvetica, sans-serif;">             
-                <tr style="background-color: #E6F9FF; color:black;" >                   
-                    <th>Descripción</th>
-                    <th>Cantidad</th>                    
-                    <th>Precio U.</th>
-                    <th>Subtotal</th>                    
+            <table width="100%" style="width:100%" style="font-size: 9pt;   font-family: Arial, Helvetica, sans-serif;">             
+                <tr style="background-color: #F1F0F0; color:black;" >                   
+                    <th>DESCRIPCIÓN</th>
+                    <th>CANTIDAD</th>                    
+                    <th>PRECIO U.</th>
+                    <th>SUBTOTAL</th>                    
                 </tr>                                            
                 @foreach($salidadetalle as $detalle)
                 <?php 
                     //$originalDate = $alumn->periodo_vencimiento;
                     //$newDate = date("d-m-Y", strtotime($originalDate));
                 ?>
-                <tr style="font-size:10pt;">
+                <tr >
                     <td>{{$detalle->descripcion}} </td>
                     <td>{{ $detalle->cantidad }}</td>                    
                     <td>$ {{$detalle->precio}} </td>
@@ -147,43 +154,36 @@
                 @endforeach    
                 <tfoot>
                     <tr>
-                        <th style="text-align: right;">Cantidad de articulos:</th>
+                        <th style="text-align: right;">CANT. DE ARTICULOS:</th>
                         <th><b>{{ $totalarticulos[0]->totalarticulos }} </b></th>
-                        <th>Total: </th>
+                        <th>TOTAL: </th>
                         <th style="text-align: right;"><b>$ {{ $totalpagar[0]->totalpagar }}</b></th>
                     </tr>
                 </tfoot>
             </table>       
             <br>
-            <span>Forma de pago:
-                @if($salida->formapago==1) Efectivo
-                @elseif($salida->formapago==2) Tarjeta de Debito 
-                @elseif($salida->formapago==3) Tarjeta de Credito @endif</span> 
+            <span style="font-size: 9pt;">FORMA DE PAGO:
+                @if($salida->formapago==1)<b> EFECTIVO</b>
+                @elseif($salida->formapago==2)<b>T. DE DEBITO</b> 
+                @elseif($salida->formapago==3)<b>T. CREDITO</b> @endif</span> 
             @if($salida->formapago==3)
                 Total + comisión= <b>$ {{ number_format($salida->total,2) }} </b>
             @endif
         </div>
 </main>
-<!--
+
 <div id="firmas" style="display: flex;
   align-items: flex-end;">
     <div style="padding-left: 10px;
     padding-top: 45px;
-    margin-left: 0px;
-    float: left;
+    margin-left: 10px;
+    float: center;
     position: relative;
-    width: 50%;
+    width: 95%;
     /*border: steelblue solid 1px;*/
-    height: auto;"><p style="text-align: center; margin-top:-50px;">Total de articulos: </div>
-    <div style="padding-top: 10px;
-    padding-left: 0px;
-    margin-left: 0px;
-    position: relative;
-    float: left;
-    width: 50%;
-    /*border: steelblue solid 1px;*/
-    height: auto; text-align: center;"><p style="text-align: center; margin-top:-16px;">Total a pagar: </p> </div>
+    height: auto;"><p style="text-align:justify; font-size: 9pt">* Tiene dos dias para cambios de mercancia. <br>* No hacemos devoluciones de dinero; únicamente hacemos cambios de talla o por otro artículo de igual o de mayor precio.<br>
+    * En caso de requerir factura podra solicitarla unicamente un dia posterior a su expedición.</div>    
 </div>
--->
+
 </body>
 </html>
