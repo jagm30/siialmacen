@@ -13,6 +13,7 @@ use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\SalidaController;
 use App\Http\Controllers\SalidaproductoController;
 use App\Http\Controllers\KardexController;
+use App\Http\Controllers\AlumnoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,6 +69,7 @@ Route::get('salidaproductos/delete/{id}', [App\Http\Controllers\SalidaproductoCo
 Route::get('salidaproductos/listarxsalida/{id}',[App\Http\Controllers\SalidaproductoController::class,'listarxsalida'])->name('listarxsalida');
 Route::resource('/salidaproductos', SalidaproductoController::class);
 Route::resource('/cancelaciones', CancelacionController::class);
+Route::resource('/alumnos', AlumnoController::class);
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
