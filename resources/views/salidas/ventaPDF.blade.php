@@ -43,20 +43,18 @@
     /** Definir las reglas del pie de página **/    
     table {
         border-collapse: collapse;
-        border:1px solid black;
+        border:none solid black;
         width: 100%;
         border-color: black;
     }
-    th, td {
+    th {
         text-align: left;
-        padding: 5px;
-        border:1px solid gray;
+     }
+    td{
+        text-align: left;
+     
     }
     /*tr:nth-child(even){background-color: #f2f2f2}*/
-    th {
-        background-color: #ECE4E4;
-        color: black;
-    }
     /** 
     * Define the width, height, margins and position of the watermark.
     **/
@@ -76,7 +74,7 @@
     }
     #firmas {
         position: fixed;
-        bottom: 2.5cm;
+        bottom: 3.5cm;
         left: 0cm;
         right: 0cm;
         height: 2cm;
@@ -126,14 +124,17 @@
         <th style="background-color: white; border:none; font-size: 9pt; color: black; text-align: center;">Folio:<br> <b>{{ $salida->id }}</b> <br>
                     <br>Fecha:  <br>
                     {{ $salida->fecha }} </th>     
-    </tr>
-    <tr style="background-color: #E6F9FF; color:black; ">
-        <th colspan="3"  style="background-color: gray; border: 1px solid gray; font-size: 9pt; color: white;  text-align: left;">CLIENTE: {{$salida->solicitante}}</th>
-    </tr>    
+    </tr>  
 </table>
 <br><br>
     <div id="contenido" class="contenido">
             <table width="100%" style="width:100%" style="font-size: 9pt;   font-family: Arial, Helvetica, sans-serif;">             
+                <tr style="background-color: #E6F9FF; color:black; ">
+                    <th colspan="3"  style="background-color: white; border: none ; font-size: 9pt; color: black;  text-align: left;">CLIENTE: {{$salida->solicitante}}</th>
+                </tr>
+                <tr>
+                    <th></th>
+                </tr>    
                 <tr style="background-color: #F1F0F0; color:black;" >                   
                     <th>DESCRIPCIÓN</th>
                     <th>CANTIDAD</th>                    
@@ -148,27 +149,13 @@
                 <tr >
                     <td>{{$detalle->descripcion}} </td>
                     <td>{{ $detalle->cantidad }}</td>                    
-                    <td>$ {{$detalle->precio}} </td>
-                    <td style="text-align: right;">$ {{$detalle->precio*$detalle->cantidad}} </td>
+                    <td>$ {{number_format($detalle->precio,2)}} </td>
+                    <td style="text-align: right;">$ {{number_format($detalle->precio*$detalle->cantidad,2)}} </td>
                 </tr>
                 @endforeach    
-                <tfoot>
-                    <tr>
-                        <th style="text-align: right;">CANT. DE ARTICULOS:</th>
-                        <th><b>{{ $totalarticulos[0]->totalarticulos }} </b></th>
-                        <th>TOTAL: </th>
-                        <th style="text-align: right;"><b>$ {{ $totalpagar[0]->totalpagar }}</b></th>
-                    </tr>
-                </tfoot>
+                
             </table>       
-            <br>
-            <span style="font-size: 9pt;">FORMA DE PAGO:
-                @if($salida->formapago==1)<b> EFECTIVO</b>
-                @elseif($salida->formapago==2)<b>T. DE DEBITO</b> 
-                @elseif($salida->formapago==3)<b>T. CREDITO</b> @endif</span> 
-            @if($salida->formapago==3)
-                Total + comisión= <b>$ {{ number_format($salida->total,2) }} </b>
-            @endif
+            <br>            
         </div>
 </main>
 
@@ -181,8 +168,24 @@
     position: relative;
     width: 95%;
     /*border: steelblue solid 1px;*/
-    height: auto;"><p style="text-align:justify; font-size: 9pt">* Tiene dos dias para cambios de mercancia. <br>* No hacemos devoluciones de dinero; únicamente hacemos cambios de talla o por otro artículo de igual o de mayor precio.<br>
-    * En caso de requerir factura podra solicitarla unicamente un dia posterior a su expedición.</div>    
+    height: auto;">
+    <hr>
+    <table style="font-size: 9pt"><tr>
+                        <th style="text-align: right;">CANT. DE ARTICULOS:</th>
+                        <th><b>{{ $totalarticulos[0]->totalarticulos }} </b></th>
+                        <th style="text-align: right;">TOTAL: </th>
+                        <th style="text-align: center;"><b>$ {{ number_format($totalpagar[0]->totalpagar,2) }}</b></th>
+                    </tr></table>
+                    <br>
+            <span style="font-size: 9pt;">FORMA DE PAGO:
+                @if($salida->formapago==1)<b> EFECTIVO</b>
+                @elseif($salida->formapago==2)<b>T. DE DEBITO</b> 
+                @elseif($salida->formapago==3)<b>T. CREDITO</b> @endif</span> 
+            @if($salida->formapago==3)
+                Total + comisión= <b>$ {{ number_format($salida->total,2) }} </b>
+            @endif
+    <p style="text-align:justify; font-size: 9pt">* Tiene dos días hábiles para cambios de cualquier prenda. <br>* No se hacen devoluciones en efectivo, únicamente se realizán cambios de talla o por otro artículo de igual o de mayor precio.<br>
+    * En caso de requerir factura podra solicitarla unicamente el día posterior a su expedición.</div>    
 </div>
 
 </body>
