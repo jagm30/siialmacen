@@ -52,6 +52,7 @@
      }
     td{
         text-align: left;
+         height: 25px;
      
     }
     /*tr:nth-child(even){background-color: #f2f2f2}*/
@@ -74,7 +75,7 @@
     }
     #firmas {
         position: fixed;
-        bottom: 3.5cm;
+        bottom: 4.5cm;
         left: 0cm;
         right: 0cm;
         height: 2cm;
