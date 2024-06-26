@@ -177,7 +177,8 @@
                         <th style="text-align: right;">TOTAL: </th>
                         <th style="text-align: center;"><b>$ {{ number_format($totalpagar[0]->totalpagar,2) }}</b></th>
                     </tr></table>
-                    <br>
+            <span style="font-size: 9pt;">Observaciones: {{ $salida->observaciones }}
+                <br>
             <span style="font-size: 9pt;">FORMA DE PAGO:
                 @if($salida->formapago==1)<b> EFECTIVO</b>
                 @elseif($salida->formapago==2)<b>T. DE DEBITO</b> 
