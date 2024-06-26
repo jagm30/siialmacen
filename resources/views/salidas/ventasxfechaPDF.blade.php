@@ -43,20 +43,19 @@
     /** Definir las reglas del pie de página **/    
     table {
         border-collapse: collapse;
-        border:1px solid black;
+        border:none solid black;
         width: 100%;
         border-color: black;
     }
-    th, td {
+    th {
         text-align: left;
-        padding: 5px;
-        border:1px solid gray;
+     }
+    td{
+        text-align: left;
+         height: 25px;
+     
     }
     /*tr:nth-child(even){background-color: #f2f2f2}*/
-    th {
-        background-color: gray;
-        color: white;
-    }
     /** 
     * Define the width, height, margins and position of the watermark.
     **/
@@ -76,7 +75,7 @@
     }
     #firmas {
         position: fixed;
-        bottom: 2cm;
+        bottom: 4.5cm;
         left: 0cm;
         right: 0cm;
         height: 2cm;
@@ -111,7 +110,20 @@
  <img src="{{ public_path().'/images/formato.jpg' }}" width="100%" height="100%">
 </div>
 <!-- Defina bloques de encabezado y pie de página antes de su contenido -->
-
+<table style="margin-top: -3cm; margin-left: 3.5cm; width: 82% !important; border: none;">
+    <tr style="background-color: #E6F9FF; color:black;" >
+        <th style="background-color: white; border:none; font-size: 9pt; color: black; text-align: left;">Colegio La Salle de Tuxtla, A. C.<br>
+                   Bolvd. La Salle No. 504. Col el Retiro C.P. 29040<br>                        
+                Tuxtla Gutiérrez, Chiapas    <br>
+                RFC: CST7001145E9<br>         
+                Tel. 961 6191943, 961 6141953<br>
+                www.lasalletuxtla.edu.mx</th>        
+        <th style="background-color: white; border:none; font-size: 9pt; color: black; text-align: center;"> </th>   
+        <th style="background-color: white; border:none; font-size: 9pt; color: black; text-align: center;">Folio:<br> <b>{{ $salida->id }}</b> <br>
+                    <br>Fecha:  <br>
+                    {{ $salida->fecha }} </th>     
+    </tr>  
+</table>
 <!-- Envuelva el contenido de su PDF dentro de una etiqueta principal -->
 <main>
 

@@ -323,7 +323,7 @@ class SalidaController extends Controller
                 ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
                 ->leftJoin('salidaproductos', 'salidaproductos.id_salida', '=', 'salidas.id')
                 ->where('salidas.almacen','=','1')
-                ->where('salidas.status','!=','captura')
+                //->where('salidas.status','!=','cancelado')
                 ->where('salidas.fecha','>=',$fecha1)
                 ->where('salidas.fecha','<=',$fecha2)
                 ->groupBy('salidas.id','salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante','salidas.total')
