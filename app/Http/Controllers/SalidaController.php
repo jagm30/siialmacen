@@ -10,6 +10,7 @@ use App\Models\Cancelacion;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use NumeroALetras\NumeroALetras;
 
 class SalidaController extends Controller
 {

@@ -14,6 +14,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
         "livewire/livewire": "^2.12",
+        "luecano/numero-a-letras": "^3.0",
         "rappasoft/laravel-livewire-tables": "^2.14",
         "yajra/laravel-datatables-editor": "^1.25",
         "yajra/laravel-datatables-oracle": "^9.21"

@@ -171,21 +171,26 @@
     /*border: steelblue solid 1px;*/
     height: auto;">
     <hr>
-    <table style="font-size: 9pt"><tr>
-                        <th style="text-align: right;">CANT. DE ARTICULOS:</th>
-                        <th><b>{{ $totalarticulos[0]->totalarticulos }} </b></th>
-                        <th style="text-align: right;">TOTAL: </th>
-                        <th style="text-align: center;"><b>$ {{ number_format($totalpagar[0]->totalpagar,2) }}</b></th>
-                    </tr></table>
-            <span style="font-size: 9pt;">Observaciones: {{ $salida->observaciones }}
-                <br>
-            <span style="font-size: 9pt;">FORMA DE PAGO:
-                @if($salida->formapago==1)<b> EFECTIVO</b>
-                @elseif($salida->formapago==2)<b>T. DE DEBITO</b> 
-                @elseif($salida->formapago==3)<b>T. CREDITO</b> @endif</span> 
-            @if($salida->formapago==3)
-                Total + comisión= <b>$ {{ number_format($salida->total,2) }} </b>
-            @endif
+        <table style="font-size: 9pt">
+            <tr>
+                <th style="text-align: right;">CANT. DE ARTICULOS:</th>
+                <th><b>{{ $totalarticulos[0]->totalarticulos }} </b></th>
+                <th style="text-align: right;">TOTAL: </th>
+                <th style="text-align: center;"><b>$ {{ number_format($salida->total,2) }}</b></th>
+            </tr>
+            <tr>
+                <th colspan="4" style="text-align: left;"> {{Convertidor::numtoletras($salida->total)}}</th>
+            </tr>
+        </table>
+        <span style="font-size: 9pt;">Observaciones: {{ $salida->observaciones }}
+            <br>
+        <span style="font-size: 9pt;">FORMA DE PAGO:
+            @if($salida->formapago==1)<b> EFECTIVO</b>
+            @elseif($salida->formapago==2)<b>T. DE DEBITO</b> 
+            @elseif($salida->formapago==3)<b>T. CREDITO</b> @endif</span> 
+        @if($salida->formapago==3)
+            Total + comisión= <b>$ {{ number_format($salida->total,2) }} </b>
+        @endif
     <p style="text-align:justify; font-size: 9pt">* Tiene dos días hábiles para cambios de cualquier prenda. <br>* No se hacen devoluciones en efectivo, únicamente se realizán cambios de talla o por otro artículo de igual o de mayor precio.<br>
     * En caso de requerir factura podra solicitarla unicamente el día posterior a su expedición.</div>    
 </div>
