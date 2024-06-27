@@ -171,10 +171,13 @@
     /*border: steelblue solid 1px;*/
     height: auto;">
     <hr>
-        <table style="font-size: 9pt">
+        <table style="font-size: 9pt" style="border: solid 1px;">
             <tr>
+                <th colspan="4"> Observaciones: {{ $salida->observaciones }}</th>
+            </tr>
+            <tr style="border: solid 1px;">
                 <th style="text-align: right;">CANT. DE ARTICULOS:</th>
-                <th><b>{{ $totalarticulos[0]->totalarticulos }} </b></th>
+                <th style="border: solid 1px;"><b>{{ $totalarticulos[0]->totalarticulos }} </b></th>
                 <th style="text-align: right;">TOTAL: </th>
                 <th style="text-align: center;"><b>$ {{ number_format($salida->total,2) }}</b></th>
             </tr>
