@@ -7,7 +7,7 @@
     }
     /** Defina ahora los márgenes reales de cada página en el PDF **/
     body {
-        margin-top: 4cm;
+        margin-top: 5cm;
         margin-left: 1cm;
         margin-right: 1cm;
         margin-bottom: 2cm;
@@ -43,20 +43,24 @@
     /** Definir las reglas del pie de página **/    
     table {
         border-collapse: collapse;
-        border:1px solid black;
+        border:0.3px solid gray;
         width: 100%;
-        border-color: black;
     }
-    th, td {
+    th {
+        border:0.3px solid gray;
         text-align: left;
-        padding: 5px;
-        border:1px solid gray;
+     }
+    td{
+        border:0.3px solid gray;
+        text-align: left;
+         height: 25px;
+         padding-left: 3px;
+     
+    }
+    span{
+        font-size: 10pt;
     }
     /*tr:nth-child(even){background-color: #f2f2f2}*/
-    th {
-        background-color: gray;
-        color: white;
-    }
     /** 
     * Define the width, height, margins and position of the watermark.
     **/
@@ -76,7 +80,7 @@
     }
     #firmas {
         position: fixed;
-        bottom: 2cm;
+        bottom: 4.5cm;
         left: 0cm;
         right: 0cm;
         height: 2cm;
@@ -114,14 +118,18 @@
 
 <!-- Envuelva el contenido de su PDF dentro de una etiqueta principal -->
 <main>
-<table style="margin-top: -2.5cm; margin-left: 3.5cm; width: 82% !important; border: none gray;">
-    <tr style="background-color: #E6F9FF; color:black;" >
-        <th style="background-color: white; border:none gray; font-size: 12pt; color: black; text-align: center;">REPORTE DE VENTAS</th>        
-    </tr>
-    <tr style="background-color: #E6F9FF; color:black;" >
-        <th style="background-color: white; border:none gray; font-size: 12pt; color: black; text-align: center;">DESDE: {{ $fecha1 }} AL {{ $fecha2 }}</th>        
-    </tr>
-</table>
+
+    <table style="margin-top: -3.8cm; margin-left: 3.5cm; width: 82% !important; border: none;">
+        <tr style="background-color: #F0F8FA; color:black;" >
+            <th style="background-color: white; border:none; font-size: 9pt; color: black; text-align: left;">Colegio La Salle de Tuxtla, A. C.<br>
+                       Bolvd. La Salle No. 504. Col el Retiro C.P. 29040<br>                        
+                    Tuxtla Gutiérrez, Chiapas    <br>
+                    RFC: CST7001145E9<br>         
+                    Tel. 961 6191943, 961 6141953<br>
+                    www.lasalletuxtla.edu.mx</th>        
+            <th colspan="2" style="background-color: white; border:none gray; font-size: 11pt; color: black; text-align: center;">Reporte de ventas <br> Del: {{ $fecha1 }} al: {{ $fecha2 }}</
+        </tr>  
+    </table>
 <br><br>
     <div id="contenido" class="contenido">
             <table width="100%" style="width:100%" style="font-size: 10pt;   font-family: Arial, Helvetica, sans-serif;">             
@@ -135,26 +143,26 @@
                 </tr>                                            
                 @foreach($salidas as $salida)
                 <tr style="font-size:10pt;">
-                    <td>{{$salida->id}} </td>
+                    <td style="text-align: center;">{{$salida->id}} </td>
                     <td>{{$salida->fecha }}</td>                    
                     <td>{{$salida->solicitante}} </td>
                     <td>@if($salida->formapago==1) Efectivo @endif
                         @if($salida->formapago==2) T. Debito @endif
                         @if($salida->formapago==3) T. Credito @endif
                     </td>
-                    <td>{{$salida->total}} </td>
-                    <td @if($salida->status=='cancelado')style="color:red" @endif>{{$salida->status}} </td>
+                    <td> $ {{number_format($salida->total,2)}} </td>
+                    <td @if($salida->status=='cancelado')style="color:red" @endif @if($salida->status=='captura')style="color:blue" @endif> {{$salida->status}} </td>
                 </tr>
                 @endforeach 
-        </div>
-        <br>
-            <span>Total  Ventas: $ {{ number_format($totalregistro[0]->totalregistro) }}</span>
+        </div>        
         <br>
             <span>Total Efectivo: $ {{ number_format($totalefectivo[0]->totalefectivo) }}</span>
         <br>
             <span>Total T. Debito: $ {{ number_format($totaldebito[0]->totaldebito) }}</span>
         <br>
             <span>Total T. de Credito: $ {{ number_format($totalcredito[0]->totalcredito) }}</span>
+        <br>
+            <span>Total  Ventas: $ <b>{{ number_format($totalregistro[0]->totalregistro) }}</b></span>
 </main>
 <!--
 <div id="firmas" style="display: flex;

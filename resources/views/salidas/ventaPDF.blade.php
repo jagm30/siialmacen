@@ -199,8 +199,8 @@
                 <th style=" font-size: 9pt;"><b>$ {{ number_format($salida->total,2) }}</b></th>
             </tr>
         </table>        
-    <p style="text-align:justify; font-size: 9pt">* Tiene dos días hábiles para cambios de cualquier prenda. <br>* No se hacen devoluciones en efectivo, únicamente se realizán cambios de talla o por otro artículo de igual o de mayor precio.<br>
-    * En caso de requerir factura podra solicitarla unicamente el día posterior a su expedición.</div>    
+    <p style="text-align:justify; font-size: 9pt">* Únicamente Tiene dos días hábiles para cambios de cualquier prenda. <br>* No se hacen devoluciones en efectivo, únicamente se realizán cambios de prendas por talla o por otro artículo de igual o de mayor precio.<br>
+    * En caso de requerir factura podrá solicitarla solo el día posterior a su expedición.</div>    
 </div>
 
 </body>
