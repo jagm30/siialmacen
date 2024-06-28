@@ -48,6 +48,7 @@ Route::get('entradaproductos/listarxentrada/{id}',[App\Http\Controllers\EntradaP
 Route::resource('/entradaproductos', EntradaProductoController::class);
 Route::resource('/almacenes', CatAlmacenController::class);
 Route::resource('/proveedores', ProveedorController::class);
+Route::get('inventario/inventariopdf', [App\Http\Controllers\InventarioController::class,'inventariopdf'])->name('inventariopdf');
 Route::resource('/inventario', InventarioController::class);
 Route::resource('/kardex', KardexController::class);
 
