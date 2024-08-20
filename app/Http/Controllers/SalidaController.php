@@ -147,13 +147,15 @@ class SalidaController extends Controller
     }
     public function finalizarsalida(Request $request, $id, $formapago, $totalventa)
     {
+        
         $salida = Salida::find($id);
         $salida->status            = 'finalizado';
-        $salida->formapago         = $formapago;
+        $salida->formapago         = $formapago;        
+        $totalventa = str_replace(",", "", $totalventa);
         $salida->total             = $totalventa;
         $salida->id_usuario        = 1;
         $salida->save();
-        return response()->json(['data' => "Cambios guardados correctamente..."]);      
+        return response()->json(['data' => $totalventa]);      
     }
     public function reportepdf($id)
     {

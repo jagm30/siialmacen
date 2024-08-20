@@ -328,7 +328,7 @@ number_format = function (number, decimals, dec_point, thousands_sep) {
     var id_salida       = $('#id_salida').val();
     var formapago       = $('#formapago').val();
     var totalventacalc  = $('#totalventacalc').val();
-    
+
     if (confirm("Desea finalizar la captura") == true) {
       $.ajax({
             type: "get",
