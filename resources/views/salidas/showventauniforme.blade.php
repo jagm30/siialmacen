@@ -217,6 +217,7 @@
         }
       ],
       searching: true,
+      paging: false,
       autoWidth: false,
       "footerCallback": function ( row, data, start, end, display ) {
         
