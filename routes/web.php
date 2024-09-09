@@ -65,8 +65,10 @@ Route::get('salidas/filtrofecha/{fecha1}/{fecha2}', [App\Http\Controllers\Salida
 Route::get('salidas/filtroalmacenfecha/{almacen}/{fecha1}/{fecha2}', [App\Http\Controllers\SalidaController::class,'filtroalmacenfecha'])->name('filtroalmacenfecha');
 Route::get('salidas/cancelar/{id}/{motivo}', [App\Http\Controllers\SalidaController::class,'cancelarsalida'])->name('cancelarsalida');
 Route::get('salidas/salidaxfechaPDF/{fecha1}/{fecha2}', [App\Http\Controllers\SalidaController::class,'salidaxfechaPDF'])->name('salidaxfechaPDF');
+Route::get('salidas/cambioventauniforme/{id}', [App\Http\Controllers\SalidaController::class,'cambioventauniforme'])->name('cambioventauniforme');
 Route::resource('/salidas', SalidaController::class);
 Route::get('salidaproductos/delete/{id}', [App\Http\Controllers\SalidaproductoController::class,'destroy'])->name('destroysalprod');
+Route::get('salidaproductos/devolver/{id}', [App\Http\Controllers\SalidaproductoController::class,'devolver'])->name('devolver');
 Route::get('salidaproductos/listarxsalida/{id}',[App\Http\Controllers\SalidaproductoController::class,'listarxsalida'])->name('listarxsalida');
 Route::resource('/salidaproductos', SalidaproductoController::class);
 Route::resource('/cancelaciones', CancelacionController::class);

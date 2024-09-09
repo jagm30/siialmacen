@@ -3,7 +3,7 @@
 <!-- SELECT2 EXAMPLE -->
       <div class="box box-default">
         <div class="box-header with-border">
-          <h3 class="box-title">Venta de uniformes || Almacen: <b>{{$salida->nomalmacen}}</b></h3>
+          <h3 class="box-title">Cambios de uniformes || Almacen: <b>{{$salida->nomalmacen}}</b></h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -39,8 +39,8 @@
                @if($salida->status=='finalizado')<a href="/salidas/ventapdf/{{ $salida->id }}" target="_blank"><img src="/images/pdf.png" width="50" height="50"></a> @endif              
             </div>
             <div class="col-md-2">
-              @if($salida->status=='captura')<button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar">AGREGAR PRODUCTO</button>      
-                  @endif     
+             <button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar">AGREGAR PRODUCTO</button>      
+                      
             </div>
             <div class="col-md-2">
                 @if($salida->status=='captura')
@@ -315,22 +315,6 @@ number_format = function (number, decimals, dec_point, thousands_sep) {
       $.ajax({
             type: "get",
             url: "{{ url('salidaproductos/delete') }}"+'/'+ id_salidaproducto,
-            success: function (data) {
-              //alert(data.data);
-              $('#productos_table').DataTable().ajax.reload();
-            }
-        });
-    }else{
-      alert("cancelado");  
-    }
-  });
-  $(document).on("click", "#btn-devolver", function () {
-    var id_salidaproducto = $(this).attr('data-id');
-    if (confirm("Desea devolver el articulo al inventario?!"+id_salidaproducto) == true) {
-        //alert("devolviedno...."+id_salidaproducto);
-      $.ajax({
-            type: "get",
-            url: "{{ url('salidaproductos/devolver') }}"+'/'+ id_salidaproducto,
             success: function (data) {
               //alert(data.data);
               $('#productos_table').DataTable().ajax.reload();

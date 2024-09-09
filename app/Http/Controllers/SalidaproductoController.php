@@ -110,12 +110,24 @@ class SalidaproductoController extends Controller
         )->addColumn('action', function($data){
             //$btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-original-title="Edit" class="edit btn btn-primary btn-sm editItem">Edit</a>'; {{route('productos.borrar',$producto->id)}},,href="#" data-id="{{ $entradaproductos->id }}
 
-            $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->id.'" id="btn-eliminar" name="btn-eliminar" data-original-title="Delete" class="btn btn-danger btn-sm deleteItem">Eliminar</a>';
+            $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->id.'" id="btn-eliminar" name="btn-eliminar" data-original-title="Delete" class="btn btn-danger btn-sm deleteItem">Eliminar</a>
+            <a href="#"   data-id="'.$data->id.'" id="btn-devolver" name="btn-devolver" data-original-title="Delete" class="btn btn-info btn-sm deleteItem" data-toggle="tooltip">Devolver Articulo</a>
+            ';
             return $btn;
 
         })
         ->rawColumns(['action'])
         ->make(true);
         }
+    }
+
+    public function devolver(Request $request, $id)
+    {
+        $salidaproducto   = Salidaproducto::findOrFail($id);
+        $salidaproducto->status         = 'devolucion';
+        $salidaproducto->cantidad       = 0;
+        $salidaproducto->save();
+
+        return response()->json(['data' => "Actualizado"]);
     }
 }
