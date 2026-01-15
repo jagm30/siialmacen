@@ -29,6 +29,7 @@ class InventarioController extends Controller
             return datatables()->of(DB::table('productos')
             ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
             ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
+            ->where('status','=', 'activo')
             ->get())
             ->make(true);
         }
@@ -37,6 +38,7 @@ class InventarioController extends Controller
         $productos = DB::table('productos')
             ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
             ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
+            ->where('status','=', 'activo')
             ->get();  
         return view('inventario.index', compact('productos','categoriaproductos','almacenes'));     
     }
@@ -76,6 +78,7 @@ class InventarioController extends Controller
                 return datatables()->of(DB::table('productos')
                     ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
                     ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
+                    ->where('status','=', 'activo')
                     ->get())
                     ->make(true);            
             }else{
@@ -128,6 +131,7 @@ class InventarioController extends Controller
         $productos  = DB::table('productos')
             ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
             ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
+            ->where('status','=', 'activo')
             ->get();        
         $today = Carbon::now()->format('d/m/Y');        
         $pdf = \PDF::loadView('inventario/inventariopdf', compact('today','productos'))->setPaper(array(0,0,612.00,792.00));

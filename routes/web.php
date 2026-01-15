@@ -28,7 +28,7 @@ use App\Http\Controllers\AlumnoController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('productos/edicion/{id_producto}/{nombre}/{claveproducto}/{descripcion}/{categoria}/{precio}/{precioPromocion}',[App\Http\Controllers\ProductoController::class,'edicion'])->name('edicion');
+Route::get('productos/edicion/{id_producto}/{nombre}/{claveproducto}/{descripcion}/{categoria}/{precio}/{precioPromocion}/{status}',[App\Http\Controllers\ProductoController::class,'edicion'])->name('edicion');
 Route::get('productos/delete/{id}', [App\Http\Controllers\ProductoController::class,'destroy'])->name('destroy');
 Route::resource('/productos', ProductoController::class);
 Route::resource('/medicos', MedicoController::class);

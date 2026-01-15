@@ -17,7 +17,7 @@ class ProductoController extends Controller
     }
     public function index(){         
     	$productos = DB::table('productos')
-            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','cat_almacens.nombre as nomalmacen')
+            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.status','cat_almacens.nombre as nomalmacen')
             ->leftJoin('cat_almacens', 'productos.categoria', '=', 'cat_almacens.id')
             ->get();    
 
@@ -46,7 +46,7 @@ class ProductoController extends Controller
         }
 
     }
-    public function edicion(Request $request ,$id_producto ,$nombre,$claveproducto ,$descripcion ,$categoria ,$precio ,$precioPromocion)
+    public function edicion(Request $request ,$id_producto ,$nombre,$claveproducto ,$descripcion ,$categoria ,$precio ,$precioPromocion, $status)
     {              
         $producto = Producto::find($id_producto);
         $producto->nombre           = $nombre;
@@ -55,6 +55,7 @@ class ProductoController extends Controller
         $producto->categoria        = $categoria;
         $producto->precio           = $precio;
         $producto->precioPromocion  = $precioPromocion;
+        $producto->status           = $status;
         $producto->save();
         return response()->json(['data' => "Cambios guardados correctamente..."]);
 

@@ -18,7 +18,8 @@
                 <th scope="col">Descripción</th>   
                 <th scope="col">Almacen</th>                    
                 <th scope="col">Precio Venta</th>                    
-                <th scope="col">Precio con descuento</th>                    
+                <th scope="col">Precio con descuento</th>
+                <th scope="col">Status</th>                    
                 <th scope="col">Acción</th>                    
                 <th scope="col"></th>                  
                 </tr>                
@@ -31,7 +32,8 @@
                   <td>{{ $producto->descripcion }}</td>
                   <td>{{ $producto->nomalmacen}}</td>                            
                   <td>$ {{ $producto->precio }}</td>                            
-                  <td>$ {{ $producto->precioPromocion }}</td>                            
+                  <td>$ {{ $producto->precioPromocion }}</td>
+                  <td @if($producto->status=='inactivo') style="background-color: red"@endif>{{ $producto->status }}</td>         
                   <td>                                
                     <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$producto->id}}" data-toggle="modal" data-target="#modal-default">
                 Editar
@@ -84,6 +86,7 @@
                     <label class="control-label" for="inputSuccess1">Precio Venta</label>
                     <input id="precio" type="text" class="form-control" name="precio"  required  autofocus value="0">
                 </div>
+                <input type="hidden" name="status" id="status" value="activo">
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Precio Mayoreo</label>
                     <input id="precioPromocion" type="text" class="form-control" name="precioPromocion"  required  autofocus value="0">
@@ -139,6 +142,13 @@
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Precio Mayoreo</label>
                     <input id="precioPromocion-e" type="text" class="form-control" name="precioPromocion-e"  required  autofocus>
+                </div>
+                <div class="form-group has-error col-md-6">
+                    <label class="control-label" for="inputError1">Status</label>
+                    <select id="status-e" name="status-e" class="form-control">                        
+                        <option value="activo">activo</option>
+                        <option value="inactivo">inactivo</option>
+                    </select>
                 </div>
                 <div class="form-group has-error col-md-6" id="cajaerror-e">                    
                 </div>
@@ -204,7 +214,9 @@
               $("#descripcion-e").val(html.descripcion);
               $("#categoria-e option[value='"+ html.categoria +"']").attr("selected",true);              
               $("#precio-e").val(html.precio);
-              $("#precioPromocion-e").val(html.precioPromocion);            
+              $("#precioPromocion-e").val(html.precioPromocion);
+              $("#status-e").val(html.status);     
+              
            }
         })
   });
@@ -216,7 +228,8 @@
     var descripcion   = $("#nombre-e").val();
     var categoria     = $("#categoria-e").val();
     var precio        = $("#precio-e").val();
-    var precioPromocion = $("#precioPromocion-e").val(); 
+    var precioPromocion = $("#precioPromocion-e").val();
+    var status        = $("#status-e").val(); 
     
     if (nombre == '' || nombre.length == 0 ) {
       document.getElementById("nombre-e").focus();
@@ -243,8 +256,9 @@
       document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Coloque "n/a" si no maneja clave de producto.</div>';
       return false;
     } 
+    //alert(status);
       $.ajax({
-         url:"/productos/edicion/"+id_producto+"/"+nombre+"/"+claveproducto+"/"+descripcion+"/"+categoria+"/"+precio+"/"+precioPromocion,
+         url:"/productos/edicion/"+id_producto+"/"+nombre+"/"+claveproducto+"/"+descripcion+"/"+categoria+"/"+precio+"/"+precioPromocion+"/"+status,
          dataType:"json",
          success:function(html){
           //alert(html.data);
@@ -264,6 +278,7 @@
     var claveproducto   = $('#claveproducto').val();
     var precio          = $('#precio').val();
     var precioPromocion = $('#precioPromocion').val();
+    var status          = $('#status').val();
     var stock           = 0;
     var id_usuario      = 1;
     
@@ -301,6 +316,7 @@
               claveproducto:  claveproducto,
               precio:         precio,
               precioPromocion:precioPromocion,
+              status:         status,
               stock:          stock,
               id_usuario:     id_usuario
           },
