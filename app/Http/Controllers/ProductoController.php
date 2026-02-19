@@ -17,8 +17,8 @@ class ProductoController extends Controller
     }
     public function index(){         
     	$productos = DB::table('productos')
-            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.status','cat_almacens.nombre as nomalmacen')
-            ->leftJoin('cat_almacens', 'productos.categoria', '=', 'cat_almacens.id')
+            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.status','categoriaproductos.nombre as categoriaproducto')
+            ->leftJoin('categoriaproductos', 'productos.categoria', '=', 'categoriaproductos.id')
             ->get();    
 
         $almacenes          = CatAlmacen::all();

@@ -76,15 +76,15 @@ class InventarioController extends Controller
         if ($request->ajax()) {
             if($id=='todos'){
                 return datatables()->of(DB::table('productos')
-                    ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
-                    ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
+                    ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock')
                     ->where('status','=', 'activo')
                     ->get())
                     ->make(true);            
             }else{
                 return datatables()->of(DB::table('productos')
-                    ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
-                    ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
+                    ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','categoriaproductos.nombre as categoriaproducto')
+                    ->leftJoin('categoriaproductos', 'categoriaproductos.id', '=', 'productos.categoria')
+                    ->where('productos.status','=', 'activo')
                     ->where('productos.categoria', '=', $id)
                     ->get())
                     ->make(true);                

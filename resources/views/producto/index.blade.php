@@ -30,7 +30,7 @@
                   <td>{{ $producto->id }}</td>                            
                   <td>{{ $producto->nombre }}</td>                            
                   <td>{{ $producto->descripcion }}</td>
-                  <td>{{ $producto->nomalmacen}}</td>                            
+                  <td>{{ $producto->categoriaproducto}}</td>                            
                   <td>$ {{ $producto->precio }}</td>                            
                   <td>$ {{ $producto->precioPromocion }}</td>
                   <td @if($producto->status=='inactivo') style="background-color: red"@endif>{{ $producto->status }}</td>         
@@ -77,8 +77,8 @@
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Almacén</label>
                     <select id="categoria" name="categoria" class="form-control">
-                        @foreach($almacenes as $almacene)
-                            <option value="{{$almacene->id}}">{{$almacene->nombre}}</option>
+                        @foreach($categoriaproductos as $categoriaproducto)
+                            <option value="{{$categoriaproducto->id}}">{{$categoriaproducto->nombre}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -130,8 +130,8 @@
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Categoria</label>
                     <select id="categoria-e" name="categoria-e" class="form-control">
-                        @foreach($almacenes as $almacene)
-                            <option value="{{$almacene->id}}">{{$almacene->nombre}}</option>
+                        @foreach($categoriaproductos as $categoriaproducto)
+                            <option value="{{$categoriaproducto->id}}">{{$categoriaproducto->nombre}}</option>
                         @endforeach
                     </select>
                 </div>
