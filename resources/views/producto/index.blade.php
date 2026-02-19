@@ -15,7 +15,8 @@
               <tr>                    
                 <th scope="col">Id</th>                    
                 <th scope="col">Nombre</th>                    
-                <th scope="col">Descripción</th>   
+                <th scope="col">Descripción</th>
+                <th scope="col">Talla</th>   
                 <th scope="col">Almacen</th>                    
                 <th scope="col">Precio Venta</th>                    
                 <th scope="col">Precio con descuento</th>
@@ -30,6 +31,7 @@
                   <td>{{ $producto->id }}</td>                            
                   <td>{{ $producto->nombre }}</td>                            
                   <td>{{ $producto->descripcion }}</td>
+                  <td>{{ $producto->talla}}</td>
                   <td>{{ $producto->categoriaproducto}}</td>                            
                   <td>$ {{ $producto->precio }}</td>                            
                   <td>$ {{ $producto->precioPromocion }}</td>
@@ -71,9 +73,13 @@
                     <input id="nombre" type="text" class="form-control" name="nombre"  required  autofocus oninput="actualizarValor()">
                 </div>
                 <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Clave</label>
-                    <input type="text" name="claveproducto" id="claveproducto" class="form-control" value="N/A">
+                    <label class="control-label" for="inputWarning1">Talla</label>
+                    <input type="text" name="talla" id="talla" class="form-control" value="0">
                 </div>
+                <div class="form-group has-warning col-md-6">
+                    <label class="control-label" for="inputWarning1">Clave</label>
+                    <input type="text" name="claveproducto" id="claveproducto" class="form-control" value="NA">
+                </div>                
                 <div class="form-group has-error col-md-6">
                     <label class="control-label" for="inputError1">Almacén</label>
                     <select id="categoria" name="categoria" class="form-control">
@@ -122,6 +128,10 @@
                 <div class="form-group has-success col-md-12">
                     <label class="control-label" for="inputSuccess1">Nombre</label>                     
                     <input id="nombre-e" type="text" class="form-control" name="nombre-e"  required  autofocus>
+                </div>
+                <div class="form-group has-warning col-md-6">
+                    <label class="control-label" for="inputWarning1">Talla</label>
+                    <input id="talla-e" name="talla-e" type="text" class="form-control">
                 </div>
                 <div class="form-group has-warning col-md-6">
                     <label class="control-label" for="inputWarning1">Clave de producto</label>
@@ -210,6 +220,7 @@
            success:function(html){                
               $("#id_producto").val(html.id);
               $("#nombre-e").val(html.nombre);
+              $("#talla-e").val(html.talla);
               $("#claveproducto-e").val(html.claveproducto);
               $("#descripcion-e").val(html.descripcion);
               $("#categoria-e option[value='"+ html.categoria +"']").attr("selected",true);              
@@ -224,6 +235,7 @@
   $('#btn_guardarcambio').click(function() {    
     var id_producto   = $("#id_producto").val();
     var nombre        = $("#nombre-e").val();
+    var talla         = $("#talla-e").val();
     var claveproducto = $("#claveproducto-e").val();
     var descripcion   = $("#nombre-e").val();
     var categoria     = $("#categoria-e").val();
@@ -258,7 +270,7 @@
     } 
     //alert(status);
       $.ajax({
-         url:"/productos/edicion/"+id_producto+"/"+nombre+"/"+claveproducto+"/"+descripcion+"/"+categoria+"/"+precio+"/"+precioPromocion+"/"+status,
+         url:"/productos/edicion/"+id_producto+"/"+nombre+"/"+talla+"/"+claveproducto+"/"+descripcion+"/"+categoria+"/"+precio+"/"+precioPromocion+"/"+status,
          dataType:"json",
          success:function(html){
           //alert(html.data);
@@ -273,7 +285,8 @@
   $('#btn_guardaregistro').click(function() {    
     
     var nombre          = $('#nombre').val();
-    var descripcion     = $('#nombre').val();    
+    var descripcion     = $('#nombre').val();
+    var talla           = $('#talla').val();    
     var categoria       = $('#categoria').val();
     var claveproducto   = $('#claveproducto').val();
     var precio          = $('#precio').val();
@@ -311,6 +324,7 @@
               _token: $("#csrf").val(),
               type: 1,
               nombre:         nombre,
+              talla:          talla,
               descripcion:    descripcion,
               categoria:      categoria,
               claveproducto:  claveproducto,

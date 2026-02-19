@@ -17,7 +17,7 @@ class ProductoController extends Controller
     }
     public function index(){         
     	$productos = DB::table('productos')
-            ->select('productos.id','productos.nombre','productos.descripcion','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.status','categoriaproductos.nombre as categoriaproducto')
+            ->select('productos.id','productos.nombre','productos.descripcion','productos.talla','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.status','categoriaproductos.nombre as categoriaproducto')
             ->leftJoin('categoriaproductos', 'productos.categoria', '=', 'categoriaproductos.id')
             ->get();    
 
@@ -46,12 +46,13 @@ class ProductoController extends Controller
         }
 
     }
-    public function edicion(Request $request ,$id_producto ,$nombre,$claveproducto ,$descripcion ,$categoria ,$precio ,$precioPromocion, $status)
+    public function edicion(Request $request ,$id_producto ,$nombre, $talla,$claveproducto ,$descripcion ,$categoria ,$precio ,$precioPromocion, $status)
     {              
         $producto = Producto::find($id_producto);
         $producto->nombre           = $nombre;
         $producto->claveproducto    = $claveproducto;
         $producto->descripcion      = $descripcion;
+        $producto->talla            = $talla;
         $producto->categoria        = $categoria;
         $producto->precio           = $precio;
         $producto->precioPromocion  = $precioPromocion;
