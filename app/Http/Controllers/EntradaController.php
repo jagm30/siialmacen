@@ -186,8 +186,12 @@ class EntradaController extends Controller
             ->select(DB::raw('SUM(entrada_productos.cantidad) as totalarticulos'))
             ->where('entrada_productos.id_entrada', '=', $id)
             ->get();
-        $today = Carbon::now()->format('d/m/Y');        
-        $pdf = \PDF::loadView('entradas/reportePDF', compact('today','entrada','entradadetalle','totalarticulos'))->setPaper(array(0,0,612.00,792.00));
+        $totalimporte         = DB::table('entrada_productos')
+            ->select(DB::raw('SUM(entrada_productos.precio * entrada_productos.cantidad) as totalimporte'))
+            ->where('entrada_productos.id_entrada', '=', $id)
+            ->get();
+        $today = Carbon::now()->format('d/m/Y');
+        $pdf = \PDF::loadView('entradas/reportePDF', compact('today','entrada','entradadetalle','totalarticulos','totalimporte'))->setPaper(array(0,0,612.00,792.00));
         return $pdf->stream();
 
     }

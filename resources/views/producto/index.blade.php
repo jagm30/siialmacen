@@ -1,370 +1,394 @@
-  @extends('layouts.app') 
-@section('contenidoprincipal') 
+@extends('layouts.app')
+@section('contenidoprincipal')
 
-   <div class="row">
-    <div class="col-xs-12">
-      <div class="box">
-          <div class="box-header">
-            <h3 class="box-title"><button type="button" class="btn btn-warning"> Catalogo de articulos</button> </h3> 
-            <button type="button" class="btn btn-success" id="btneditar"   data-toggle="modal" data-target="#modal-agregar"> Agregar articulo</button>
-          </div>
-          <!-- /.box-header -->
-          <div class="box-body">
-             <table id="example1" class="table table-bordered table-striped">           
-            <thead>                  
-              <tr>                    
-                <th scope="col">Id</th>                    
-                <th scope="col">Nombre</th>                    
-                <th scope="col">Descripción</th>
-                <th scope="col">Talla</th>   
-                <th scope="col">Almacen</th>                    
-                <th scope="col">Precio Venta</th>                    
-                <th scope="col">Precio con descuento</th>
-                <th scope="col">Status</th>                    
-                <th scope="col">Acción</th>                    
-                <th scope="col"></th>                  
-                </tr>                
-            </thead>                
-            <tbody>                    
-              @foreach ($productos as $producto)                        
-                <tr>                            
-                  <td>{{ $producto->id }}</td>                            
-                  <td>{{ $producto->nombre }}</td>                            
-                  <td>{{ $producto->descripcion }}</td>
-                  <td>{{ $producto->talla}}</td>
-                  <td>{{ $producto->categoriaproducto}}</td>                            
-                  <td>$ {{ $producto->precio }}</td>                            
-                  <td>$ {{ $producto->precioPromocion }}</td>
-                  <td @if($producto->status=='inactivo') style="background-color: red"@endif>{{ $producto->status }}</td>         
-                  <td>                                
-                    <button type="button" class="btn btn-success" id="btneditar"  data-id="{{$producto->id}}" data-toggle="modal" data-target="#modal-default">
-                Editar
-              </button>
-                  </td>                            
-                  <td>                                
-                  <!--  <button type="button" id="btn-eliminar" name="btn-eliminar" data-id="{{$producto->id}}" class="btn btn-danger">Borrar</button>-->
-                  </td>                        
-                </tr>                    
-              @endforeach                
-            </tbody>            
-           </table>                
-          <!-- /.box-body -->
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box box-primary">
+
+      <div class="box-header with-border">
+        <h3 class="box-title">
+          <i class="fa fa-tags"></i>&nbsp; Catálogo de artículos
+        </h3>
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-success btn-sm"
+                  data-toggle="modal" data-target="#modal-agregar">
+            <i class="fa fa-plus"></i> Agregar artículo
+          </button>
         </div>
-    </div>
+      </div>
+
+      <div class="box-body">
+
+        {{-- Filtro por almacén --}}
+        <div class="row" style="margin-bottom:14px;">
+          <div class="col-md-4 col-sm-6">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-filter"></i></span>
+              <select id="filtroAlmacen" class="form-control">
+                <option value="">Todos los almacenes</option>
+                @foreach($categoriaproductos as $cat)
+                  <option value="{{ $cat->nombre }}">{{ $cat->nombre }}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <table id="example1" class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr>
+              <th style="width:40px;">#</th>
+              <th>Descripción</th>
+              <th style="width:70px;">Talla</th>
+              <th>Almacén</th>
+              <th style="width:100px;">Precio venta</th>
+              <th style="width:110px;">Precio mayoreo</th>
+              <th style="width:80px; text-align:center;">Status</th>
+              <th style="width:80px; text-align:center;">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($productos as $producto)
+            <tr>
+              <td>{{ $producto->id }}</td>
+              <td>{{ $producto->nombre }}</td>
+              <td>{{ $producto->talla }}</td>
+              <td>{{ $producto->categoriaproducto }}</td>
+              <td>$ {{ number_format($producto->precio, 2) }}</td>
+              <td>$ {{ number_format($producto->precioPromocion, 2) }}</td>
+              <td style="text-align:center;">
+                @if($producto->status == 'activo')
+                  <span class="label label-success">Activo</span>
+                @else
+                  <span class="label label-danger">Inactivo</span>
+                @endif
+              </td>
+              <td style="text-align:center;">
+                <button type="button" class="btn btn-primary btn-xs"
+                        id="btneditar" data-id="{{ $producto->id }}"
+                        data-toggle="modal" data-target="#modal-default"
+                        title="Editar">
+                  <i class="fa fa-pencil"></i>
+                </button>
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+
+      </div>{{-- /.box-body --}}
+    </div>{{-- /.box --}}
   </div>
-</div> 
+</div>
 
 
+{{-- ===================== MODAL: AGREGAR ===================== --}}
 <div class="modal fade" id="modal-agregar">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Registro de productos</h4>
-      </div>
-      <div class="modal-body">
-         <div class="row">
-           <form id="formmodal">
-              <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
-                <input id="id_producto" type="hidden" class="form-control" name="id_producto">
-                <div class="form-group has-success col-md-12">
-                    <label class="control-label" for="inputSuccess1">Descripción</label>                     
-                    <input id="nombre" type="text" class="form-control" name="nombre"  required  autofocus oninput="actualizarValor()">
-                </div>
-                <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Talla</label>
-                    <input type="text" name="talla" id="talla" class="form-control" value="0">
-                </div>
-                <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Clave</label>
-                    <input type="text" name="claveproducto" id="claveproducto" class="form-control" value="NA">
-                </div>                
-                <div class="form-group has-error col-md-6">
-                    <label class="control-label" for="inputError1">Almacén</label>
-                    <select id="categoria" name="categoria" class="form-control">
-                        @foreach($categoriaproductos as $categoriaproducto)
-                            <option value="{{$categoriaproducto->id}}">{{$categoriaproducto->nombre}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group has-success col-md-6">
-                    <label class="control-label" for="inputSuccess1">Precio Venta</label>
-                    <input id="precio" type="text" class="form-control" name="precio"  required  autofocus value="0">
-                </div>
-                <input type="hidden" name="status" id="status" value="activo">
-                <div class="form-group has-error col-md-6">
-                    <label class="control-label" for="inputError1">Precio Mayoreo</label>
-                    <input id="precioPromocion" type="text" class="form-control" name="precioPromocion"  required  autofocus value="0">
-                </div>
-                <div class="form-group has-error col-md-6" id="cajaerror">                    
-                </div>
-            </form>
-         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
-        <button id="btn_guardaregistro" name="btn_guardaregistro" type="button" class="btn btn-primary">Guardar cambios</button>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
 
+      <div class="modal-header" style="background-color:#00a65a; color:#fff;">
+        <button type="button" class="close" data-dismiss="modal" style="color:#fff; opacity:1;">
+          <span>&times;</span>
+        </button>
+        <h4 class="modal-title"><i class="fa fa-plus-circle"></i>&nbsp; Nuevo artículo</h4>
+      </div>
+
+      <div class="modal-body">
+        <form id="formmodal">
+          <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+          <input type="hidden" name="status" id="status" value="activo">
+
+          <div class="form-group col-md-12">
+            <label>Descripción</label>
+            <input id="nombre" type="text" class="form-control" name="nombre" required autofocus
+                   placeholder="Nombre del artículo">
+          </div>
+          <div class="form-group col-md-6">
+            <label>Talla</label>
+            <input type="text" name="talla" id="talla" class="form-control" value="0" placeholder="Ej: M, XL, 30">
+          </div>
+          <div class="form-group col-md-6">
+            <label>Clave</label>
+            <input type="text" name="claveproducto" id="claveproducto" class="form-control" value="NA">
+          </div>
+          <div class="form-group col-md-12">
+            <label>Almacén</label>
+            <select id="categoria" name="categoria" class="form-control">
+              @foreach($categoriaproductos as $categoriaproducto)
+                <option value="{{ $categoriaproducto->id }}">{{ $categoriaproducto->nombre }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Precio venta</label>
+            <div class="input-group">
+              <span class="input-group-addon">$</span>
+              <input id="precio" type="text" class="form-control" name="precio" value="0">
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Precio mayoreo</label>
+            <div class="input-group">
+              <span class="input-group-addon">$</span>
+              <input id="precioPromocion" type="text" class="form-control" name="precioPromocion" value="0">
+            </div>
+          </div>
+          <div class="col-md-12" id="cajaerror"></div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
+          <i class="fa fa-times"></i> Cancelar
+        </button>
+        <button id="btn_guardaregistro" type="button" class="btn btn-success">
+          <i class="fa fa-save"></i> Guardar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{{-- ===================== MODAL: EDITAR ===================== --}}
 <div class="modal fade" id="modal-default">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Edición</h4>
+
+      <div class="modal-header" style="background-color:#3c8dbc; color:#fff;">
+        <button type="button" class="close" data-dismiss="modal" style="color:#fff; opacity:1;">
+          <span>&times;</span>
+        </button>
+        <h4 class="modal-title"><i class="fa fa-pencil-square-o"></i>&nbsp; Editar artículo</h4>
       </div>
+
       <div class="modal-body">
-         <div class="row">
-           <form id="formmodal" method="POST" action="/clientes">
-                <input id="id_producto" type="hidden" class="form-control" name="id_producto">
-                <div class="form-group has-success col-md-12">
-                    <label class="control-label" for="inputSuccess1">Nombre</label>                     
-                    <input id="nombre-e" type="text" class="form-control" name="nombre-e"  required  autofocus>
-                </div>
-                <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Talla</label>
-                    <input id="talla-e" name="talla-e" type="text" class="form-control">
-                </div>
-                <div class="form-group has-warning col-md-6">
-                    <label class="control-label" for="inputWarning1">Clave de producto</label>
-                    <input id="claveproducto-e" name="claveproducto-e" type="text" class="form-control">
-                </div>
-                <div class="form-group has-error col-md-6">
-                    <label class="control-label" for="inputError1">Categoria</label>
-                    <select id="categoria-e" name="categoria-e" class="form-control">
-                        @foreach($categoriaproductos as $categoriaproducto)
-                            <option value="{{$categoriaproducto->id}}">{{$categoriaproducto->nombre}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group has-success col-md-6">
-                    <label class="control-label" for="inputSuccess1">Precio Venta</label>
-                    <input id="precio-e" type="text" class="form-control" name="precio-e"  required  autofocus>
-                </div>
-                <div class="form-group has-error col-md-6">
-                    <label class="control-label" for="inputError1">Precio Mayoreo</label>
-                    <input id="precioPromocion-e" type="text" class="form-control" name="precioPromocion-e"  required  autofocus>
-                </div>
-                <div class="form-group has-error col-md-6">
-                    <label class="control-label" for="inputError1">Status</label>
-                    <select id="status-e" name="status-e" class="form-control">                        
-                        <option value="activo">activo</option>
-                        <option value="inactivo">inactivo</option>
-                    </select>
-                </div>
-                <div class="form-group has-error col-md-6" id="cajaerror-e">                    
-                </div>
-            </form>
-         </div>
+        <form id="formmodal-e">
+          <input id="id_producto" type="hidden" name="id_producto">
+
+          <div class="form-group col-md-12">
+            <label>Descripción</label>
+            <input id="nombre-e" type="text" class="form-control" name="nombre-e" required autofocus>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Talla</label>
+            <input id="talla-e" name="talla-e" type="text" class="form-control" placeholder="Ej: M, XL, 30">
+          </div>
+          <div class="form-group col-md-6">
+            <label>Clave de producto</label>
+            <input id="claveproducto-e" name="claveproducto-e" type="text" class="form-control">
+          </div>
+          <div class="form-group col-md-12">
+            <label>Almacén</label>
+            <select id="categoria-e" name="categoria-e" class="form-control">
+              @foreach($categoriaproductos as $categoriaproducto)
+                <option value="{{ $categoriaproducto->id }}">{{ $categoriaproducto->nombre }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Precio venta</label>
+            <div class="input-group">
+              <span class="input-group-addon">$</span>
+              <input id="precio-e" type="text" class="form-control" name="precio-e">
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Precio mayoreo</label>
+            <div class="input-group">
+              <span class="input-group-addon">$</span>
+              <input id="precioPromocion-e" type="text" class="form-control" name="precioPromocion-e">
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Status</label>
+            <select id="status-e" name="status-e" class="form-control">
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            </select>
+          </div>
+          <div class="col-md-12" id="cajaerror-e"></div>
+        </form>
       </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
-        <button id="btn_guardarcambio" name="btn_guardarcambio" type="button" class="btn btn-primary">Guardar cambio</button>
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
+          <i class="fa fa-times"></i> Cancelar
+        </button>
+        <button id="btn_guardarcambio" type="button" class="btn btn-primary">
+          <i class="fa fa-save"></i> Guardar cambios
+        </button>
       </div>
+
     </div>
-    <!-- /.modal-content -->
   </div>
-  <!-- /.modal-dialog -->
 </div>
 
 @endsection
 @section("scriptpie")
 <script>
+  // ── Ordenamiento personalizado para tallas ──
+  var tallasRopa = ['XS','S','M','L','XL','XXL','XXXL','XXXXL'];
+
+  function tallaANumero(talla) {
+    if (!talla || talla === '0' || talla.trim() === '' ||
+        talla.trim().toUpperCase() === 'NA' || talla.trim().toUpperCase() === 'N/A') {
+      return -1;
+    }
+    var t = talla.trim().toUpperCase();
+    var idx = tallasRopa.indexOf(t);
+    if (idx !== -1) return 1000 + idx;
+    var n = parseFloat(t);
+    if (!isNaN(n)) return n;
+    return 999;
+  }
+
+  $.fn.dataTable.ext.type.order['talla-pre'] = function(d) {
+    return tallaANumero(d);
+  };
+
   $(function () {
-    $('#example1').DataTable({
+    var table = $('#example1').DataTable({
       language: {
-        "decimal": "",
-        "emptyTable": "No hay información",
-        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-        "infoPostFix": "",
-        "thousands": ",",
-        "lengthMenu": "Mostrar _MENU_ Entradas",
-        "loadingRecords": "Cargando...",
-        "processing": "Procesando...",
-        "search": "Buscar:",
-        "zeroRecords": "Sin resultados encontrados"        
+        "emptyTable":    "No hay información",
+        "info":          "Mostrando _START_ a _END_ de _TOTAL_ registros",
+        "infoEmpty":     "Mostrando 0 registros",
+        "infoFiltered":  "(filtrado de _MAX_ total)",
+        "lengthMenu":    "Mostrar _MENU_ registros",
+        "loadingRecords":"Cargando...",
+        "processing":    "Procesando...",
+        "search":        "Buscar:",
+        "zeroRecords":   "Sin resultados encontrados",
+        "thousands":     ","
       },
-      "search": {
-            "addClass": 'form-control input-lg col-xs-12'
-      },
-      "fnDrawCallback":function(){
-        $("input[type='search']").attr("id", "searchBox");            
-        $('#searchBox').css("width", "400px").focus();
+      "search": { "addClass": 'form-control' },
+      "fnDrawCallback": function(){
+        $("input[type='search']").attr("id", "searchBox");
+        $('#searchBox').css("width", "300px").focus();
       },
       dom: 'Bfrtip',
-      buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-    })
-    $("#menuproductos").addClass("important active");
-  })
+      buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+      order: [[1, 'asc'], [2, 'asc']],
+      columnDefs: [
+        { type: 'talla', targets: 2 },
+        { orderable: false, targets: 7 }
+      ]
+    });
 
- $(document).on("click", "#btneditar", function () {
-    //alert("accediendo a la edicion..."+$(this).attr('data-id'));
-    var id_producto = $(this).attr('data-id');
-     // alert(id_producto);
-    $.ajax({
-           url:"/productos/"+id_producto,
-           async: false,
-           dataType:"json",
-           success:function(html){                
-              $("#id_producto").val(html.id);
-              $("#nombre-e").val(html.nombre);
-              $("#talla-e").val(html.talla);
-              $("#claveproducto-e").val(html.claveproducto);
-              $("#descripcion-e").val(html.descripcion);
-              $("#categoria-e option[value='"+ html.categoria +"']").attr("selected",true);              
-              $("#precio-e").val(html.precio);
-              $("#precioPromocion-e").val(html.precioPromocion);
-              $("#status-e").val(html.status);     
-              
-           }
-        })
+    $("#menuproductos").addClass("important active");
+
+    // Filtro por almacén (columna 3)
+    $('#filtroAlmacen').on('change', function () {
+      var val = $.fn.dataTable.util.escapeRegex($(this).val());
+      table.column(3).search(val ? '^' + val + '$' : '', true, false).draw();
+    });
   });
 
-  $('#btn_guardarcambio').click(function() {    
-    var id_producto   = $("#id_producto").val();
-    var nombre        = $("#nombre-e").val();
-    var talla         = $("#talla-e").val();
-    var claveproducto = $("#claveproducto-e").val();
-    var descripcion   = $("#nombre-e").val();
-    var categoria     = $("#categoria-e").val();
-    var precio        = $("#precio-e").val();
+  // ── Cargar datos al abrir modal editar ──
+  $(document).on("click", "#btneditar", function () {
+    var id_producto = $(this).attr('data-id');
+    $.ajax({
+      url: "/productos/" + id_producto,
+      async: false,
+      dataType: "json",
+      success: function(html){
+        $("#id_producto").val(html.id);
+        $("#nombre-e").val(html.nombre);
+        $("#talla-e").val(html.talla);
+        $("#claveproducto-e").val(html.claveproducto);
+        $("#categoria-e").val(html.categoria);
+        $("#precio-e").val(html.precio);
+        $("#precioPromocion-e").val(html.precioPromocion);
+        $("#status-e").val(html.status);
+      }
+    });
+  });
+
+  // ── Guardar cambios ──
+  $('#btn_guardarcambio').click(function() {
+    var id_producto     = $("#id_producto").val();
+    var nombre          = $("#nombre-e").val();
+    var talla           = $("#talla-e").val();
+    var claveproducto   = $("#claveproducto-e").val();
+    var descripcion     = nombre;
+    var categoria       = $("#categoria-e").val();
+    var precio          = $("#precio-e").val();
     var precioPromocion = $("#precioPromocion-e").val();
-    var status        = $("#status-e").val(); 
-    
-    if (nombre == '' || nombre.length == 0 ) {
-      document.getElementById("nombre-e").focus();
-      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese el nombre.</div>';
-      return false;
-    } 
-    if (descripcion == '' || descripcion.length == 0 ) {
-      document.getElementById("descripcion-e").focus();
-      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese la descripcion.</div>';
+    var status          = $("#status-e").val();
+
+    if (!nombre) {
+      $("#cajaerror-e").html('<div class="alert alert-warning"><i class="fa fa-warning"></i> Ingrese el nombre.</div>');
       return false;
     }
-    if (precio == '' || precio.length == 0 ) {
-      document.getElementById("precio-e").focus();
-      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Si no maneja precio, deje el campo con el valor 0</div>';
+    if (!precio) {
+      $("#cajaerror-e").html('<div class="alert alert-warning"><i class="fa fa-warning"></i> Si no maneja precio, ingrese 0.</div>');
       return false;
-    } 
-    if (precioPromocion == '' || precioPromocion.length == 0 ) {
-      document.getElementById("precioPromocion-e").focus();
-      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Si no maneja precio, deje el campo con el valor 0</div>';
+    }
+    if (!precioPromocion) {
+      $("#cajaerror-e").html('<div class="alert alert-warning"><i class="fa fa-warning"></i> Si no maneja precio mayoreo, ingrese 0.</div>');
       return false;
-    } 
-    if (claveproducto == '' || claveproducto.length == 0 ) {
-      document.getElementById("claveproducto-e").focus();
-      document.getElementById("cajaerror-e").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Coloque "n/a" si no maneja clave de producto.</div>';
+    }
+    if (!claveproducto) {
+      $("#cajaerror-e").html('<div class="alert alert-warning"><i class="fa fa-warning"></i> Coloque "N/A" si no maneja clave.</div>');
       return false;
-    } 
-    //alert(status);
-      $.ajax({
-         url:"/productos/edicion/"+id_producto+"/"+nombre+"/"+talla+"/"+claveproducto+"/"+descripcion+"/"+categoria+"/"+precio+"/"+precioPromocion+"/"+status,
-         dataType:"json",
-         success:function(html){
-          //alert(html.data);
-          $("#formmodal")[0].reset();
-          $('#modal-default').modal('toggle');
-          location.reload();
-         }
-      })
-    }); 
+    }
 
-//Agregar producto
-  $('#btn_guardaregistro').click(function() {    
-    
+    $.ajax({
+      url: "/productos/edicion/" + id_producto + "/" + nombre + "/" + talla + "/" + claveproducto + "/" + descripcion + "/" + categoria + "/" + precio + "/" + precioPromocion + "/" + status,
+      dataType: "json",
+      success: function(){
+        $('#modal-default').modal('hide');
+        location.reload();
+      }
+    });
+  });
+
+  // ── Agregar producto ──
+  $('#btn_guardaregistro').click(function() {
     var nombre          = $('#nombre').val();
-    var descripcion     = $('#nombre').val();
-    var talla           = $('#talla').val();    
+    var talla           = $('#talla').val();
     var categoria       = $('#categoria').val();
     var claveproducto   = $('#claveproducto').val();
     var precio          = $('#precio').val();
     var precioPromocion = $('#precioPromocion').val();
-    var status          = $('#status').val();
-    var stock           = 0;
-    var id_usuario      = 1;
-    
-    if (nombre == '' || nombre.length == 0 ) {
-      document.getElementById("nombre").focus();
-      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese el nombre.</div>';
-      return false;
-    } 
-    if (descripcion == '' || descripcion.length == 0 ) {
-      document.getElementById("descripcion").focus();
-      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Ingrese la descripcion.</div>';
+
+    if (!nombre) {
+      $("#cajaerror").html('<div class="alert alert-warning"><i class="fa fa-warning"></i> Ingrese el nombre.</div>');
       return false;
     }
-    if (precio == '' || precio.length == 0 ) {
-      document.getElementById("precio").focus();
-      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Si no maneja precio, deje el campo con el valor 0</div>';
+    if (!precio) {
+      $("#cajaerror").html('<div class="alert alert-warning"><i class="fa fa-warning"></i> Si no maneja precio, ingrese 0.</div>');
       return false;
-    } 
-    if (precioPromocion == '' || precioPromocion.length == 0 ) {
-      document.getElementById("precioPromocion").focus();
-      document.getElementById("cajaerror").innerHTML = '<div class="alert alert-warning alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-warning"></i> Alerta!</h4>Si no maneja precio, deje el campo con el valor 0</div>';
-      return false;
-    } 
-    
-
-      $.ajax({
-          url: "/productos",
-          type: "POST",
-          data: {
-              _token: $("#csrf").val(),
-              type: 1,
-              nombre:         nombre,
-              talla:          talla,
-              descripcion:    descripcion,
-              categoria:      categoria,
-              claveproducto:  claveproducto,
-              precio:         precio,
-              precioPromocion:precioPromocion,
-              status:         status,
-              stock:          stock,
-              id_usuario:     id_usuario
-          },
-          cache: false,
-          success: function(dataResult){
-            alert(dataResult.data);     
-            $("#formmodal")[0].reset();
-            $('#modal-agregar').modal('toggle');
-            location.reload();             
-          }
-      });    
-  });
-
-
-
-  $(document).on("click", "#btn-eliminar", function () {
-    var id_producto = $(this).attr('data-id');
-    if (confirm("Desea eliminar el registro!"+id_producto) == true) {
-      $.ajax({
-            type: "get",
-            url: "{{ url('productos/delete') }}"+'/'+ id_producto,
-            success: function (data) {
-              alert(data.data);
-              location.reload();
-            }
-        });
-    }else{
-      alert("cancelado");  
     }
-  });
+    if (!precioPromocion) {
+      $("#cajaerror").html('<div class="alert alert-warning"><i class="fa fa-warning"></i> Si no maneja precio mayoreo, ingrese 0.</div>');
+      return false;
+    }
 
-  function actualizarValor(){
-    let nombre = document.getElementById("nombre").value;
-    document.getElementById("descripcion").value = nombre;
-  }
+    $.ajax({
+      url: "/productos",
+      type: "POST",
+      data: {
+        _token:          $("#csrf").val(),
+        nombre:          nombre,
+        talla:           talla,
+        descripcion:     nombre,
+        categoria:       categoria,
+        claveproducto:   claveproducto,
+        precio:          precio,
+        precioPromocion: precioPromocion,
+        status:          'activo',
+        stock:           0,
+        id_usuario:      1
+      },
+      success: function(result){
+        alert(result.data);
+        $('#modal-agregar').modal('hide');
+        location.reload();
+      }
+    });
+  });
 </script>
 @endsection
