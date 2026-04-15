@@ -17,15 +17,14 @@ class CreateProductosTable extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('descripcion');
+            $table->string('talla', 30)->nullable();
             $table->string('categoria');
-            $table->string('claveproducto');
-            $table->string('status',15)->nullable();
-            $table->string('precio');
-            $table->string('precioPromocion');
-            $table->integer('stock')->nullable();;
-            $table->integer('id_usuario')->nullable();;
-
-
+            $table->text('claveproducto');
+            $table->string('status', 15)->nullable();
+            $table->float('precio', 8, 2);
+            $table->float('precioPromocion', 8, 2);
+            $table->integer('stock');
+            $table->integer('id_usuario');
             $table->timestamps();
         });
     }

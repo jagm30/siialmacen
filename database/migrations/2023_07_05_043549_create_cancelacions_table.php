@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKardexesTable extends Migration
+class CreateCancelacionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateKardexesTable extends Migration
      */
     public function up()
     {
-        Schema::create('kardexes', function (Blueprint $table) {
+        Schema::create('cancelacions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('tipomovimiento', 60);
-            $table->integer('id_movimiento');
-            $table->integer('id_producto');
-            $table->integer('cantidad');
-            $table->string('motivo', 60);
+            $table->integer('id_salida');
+            $table->string('motivo', 100);
+            $table->date('fecha');
             $table->integer('id_usuario');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
@@ -33,6 +31,6 @@ class CreateKardexesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kardexes');
+        Schema::dropIfExists('cancelacions');
     }
 }

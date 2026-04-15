@@ -11,6 +11,7 @@ use App\Models\Proveedor;
 use App\Models\CatAlmacen;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class EntradaController extends Controller
@@ -197,6 +198,50 @@ class EntradaController extends Controller
     }
 
     
+    public function cancelarentrada(Request $request, $id)
+    {
+        $motivo  = $request->input('motivo', 'sin motivo');
+        $entrada = Entrada::findOrFail($id);
+
+        if ($entrada->status !== 'finalizado') {
+            return response()->json(['data' => 'Solo se pueden cancelar entradas finalizadas.'], 422);
+        }
+
+        $items = EntradaProducto::where('id_entrada', $id)
+                                ->where('status', 'finalizado')
+                                ->get();
+
+        foreach ($items as $item) {
+            $producto = Producto::find($item->id_producto);
+            if ($producto) {
+                $producto->stock -= $item->cantidad;
+                if ($producto->stock < 0) {
+                    $producto->stock = 0;
+                }
+                $producto->save();
+            }
+
+            DB::table('kardexes')->insert([
+                'tipomovimiento' => 'cancelacion',
+                'id_movimiento'  => $item->id_entrada,
+                'id_producto'    => $item->id_producto,
+                'cantidad'       => $item->cantidad,
+                'motivo'         => 'cancelacion de entrada: ' . $motivo,
+                'id_usuario'     => Auth::id(),
+                'created_at'     => now(),
+                'updated_at'     => now(),
+            ]);
+
+            $item->status = 'cancelado';
+            $item->save();
+        }
+
+        $entrada->status = 'cancelado';
+        $entrada->save();
+
+        return response()->json(['data' => 'Entrada cancelada correctamente.']);
+    }
+
     public function filtrofecha(Request $request, $fecha1, $fecha2)
     {
         if ($request->ajax()) {

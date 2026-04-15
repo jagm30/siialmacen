@@ -17,11 +17,12 @@ class CreateEntradasTable extends Migration
             $table->id();
             $table->integer('proveedor');
             $table->date('fecha');
-            $table->string('nfactura',20);
-            $table->string('referencia',100);
-            $table->string('categoria',20);
-            $table->string('observaciones',200);
-            $table->string('status',15)->nullable();
+            $table->string('id_almacen', 15);
+            $table->string('nfactura', 40);
+            $table->string('referencia', 100);
+            $table->string('categoria', 20);
+            $table->string('observaciones', 200);
+            $table->string('status', 15)->nullable();
             $table->integer('id_usuario');
             $table->timestamps();
         });

@@ -18,7 +18,7 @@ class CreateSalidaproductosTable extends Migration
             $table->integer('id_salida');
             $table->integer('id_producto');
             $table->integer('cantidad');
-            $table->float('precio', 8,2);            
+            $table->double('precio', 8, 2);
             $table->string('status',30);
             $table->integer('id_usuario');
             $table->timestamps();

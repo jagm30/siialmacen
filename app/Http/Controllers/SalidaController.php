@@ -7,6 +7,7 @@ use App\Models\Salidaproducto;
 use App\Models\Producto;
 use App\Models\CatAlmacen;
 use App\Models\Cancelacion;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -275,50 +276,69 @@ class SalidaController extends Controller
     }
     public function filtroalmacenfecha(Request $request,$almacen,$fecha1, $fecha2)
     {
-        if($almacen=='todos'){
-            if ($request->ajax()) {
-                return datatables()->of(DB::table('salidas')
-                ->select('salidas.id',DB::raw('SUM(salidaproductos.cantidad*salidaproductos.precio) as totalpago'),'salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante')
+        if ($request->ajax()) {
+            $query = DB::table('salidas')
+                ->select('salidas.id', DB::raw('SUM(salidaproductos.cantidad*salidaproductos.precio) as totalpago'), 'salidas.fecha', 'salidas.status', 'salidas.formapago', 'salidas.solicitante')
                 ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
                 ->leftJoin('salidaproductos', 'salidaproductos.id_salida', '=', 'salidas.id')
-                ->where('salidas.almacen','=','1')
-                ->where('salidas.fecha','>=',$fecha1)
-                ->where('salidas.fecha','<=',$fecha2)
-                ->groupBy('salidas.id','salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante')
-                ->get())->make(true);        
-                
+                ->where('salidas.fecha', '>=', $fecha1)
+                ->where('salidas.fecha', '<=', $fecha2)
+                ->groupBy('salidas.id', 'salidas.fecha', 'salidas.status', 'salidas.formapago', 'salidas.solicitante');
+
+            if ($almacen != 'todos') {
+                $query->where('salidas.almacen', '=', $almacen);
             }
-        }else{
-            if ($request->ajax()) {
-                return datatables()->of(DB::table('salidas')
-                ->select('salidas.id',DB::raw('SUM(salidaproductos.cantidad*salidaproductos.precio) as totalpago'),'salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante')
-                ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
-                ->leftJoin('salidaproductos', 'salidaproductos.id_salida', '=', 'salidas.id')
-                ->where('salidas.almacen','=','1')
-                ->where('salidas.fecha','>=',$fecha1)
-                ->where('salidas.fecha','<=',$fecha2)
-                ->groupBy('salidas.id','salidas.fecha','salidas.status','salidas.formapago','salidas.solicitante')
-                ->get())->make(true); 
-            }
+
+            return datatables()->of($query->get())->make(true);
+        }
+    }
+    public function cancelarsalida(Request $request, $id)
+    {
+        $motivo = $request->input('motivo', 'sin motivo');
+        $salida = Salida::find($id);
+
+        if (!$salida || !in_array($salida->status, ['captura', 'finalizado'])) {
+            return response()->json(['data' => 'La venta no puede cancelarse.'], 422);
         }
 
-    }
-    public function cancelarsalida(Request $request,$id, $motivo)
-    {
-        $date = Carbon::now();
-        $date = $date->format('Y-m-d');
-        $salida = Salida::find($id);
-        $salida->status            = 'cancelado';
-        //$salida->id_usuario        = 1;
+        // Restaurar stock directamente en PHP para cada artículo
+        $items = Salidaproducto::where('id_salida', $id)
+                    ->whereIn('status', ['captura', 'finalizado'])
+                    ->get();
+
+        foreach ($items as $item) {
+            if ($item->cantidad > 0) {
+                DB::table('productos')
+                    ->where('id', $item->id_producto)
+                    ->increment('stock', $item->cantidad);
+
+                DB::table('kardexes')->insert([
+                    'tipomovimiento' => 'cancelacion',
+                    'id_movimiento'  => $id,
+                    'id_producto'    => $item->id_producto,
+                    'cantidad'       => $item->cantidad,
+                    'motivo'         => 'cancelacion venta: ' . $motivo,
+                    'id_usuario'     => Auth::id(),
+                    'created_at'     => now(),
+                    'updated_at'     => now(),
+                ]);
+            }
+
+            $item->status = 'cancelado';
+            $item->save();
+        }
+
+        $salida->status = 'cancelado';
         $salida->save();
 
         $cancelacion = new Cancelacion;
-        $cancelacion->id_salida     = $id;
-        $cancelacion->motivo        = $motivo;
-        $cancelacion->fecha         = $date;
-        $cancelacion->id_usuario    = 1;
+        $cancelacion->id_salida  = $id;
+        $cancelacion->motivo     = $motivo;
+        $cancelacion->fecha      = Carbon::now()->format('Y-m-d');
+        $cancelacion->id_usuario = Auth::id();
         $cancelacion->save();
-        return response()->json(['data' => "Cancelado correctamente..."]);      
+
+        return response()->json(['data' => 'Venta cancelada correctamente.']);
     }
     public function salidaxfechaPDF(Request $request, $fecha1, $fecha2){
         $salidas  = DB::table('salidas')

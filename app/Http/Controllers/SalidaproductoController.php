@@ -37,14 +37,24 @@ class SalidaproductoController extends Controller
      */
     public function store(Request $request)
     {
-        try {              
+        try {
+            $cantidad = (int) $request->input('cantidad');
+            $producto = Producto::findOrFail($request->input('id_producto'));
+
+            if ($producto->stock < $cantidad) {
+                return response()->json(['data' => 'Stock insuficiente.'], 422);
+            }
+
             $salida = Salidaproducto::create($request->all());
-            return response()->json(['data' => $salida->id]);   
+
+            $producto->stock -= $cantidad;
+            $producto->save();
+
+            return response()->json(['data' => $salida->id]);
 
         } catch (\Exception $e) {
-            
-            return response()->json(['data' => $e->getMessage()]);  
-        }               
+            return response()->json(['data' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -89,11 +99,15 @@ class SalidaproductoController extends Controller
      */
     public function destroy($id)
     {
-        $salidaproducto   = Salidaproducto::findOrFail($id);
-        if($salidaproducto->status=='captura'){
+        $salidaproducto = Salidaproducto::findOrFail($id);
+        if ($salidaproducto->status == 'captura') {
+            $producto = Producto::findOrFail($salidaproducto->id_producto);
+            $producto->stock += $salidaproducto->cantidad;
+            $producto->save();
+
             $salidaproducto->delete();
             return response()->json(['data' => "Eliminado correctamente..."]);
-        }else{
+        } else {
             return response()->json(['data' => "No se puede eliminar..."]);
         }
     }
@@ -110,9 +124,16 @@ class SalidaproductoController extends Controller
         )->addColumn('action', function($data){
             //$btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-original-title="Edit" class="edit btn btn-primary btn-sm editItem">Edit</a>'; {{route('productos.borrar',$producto->id)}},,href="#" data-id="{{ $entradaproductos->id }}
 
-            $btn = ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->id.'" id="btn-eliminar" name="btn-eliminar" data-original-title="Delete" class="btn btn-danger btn-sm deleteItem">Eliminar</a>
-            <a href="#"   data-id="'.$data->id.'" id="btn-devolver" name="btn-devolver" data-original-title="Delete" class="btn btn-info btn-sm deleteItem" data-toggle="tooltip">Devolver Articulo</a>
-            ';
+            $btn = '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar artículo"
+                        data-id="'.$data->id.'" id="btn-eliminar" name="btn-eliminar"
+                        class="btn btn-danger btn-xs">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                    <a href="javascript:void(0)" data-toggle="tooltip" title="Devolver al inventario"
+                        data-id="'.$data->id.'" id="btn-devolver" name="btn-devolver"
+                        class="btn btn-info btn-xs">
+                        <i class="fa fa-undo"></i>
+                    </a>';
             return $btn;
 
         })
@@ -123,9 +144,14 @@ class SalidaproductoController extends Controller
 
     public function devolver(Request $request, $id)
     {
-        $salidaproducto   = Salidaproducto::findOrFail($id);
-        $salidaproducto->status         = 'devolucion';
-        $salidaproducto->cantidad       = 0;
+        $salidaproducto = Salidaproducto::findOrFail($id);
+
+        $producto = Producto::findOrFail($salidaproducto->id_producto);
+        $producto->stock += $salidaproducto->cantidad;
+        $producto->save();
+
+        $salidaproducto->status   = 'devolucion';
+        $salidaproducto->cantidad = 0;
         $salidaproducto->save();
 
         return response()->json(['data' => "Actualizado"]);

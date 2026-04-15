@@ -15,15 +15,17 @@ class CreateSalidasTable extends Migration
     {
         Schema::create('salidas', function (Blueprint $table) {
             $table->id();
-            $table->integer('folioreq');
-            $table->string('solicitante',100);
+            $table->string('folioreq', 20);
+            $table->string('solicitante', 100);
             $table->date('fecha');
-            $table->integer('almacen');
-            $table->string('cajapago',30)->nullable();
-            $table->string('nnotaventa',20)->nullable();
-            $table->string('fventa',20)->nullable();
-            $table->string('observaciones',150)->nullable();
-            $table->string('status',15)->nullable();
+            $table->integer('almacen')->nullable();
+            $table->string('cajapago', 30)->nullable();
+            $table->string('nnotaventa', 20)->nullable();
+            $table->string('fventa', 20)->nullable();
+            $table->integer('formapago')->nullable();
+            $table->string('observaciones', 150)->nullable();
+            $table->float('total', 8, 2)->nullable();
+            $table->string('status', 15)->nullable();
             $table->integer('id_usuario');
             $table->timestamps();
         });

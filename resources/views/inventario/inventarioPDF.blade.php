@@ -2,46 +2,27 @@
 <head>
 <style>
     @page {
-        margin: 0cm 0cm;
+        margin: 1.5cm 1.5cm 1.2cm 1.5cm;
         font-family: Arial, Helvetica, sans-serif;
     }
     body {
-        margin-top: 4.2cm;
-        margin-left: 1.5cm;
-        margin-right: 1.5cm;
-        margin-bottom: 1.5cm;
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 0;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 10pt;
         color: #222;
     }
-    #watermark {
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        top: 0px;
-        width: 21.5cm;
-        height: 28cm;
-        z-index: -1000;
+    .logo-header {
+        height: 1.8cm;
+        width: auto;
     }
     .page-break {
         page-break-after: always;
     }
 
-    /* ── Pie de página con número de página ── */
-    footer {
-        position: fixed;
-        bottom: 0cm;
-        left: 0cm;
-        right: 0cm;
-        height: 0.8cm;
-        background-color: #1a5276;
-        color: white;
-        font-size: 8pt;
-        text-align: center;
-        line-height: 0.8cm;
-    }
-    .pagenum:before   { content: counter(page); }
-    .pagecount:before { content: counter(pages); }
+    /* pie de página manejado por canvas PHP */
 
     /* ── Encabezado del documento ── */
     .doc-header {
@@ -147,14 +128,30 @@
 </head>
 <body>
 
-<div id="watermark">
-    <img src="{{ public_path().'/images/formato.jpg' }}" width="100%" height="100%">
-</div>
+<footer></footer>
 
-<footer>
-    Página <span class="pagenum"></span> de <span class="pagecount"></span>
-    &nbsp;&nbsp;|&nbsp;&nbsp; Generado el {{ $today }}
-</footer>
+<script type="text/php">
+    if (isset($pdf)) {
+        $pdf->page_script('
+            $font  = $fontMetrics->getFont("Arial", "normal");
+            $size  = 8;
+            $white = array(1, 1, 1);
+            $pw    = $pdf->get_width();
+            $ph    = $pdf->get_height();
+            $y     = $ph - 15;
+
+            $left  = "Inventario de Almacén";
+            $mid   = "Página " . $PAGE_NUM . " de " . $PAGE_COUNT;
+            $right = "Generado el {{ $today }}";
+
+            $pdf->text(14, $y, $left,  $font, $size, $white);
+            $midW = $fontMetrics->getTextWidth($mid, $font, $size);
+            $pdf->text(($pw - $midW) / 2, $y, $mid, $font, $size, $white);
+            $rightW = $fontMetrics->getTextWidth($right, $font, $size);
+            $pdf->text($pw - $rightW - 14, $y, $right, $font, $size, $white);
+        ');
+    }
+</script>
 
 <?php
     $totalUnidades  = $productos->sum('stock');
@@ -166,7 +163,10 @@
     {{-- Encabezado --}}
     <table class="doc-header">
         <tr>
-            <td>
+            <td style="width:90px; vertical-align:middle;">
+                <img src="{{ public_path('images/logo.png') }}" class="logo-header">
+            </td>
+            <td style="vertical-align:middle; padding-left:10px;">
                 <div class="emisor">
                     <strong>Colegio La Salle de Tuxtla, A. C.</strong><br>
                     Blvd. La Salle No. 504. Col. El Retiro C.P. 29040<br>
@@ -174,7 +174,7 @@
                     RFC: CST7001145E9 &nbsp;|&nbsp; Tel. 961 619-1943
                 </div>
             </td>
-            <td style="width:200px;">
+            <td style="width:200px; vertical-align:middle;">
                 <div class="titulo-box">
                     <div class="titulo-doc">Inventario de almacén</div>
                     <div class="titulo-fecha">Generado el: {{ $today }}</div>
