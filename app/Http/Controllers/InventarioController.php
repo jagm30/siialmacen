@@ -151,7 +151,7 @@ class InventarioController extends Controller
             ")
             ->get();
         $today = Carbon::now()->format('d/m/Y');
-        $pdf = \PDF::loadView('inventario/inventariopdf', compact('today','productos'))->setPaper(array(0,0,612.00,792.00));
+        $pdf = \PDF::loadView('inventario.inventarioPDF', compact('today','productos'))->setPaper(array(0,0,612.00,792.00));
         return $pdf->stream();
 
     }
