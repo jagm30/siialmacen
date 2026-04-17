@@ -192,7 +192,7 @@ class EntradaController extends Controller
             ->where('entrada_productos.id_entrada', '=', $id)
             ->get();
         $today = Carbon::now()->format('d/m/Y');
-        $pdf = \PDF::loadView('entradas/reportePDF', compact('today','entrada','entradadetalle','totalarticulos','totalimporte'))->setPaper(array(0,0,612.00,792.00));
+        $pdf = \PDF::loadView('entradas.reportePDF', compact('today','entrada','entradadetalle','totalarticulos','totalimporte'))->setPaper(array(0,0,612.00,792.00));
         return $pdf->stream();
 
     }

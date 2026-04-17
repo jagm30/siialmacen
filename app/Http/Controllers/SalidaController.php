@@ -171,7 +171,7 @@ class SalidaController extends Controller
             ->where('salidaproductos.id_salida', '=', $id)
             ->get();
         $today = Carbon::now()->format('d/m/Y');        
-        $pdf = \PDF::loadView('salidas/reportePDF', compact('today','salida','salidadetalle'))->setPaper(array(0,0,612.00,792.00));
+        $pdf = \PDF::loadView('salidas.reportePDF', compact('today','salida','salidadetalle'))->setPaper(array(0,0,612.00,792.00));
         return $pdf->stream();
 
     }
@@ -197,7 +197,7 @@ class SalidaController extends Controller
             ->get();
 
         $today = Carbon::now()->format('d/m/Y');        
-        $pdf = \PDF::loadView('salidas/ventaPDF', compact('today','salida','salidadetalle','totalpagar','totalarticulos'))->setPaper(array(0,0,612.00,792.00));
+        $pdf = \PDF::loadView('salidas.ventaPDF', compact('today','salida','salidadetalle','totalpagar','totalarticulos'))->setPaper(array(0,0,612.00,792.00));
         return $pdf->stream();
 
     }
@@ -383,7 +383,7 @@ class SalidaController extends Controller
                 ->get();
         
         $today = Carbon::now()->format('d/m/Y');        
-        $pdf = \PDF::loadView('salidas/salidaxfechaPDF', compact('today','salidas','fecha1','fecha2', 'totalregistro','totalefectivo','totaldebito','totalcredito'))->setPaper(array(0,0,612.00,792.00));
+        $pdf = \PDF::loadView('salidas.salidaxfechaPDF', compact('today','salidas','fecha1','fecha2', 'totalregistro','totalefectivo','totaldebito','totalcredito'))->setPaper(array(0,0,612.00,792.00));
         return $pdf->stream();
     }
     // Venta version 2
