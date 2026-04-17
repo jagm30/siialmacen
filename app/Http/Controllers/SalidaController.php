@@ -186,8 +186,8 @@ class SalidaController extends Controller
             ->where('salidas.id', '=', $id)
             ->first();
         $salidadetalle       = DB::table('salidaproductos')
-            ->select('salidaproductos.id','salidaproductos.id_salida','salidaproductos.id_producto','salidaproductos.cantidad','salidaproductos.precio','salidaproductos.status','productos.nombre','productos.descripcion')
-            ->leftJoin('productos', 'salidaproductos.id_producto', '=', 'productos.id')            
+            ->select('salidaproductos.id','salidaproductos.id_salida','salidaproductos.id_producto','salidaproductos.cantidad','salidaproductos.precio','salidaproductos.status','productos.nombre','productos.descripcion','productos.talla')
+            ->leftJoin('productos', 'salidaproductos.id_producto', '=', 'productos.id')
             ->where('salidaproductos.id_salida', '=', $id)
             ->get();
         $totalpagar       = DB::table('salidaproductos')
@@ -199,7 +199,7 @@ class SalidaController extends Controller
             ->where('salidaproductos.id_salida', '=', $id)
             ->get();
 
-        $today = Carbon::now()->format('d/m/Y');        
+        $today = Carbon::now()->format('d/m/Y');
         $pdf = \PDF::loadView('salidas.ventaPDF', compact('today','salida','salidadetalle','totalpagar','totalarticulos'))->setPaper(array(0,0,612.00,792.00));
         return $pdf->stream();
 

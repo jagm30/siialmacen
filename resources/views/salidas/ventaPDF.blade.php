@@ -238,7 +238,7 @@
         <tbody>
             @foreach($salidadetalle as $detalle)
             <tr>
-                <td>{{ $detalle->descripcion }}</td>
+                <td>{{ $detalle->descripcion }}{{ $detalle->talla ? ' - Talla: ' . $detalle->talla : '' }}</td>
                 <td class="num">{{ number_format($detalle->cantidad, 0) }}</td>
                 <td class="num">$ {{ number_format($detalle->precio, 2) }}</td>
                 <td class="num">$ {{ number_format($detalle->precio * $detalle->cantidad, 2) }}</td>
