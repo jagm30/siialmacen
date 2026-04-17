@@ -20,17 +20,12 @@ class SalidaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $date = Carbon::now();
-        $date = $date->format('Y-m-d');                
-        //$salidas       = Entrada::all();
-        $salidas       = DB::table('salidas')
-            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','salidas.formapago','cat_almacens.nombre as nomalmacen')
-            ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
-            ->get();
-        $almacenes      = CatAlmacen::all();
-        return view('salidas.index',compact('salidas','date','almacenes'));
+        $date      = Carbon::now()->format('Y-m-d');
+        $almacenes = CatAlmacen::all();
+        $productos = Producto::where('stock', '>', '0')->get();
+        return view('salidas.index', compact('date', 'almacenes', 'productos'));
     }
 
     /**
@@ -86,24 +81,32 @@ class SalidaController extends Controller
         $productos  = Producto::where('stock','>','0')->get();
         return view('salidas.show',compact('salidas','salida','productos','id_salida'));
     }
+    public function nuevaventa(Request $request)
+    {
+        $date      = Carbon::now()->format('Y-m-d');
+        $almacenes = CatAlmacen::all();
+        return view('salidas.ventauniforme', compact('date', 'almacenes'));
+    }
+
     public function showventauniforme(Request $request, $id)
     {
-        if ($request->ajax()) {
-            $salida = DB::table('salidas')
-                    ->where('salidas.id',$id)
-                    ->first();
-            return json_encode($salida);
-        }
-        $id_salida  = $id;
-        //$salida     = Salida::findOrFail($id);
-        $salida     = DB::table('salidas')
+        $salida = DB::table('salidas')
             ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','salidas.formapago','cat_almacens.nombre as nomalmacen','salidas.total')
             ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
-            ->where('salidas.id','=',$id)
+            ->where('salidas.id', '=', $id)
             ->first();
-        $salidas    = Salida::all();
-        $productos  = Producto::where('stock','>','0')->get();
-        return view('salidas.showventauniforme',compact('salidas','salida','productos','id_salida'));
+
+        if ($request->ajax()) {
+            return response()->json($salida);
+        }
+
+        if (!$salida) {
+            return redirect('/salidas/ventauniforme')->with('error', 'Venta no encontrada.');
+        }
+
+        $id_salida = $id;
+        $productos = Producto::where('stock', '>', '0')->get();
+        return view('salidas.showventauniforme', compact('salida', 'productos', 'id_salida'));
     }
     /**
      * Show the form for editing the specified resource.
@@ -202,15 +205,10 @@ class SalidaController extends Controller
 
     }
     public function ventauniforme(Request $request){
-        $date = Carbon::now();
-        $date = $date->format('Y-m-d');                
-        //$salidas       = Entrada::all();
-        $salidas       = DB::table('salidas')
-            ->select('salidas.id','salidas.folioreq','salidas.solicitante','salidas.fecha','salidas.almacen','salidas.cajapago','salidas.nnotaventa','salidas.fventa','salidas.observaciones','salidas.status','salidas.id_usuario','cat_almacens.nombre as nomalmacen')
-            ->leftJoin('cat_almacens', 'salidas.almacen', '=', 'cat_almacens.id')
-            ->get();
-        $almacenes      = CatAlmacen::all();
-        return view('salidas.ventauniforme',compact('salidas','date','almacenes'));
+        $date      = Carbon::now()->format('Y-m-d');
+        $almacenes = CatAlmacen::all();
+        $productos = Producto::where('stock', '>', '0')->get();
+        return view('salidas.ventauniforme', compact('date', 'almacenes'));
     }
     public function ventaxalmacen(Request $request, $almacen){
         $date = Carbon::now();

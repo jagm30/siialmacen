@@ -295,5 +295,11 @@
 }
 </style>
 
+@auth
+<a href="{{ url('/salidas') }}" class="btn-flotante" title="Nueva venta">
+  <i class="fa fa-shopping-cart"></i> Nueva venta
+</a>
+@endauth
+
 </body>
 </html>

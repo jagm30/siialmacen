@@ -38,13 +38,13 @@ class EntradaController extends Controller
         $date = $date->format('Y-m-d');
         $almacenes      = CatAlmacen::all();
         $proveedores    = Proveedor::all();
-        //$entradas       = Entrada::all();
+        $productos      = Producto::all();
         $entradas       = DB::table('entradas')
             ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
             ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
             ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
             ->get();
-        return view('entradas.index',compact('entradas','proveedores','almacenes','date'));
+        return view('entradas.index',compact('entradas','proveedores','almacenes','date','productos'));
 
     }
 
@@ -53,6 +53,15 @@ class EntradaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function nueva()
+    {
+        $date        = Carbon::now()->format('Y-m-d');
+        $almacenes   = CatAlmacen::all();
+        $proveedores = Proveedor::all();
+        $productos   = Producto::all();
+        return view('entradas.nueva', compact('almacenes', 'proveedores', 'productos', 'date'));
+    }
+
     public function create()
     {
         //
@@ -79,23 +88,26 @@ class EntradaController extends Controller
      */
     public function show(Request $request, $id)
     {
-        if ($request->ajax()) {
-            $entrada    = DB::table('entradas')
-                    ->where('entradas.id',$id)
-                    ->first();
-            return json_encode($entrada);
-        }
-        $id_entrada = $id;
-        $almacenes      = CatAlmacen::all();
-        $proveedores    = Proveedor::all();
-        $entrada       = DB::table('entradas')
+        $entrada = DB::table('entradas')
             ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
             ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
             ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
-            ->where('entradas.id','=', $id)
+            ->where('entradas.id', '=', $id)
             ->first();
-        $productos  = Producto::all();
-        return view('entradas.show',compact('entrada','productos','id_entrada','almacenes','proveedores'));
+
+        if ($request->ajax()) {
+            return response()->json($entrada);
+        }
+
+        if (!$entrada) {
+            return redirect('/entradas')->with('error', 'Entrada no encontrada.');
+        }
+
+        $id_entrada  = $id;
+        $almacenes   = CatAlmacen::all();
+        $proveedores = Proveedor::all();
+        $productos   = Producto::all();
+        return view('entradas.show', compact('entrada','productos','id_entrada','almacenes','proveedores'));
     }
 
     /**
