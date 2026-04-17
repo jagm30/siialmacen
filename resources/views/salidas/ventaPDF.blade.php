@@ -2,26 +2,14 @@
 <head>
 <style>
     @page {
-        margin: 0cm 0cm;
+        margin: 1.5cm 1.5cm 6cm 1.5cm;
         font-family: Arial, Helvetica, sans-serif;
     }
     body {
-        margin-top: 4.2cm;
-        margin-left: 1.5cm;
-        margin-right: 1.5cm;
-        margin-bottom: 6cm;
+        margin: 0;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 10pt;
         color: #222;
-    }
-    #watermark {
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        top: 0px;
-        width: 21.5cm;
-        height: 28cm;
-        z-index: -1000;
     }
 
     /* ── Encabezado: datos del emisor y folio ── */
@@ -126,8 +114,8 @@
     #pie {
         position: fixed;
         bottom: 0.8cm;
-        left: 1.5cm;
-        right: 1.5cm;
+        left: 0;
+        right: 0;
     }
     .totales-box {
         width: 100%;
@@ -180,16 +168,15 @@
 </head>
 <body>
 
-<div id="watermark">
-    <img src="{{ public_path().'/images/formato.jpg' }}" width="100%" height="100%">
-</div>
-
 <main>
 
-    {{-- Encabezado: emisor + folio --}}
+    {{-- Encabezado: logo | datos empresa | folio --}}
     <table class="doc-header">
         <tr>
-            <td>
+            <td style="width:130px; vertical-align:middle;">
+                <img src="{{ public_path().'/images/logo.png' }}" height="65">
+            </td>
+            <td style="text-align:center; vertical-align:middle;">
                 <div class="emisor">
                     <strong>Colegio La Salle de Tuxtla, A. C.</strong><br>
                     Blvd. La Salle No. 504. Col. El Retiro C.P. 29040<br>
@@ -210,7 +197,7 @@
     </table>
 
     {{-- Cliente --}}
-    <table class="cliente-box">
+    <table class="cliente-box" style="width:100%">
         <tr>
             <td class="cliente-label">Cliente</td>
             <td>{{ $salida->solicitante }}</td>

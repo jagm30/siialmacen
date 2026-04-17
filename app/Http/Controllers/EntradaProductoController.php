@@ -49,7 +49,7 @@ class EntradaProductoController extends Controller
         if ($request->ajax()) {
         // $data = Entradaproducto::all();
             return datatables()->of(DB::table('entrada_productos')
-            ->select('entrada_productos.id','entrada_productos.id_entrada','entrada_productos.id_producto','entrada_productos.precio','entrada_productos.cantidad','entrada_productos.id_usuario','productos.descripcion',DB::raw('entrada_productos.precio * entrada_productos.cantidad as subtotal'))
+            ->select('entrada_productos.id','entrada_productos.id_entrada','entrada_productos.id_producto','entrada_productos.precio','entrada_productos.cantidad','entrada_productos.id_usuario','productos.descripcion','productos.talla',DB::raw('entrada_productos.precio * entrada_productos.cantidad as subtotal'))
             ->leftJoin('productos', 'entrada_productos.id_producto', '=', 'productos.id')
             ->where('entrada_productos.id_entrada',$id)
             ->get()

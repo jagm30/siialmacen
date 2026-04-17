@@ -10,7 +10,8 @@
           <i class="fa fa-cubes"></i>&nbsp; Inventario de artículos
         </h3>
         <div class="box-tools pull-right">
-          <a href="/inventario/inventariopdf" target="_blank" class="btn btn-danger btn-sm">
+          <a id="btnExportarPDF" href="/inventario/inventariopdf?categoria=todos"
+             target="_blank" class="btn btn-danger btn-sm">
             <i class="fa fa-file-pdf-o"></i> Exportar PDF
           </a>
         </div>
@@ -18,9 +19,9 @@
 
       <div class="box-body">
 
-        {{-- Filtro por almacén --}}
+        {{-- Filtros --}}
         <div class="row" style="margin-bottom:14px;">
-          <div class="col-md-4 col-sm-6">
+          <div class="col-md-4 col-sm-6" style="margin-bottom:6px;">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-filter"></i></span>
               <select id="categoria" name="categoria" class="form-control">
@@ -29,6 +30,19 @@
                   <option value="{{ $categoriaproducto->id }}">{{ $categoriaproducto->nombre }}</option>
                 @endforeach
               </select>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-6" style="margin-bottom:6px;">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-search"></i></span>
+              <input type="text" id="buscar" class="form-control"
+                     placeholder="Buscar descripción o talla...">
+              <span class="input-group-btn">
+                <button id="btnLimpiarBuscar" class="btn btn-default" type="button"
+                        style="display:none;" title="Limpiar búsqueda">
+                  <i class="fa fa-times"></i>
+                </button>
+              </span>
             </div>
           </div>
         </div>
@@ -42,24 +56,7 @@
               <th style="width:80px; text-align:center;">Stock</th>
             </tr>
           </thead>
-          <tbody>
-            @foreach ($productos as $producto)
-            <tr>
-              <td>{{ $producto->descripcion }}</td>
-              <td>{{ $producto->talla }}</td>
-              <td>$ {{ number_format($producto->precio, 2) }}</td>
-              <td style="text-align:center;">
-                @if($producto->stock <= 0)
-                  <span class="label label-danger">{{ $producto->stock }}</span>
-                @elseif($producto->stock <= 5)
-                  <span class="label label-warning">{{ $producto->stock }}</span>
-                @else
-                  <span class="label label-success">{{ $producto->stock }}</span>
-                @endif
-              </td>
-            </tr>
-            @endforeach
-          </tbody>
+          <tbody></tbody>
         </table>
 
       </div>{{-- /.box-body --}}
@@ -90,61 +87,94 @@
     return tallaANumero(d);
   };
 
-  var dtConfig = {
-    language: {
-      "emptyTable":    "No hay información",
-      "info":          "Mostrando _START_ a _END_ de _TOTAL_ registros",
-      "infoEmpty":     "Mostrando 0 registros",
-      "infoFiltered":  "(filtrado de _MAX_ total)",
-      "lengthMenu":    "Mostrar _MENU_ registros",
-      "loadingRecords":"Cargando...",
-      "processing":    "Procesando...",
-      "search":        "Buscar:",
-      "zeroRecords":   "Sin resultados encontrados",
-      "thousands":     ","
-    },
-    "search": { "addClass": "form-control" },
-    "fnDrawCallback": function() {
-      $("input[type='search']").attr("id", "searchBox");
-      $('#searchBox').css("width", "300px").focus();
-    },
-    dom: 'Bfrtip',
-    buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-    order: [[0, 'asc'], [1, 'asc']],
-    columnDefs: [
-      { type: 'talla', targets: 1 },
-      { orderable: false, targets: 3 }
-    ]
-  };
+  var dt;
+  var categoriaActual = 'todos';
+  var buscarActual    = '';
+  var buscarTimer;
+
+  function getAjaxUrl() {
+    var url = '/inventario/' + categoriaActual;
+    if (buscarActual) url += '?buscar=' + encodeURIComponent(buscarActual);
+    return url;
+  }
+
+  function actualizarPDFBtn() {
+    var url = '/inventario/inventariopdf?categoria=' + categoriaActual;
+    if (buscarActual) url += '&buscar=' + encodeURIComponent(buscarActual);
+    $('#btnExportarPDF').attr('href', url);
+  }
 
   $(function () {
-    $('#example2').DataTable(dtConfig);
-    $("#menuinventario").addClass("important active");
-  });
-
-  // ── Filtro server-side por almacén ──
-  $("#categoria").change(function() {
-    var filtro = $(this).val();
-    $('#example2').DataTable().clear().destroy();
-    $('#example2').DataTable($.extend(true, {}, dtConfig, {
+    dt = $('#example2').DataTable({
       processing: true,
       serverSide: true,
-      ajax: "/inventario/" + filtro,
+      ajax: getAjaxUrl(),
       columns: [
         { data: 'descripcion', name: 'descripcion' },
-        { data: 'talla',       name: 'talla'       },
-        { data: 'precio',      name: 'precio',
-          render: function(data) { return '$ ' + parseFloat(data).toFixed(2); }
+        { data: 'talla', name: 'talla',
+          render: function(data) {
+            return '<span style="display:block;text-align:center;">' + (data || '—') + '</span>';
+          }
         },
-        { data: 'stock',       name: 'stock',
+        { data: 'precio', name: 'precio',
+          render: function(data) {
+            return '$ ' + parseFloat(data).toFixed(2);
+          }
+        },
+        { data: 'stock', name: 'stock',
           render: function(data) {
             var n = parseInt(data);
             var cls = n <= 0 ? 'danger' : (n <= 5 ? 'warning' : 'success');
-            return '<span class="label label-' + cls + '">' + n + '</span>';
-          }
+            return '<span class="label label-' + cls + '" style="display:block;text-align:center;">' + n + '</span>';
+          },
+          orderable: false
         }
+      ],
+      language: {
+        "emptyTable":    "No hay información",
+        "info":          "Mostrando _START_ a _END_ de _TOTAL_ registros",
+        "infoEmpty":     "Mostrando 0 registros",
+        "infoFiltered":  "(filtrado de _MAX_ total)",
+        "lengthMenu":    "Mostrar _MENU_ registros",
+        "loadingRecords":"Cargando...",
+        "processing":    "Procesando...",
+        "zeroRecords":   "Sin resultados encontrados",
+        "thousands":     ","
+      },
+      dom: 'Brtip',
+      buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+      order: [[0, 'asc']],
+      columnDefs: [
+        { type: 'talla', targets: 1 },
+        { orderable: false, targets: 3 }
       ]
-    }));
+    });
+
+    $("#menuinventario").addClass("important active");
+
+    // ── Filtro por almacén ──
+    $('#categoria').change(function() {
+      categoriaActual = $(this).val();
+      dt.ajax.url(getAjaxUrl()).load();
+      actualizarPDFBtn();
+    });
+
+    // ── Búsqueda por texto (debounce 400ms) ──
+    $('#buscar').on('input', function() {
+      var val = $(this).val().trim();
+      $('#btnLimpiarBuscar').toggle(val.length > 0);
+      clearTimeout(buscarTimer);
+      buscarTimer = setTimeout(function() {
+        buscarActual = val;
+        dt.ajax.url(getAjaxUrl()).load();
+        actualizarPDFBtn();
+      }, 400);
+    });
+
+    // ── Botón limpiar búsqueda ──
+    $('#btnLimpiarBuscar').click(function() {
+      $('#buscar').val('').trigger('input');
+    });
   });
 </script>
 @endsection

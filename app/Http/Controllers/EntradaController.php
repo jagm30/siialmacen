@@ -191,7 +191,7 @@ class EntradaController extends Controller
             ->where('entradas.id', '=', $id)
             ->first();
         $entradadetalle       = DB::table('entrada_productos')
-            ->select('entrada_productos.id','entrada_productos.id_entrada','entrada_productos.id_producto','entrada_productos.cantidad','entrada_productos.precio','entrada_productos.categoria','productos.nombre','productos.descripcion')
+            ->select('entrada_productos.id','entrada_productos.id_entrada','entrada_productos.id_producto','entrada_productos.cantidad','entrada_productos.precio','entrada_productos.categoria','productos.nombre','productos.descripcion','productos.talla')
             ->leftJoin('productos', 'entrada_productos.id_producto', '=', 'productos.id')            
             ->where('entrada_productos.id_entrada', '=', $id)
             ->get();

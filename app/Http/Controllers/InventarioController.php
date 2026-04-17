@@ -72,24 +72,28 @@ class InventarioController extends Controller
      */
     public function show(Request $request, $id)
     {
-        //Filtro de inventarios segun el almacen seleccionado
         if ($request->ajax()) {
-            if($id=='todos'){
-                return datatables()->of(DB::table('productos')
-                    ->select('productos.id','productos.nombre','productos.descripcion','productos.talla','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock')
-                    ->where('status','=', 'activo')
-                    ->get())
-                    ->make(true);
-            }else{
-                return datatables()->of(DB::table('productos')
-                    ->select('productos.id','productos.nombre','productos.descripcion','productos.talla','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','categoriaproductos.nombre as categoriaproducto')
-                    ->leftJoin('categoriaproductos', 'categoriaproductos.id', '=', 'productos.categoria')
-                    ->where('productos.status','=', 'activo')
-                    ->where('productos.categoria', '=', $id)
-                    ->get())
-                    ->make(true);
-            }           
-        } 
+            $buscar = trim($request->get('buscar', ''));
+
+            $query = DB::table('productos')
+                ->select('productos.id','productos.nombre','productos.descripcion','productos.talla',
+                         'productos.categoria','productos.claveproducto','productos.precio',
+                         'productos.precioPromocion','productos.stock')
+                ->where('productos.status', 'activo');
+
+            if ($id !== 'todos') {
+                $query->where('productos.categoria', $id);
+            }
+
+            if ($buscar !== '') {
+                $query->where(function($q) use ($buscar) {
+                    $q->where('productos.descripcion', 'like', "%{$buscar}%")
+                      ->orWhere('productos.talla', 'like', "%{$buscar}%");
+                });
+            }
+
+            return datatables()->of($query)->make(true);
+        }
     }
 
     /**
@@ -126,12 +130,30 @@ class InventarioController extends Controller
         //
     }
 
-    public function inventariopdf()
+    public function inventariopdf(Request $request)
     {
-        $productos  = DB::table('productos')
-            ->select('productos.id','productos.nombre','productos.descripcion','productos.talla','productos.categoria','productos.claveproducto','productos.precio','productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
+        $categoria = $request->get('categoria', 'todos');
+        $buscar    = trim($request->get('buscar', ''));
+
+        $query = DB::table('productos')
+            ->select('productos.id','productos.nombre','productos.descripcion','productos.talla',
+                     'productos.categoria','productos.claveproducto','productos.precio',
+                     'productos.precioPromocion','productos.stock','cat_almacens.nombre as nomalmacen')
             ->leftJoin('cat_almacens', 'cat_almacens.id', '=', 'productos.categoria')
-            ->where('status','=', 'activo')
+            ->where('productos.status', 'activo');
+
+        if ($categoria !== 'todos') {
+            $query->where('productos.categoria', $categoria);
+        }
+
+        if ($buscar !== '') {
+            $query->where(function($q) use ($buscar) {
+                $q->where('productos.descripcion', 'like', "%{$buscar}%")
+                  ->orWhere('productos.talla', 'like', "%{$buscar}%");
+            });
+        }
+
+        $productos = $query
             ->orderBy('cat_almacens.nombre', 'asc')
             ->orderBy('productos.descripcion', 'asc')
             ->orderByRaw("
@@ -150,9 +172,10 @@ class InventarioController extends Controller
                 END ASC
             ")
             ->get();
-        $today = Carbon::now()->format('d/m/Y');
-        $pdf = \PDF::loadView('inventario.inventarioPDF', compact('today','productos'))->setPaper(array(0,0,612.00,792.00));
-        return $pdf->stream();
 
+        $today = Carbon::now()->format('d/m/Y');
+        $pdf = \PDF::loadView('inventario.inventarioPDF', compact('today','productos'))
+                   ->setPaper(array(0,0,612.00,792.00));
+        return $pdf->stream();
     }
 }

@@ -2,26 +2,24 @@
 <head>
 <style>
     @page {
-        margin: 0cm 0cm;
+        margin: 1.5cm 1.5cm;
         font-family: Arial, Helvetica, sans-serif;
     }
     body {
-        margin-top: 4.2cm;
-        margin-left: 1.5cm;
-        margin-right: 1.5cm;
-        margin-bottom: 3cm;
+        margin: 0;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 10pt;
         color: #222;
     }
-    #watermark {
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        top: 0px;
-        width: 21.5cm;
-        height: 28cm;
-        z-index: -1000;
+    .logo-header {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 14px;
+    }
+    .logo-header td {
+        padding: 0;
+        border: none;
+        vertical-align: middle;
     }
 
     /* ── Sección de encabezado del documento ── */
@@ -134,17 +132,20 @@
 </head>
 <body>
 
-<div id="watermark">
-    <img src="{{ public_path().'/images/formato.jpg' }}" width="100%" height="100%">
-</div>
-
 <main>
 
-    {{-- Título y folio --}}
-    <table class="doc-header">
+    {{-- Logo y título --}}
+    <table class="logo-header">
         <tr>
-            <td><span class="doc-title">Entrada de mercancía</span></td>
-            <td class="doc-folio">Fecha: {{ $entrada->fecha }}</td>
+            <td style="width:120px;">
+                <img src="{{ public_path().'/images/logo.png' }}" height="60">
+            </td>
+            <td style="text-align:center;">
+                <span class="doc-title">Entrada de mercancía</span>
+            </td>
+            <td style="width:130px; text-align:right;">
+                <span class="doc-folio">Fecha: {{ $entrada->fecha }}</span>
+            </td>
         </tr>
     </table>
 
@@ -172,16 +173,18 @@
     <table class="detalle">
         <thead>
             <tr>
-                <th style="width:45%;">Descripción</th>
-                <th class="num" style="width:15%;">Cantidad</th>
-                <th class="num" style="width:20%;">Precio unit.</th>
-                <th class="num" style="width:20%;">Subtotal</th>
+                <th style="width:38%;">Descripción</th>
+                <th style="width:12%; text-align:center;">Talla</th>
+                <th class="num" style="width:13%;">Cantidad</th>
+                <th class="num" style="width:18%;">Precio unit.</th>
+                <th class="num" style="width:19%;">Subtotal</th>
             </tr>
         </thead>
         <tbody>
             @foreach($entradadetalle as $detalle)
             <tr>
                 <td>{{ $detalle->descripcion }}</td>
+                <td style="text-align:center;">{{ $detalle->talla ?: '—' }}</td>
                 <td class="num">{{ number_format($detalle->cantidad, 0) }}</td>
                 <td class="num">$ {{ number_format($detalle->precio, 2) }}</td>
                 <td class="num">$ {{ number_format($detalle->precio * $detalle->cantidad, 2) }}</td>
@@ -191,11 +194,12 @@
         <tfoot>
             <tr class="fila-articulos">
                 <td>Total de artículos</td>
+                <td></td>
                 <td class="num">{{ number_format($totalarticulos[0]->totalarticulos, 0) }}</td>
                 <td colspan="2"></td>
             </tr>
             <tr class="fila-total">
-                <td colspan="3" class="num">TOTAL</td>
+                <td colspan="4" class="num">TOTAL</td>
                 <td class="num">$ {{ number_format($totalimporte[0]->totalimporte, 2) }}</td>
             </tr>
         </tfoot>

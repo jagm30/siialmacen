@@ -108,7 +108,7 @@
                   class="form-control select2" style="width:100%;">
             <option value="">Seleccione un artículo...</option>
             @foreach($productos as $producto)
-              <option value="{{ $producto->id }}">{{ $producto->descripcion }}</option>
+              <option value="{{ $producto->id }}">{{ $producto->descripcion }}{{ $producto->talla ? ' - ' . $producto->talla : '' }}</option>
             @endforeach
           </select>
         </div>
@@ -167,6 +167,7 @@
           <thead>
             <tr>
               <th>Descripción</th>
+              <th style="width:80px; text-align:center;">Talla</th>
               <th style="width:80px; text-align:center;">Cantidad</th>
               <th style="width:110px; text-align:right;">Precio</th>
               <th style="width:110px; text-align:right;">Subtotal</th>
@@ -175,7 +176,7 @@
           </thead>
           <tfoot>
             <tr>
-              <th colspan="2"></th>
+              <th colspan="3"></th>
               <th style="text-align:right; font-size:12px;">Total:</th>
               <th id="footer-total"></th>
               <th></th>
@@ -210,6 +211,11 @@
       ajax: "/entradaproductos/listarxentrada/" + {{ $entrada->id }},
       columns: [
         { data: 'descripcion', name: 'descripcion' },
+        { data: 'talla',       name: 'talla',
+          render: function(data) {
+            return '<span style="display:block; text-align:center;">' + (data || '—') + '</span>';
+          }
+        },
         { data: 'cantidad',    name: 'cantidad',
           render: function(data) {
             return '<span style="display:block; text-align:center;">' + data + '</span>';
@@ -233,7 +239,7 @@
       language: { processing: 'Cargando...', emptyTable: 'Sin artículos agregados.' },
       "footerCallback": function(row, data, start, end, display) {
         var total = this.api()
-          .column(3)
+          .column(4)
           .data()
           .reduce(function(a, b) { return parseFloat(a) + parseFloat(b); }, 0);
 
