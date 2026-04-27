@@ -57,12 +57,7 @@
           </div>
           <div class="form-group col-md-6">
             <label>Proveedor</label>
-            <select id="proveedor-e" class="form-control">
-              <option value="">Seleccione un proveedor</option>
-              @foreach($proveedores as $prov)
-                <option value="{{ $prov->id }}">{{ $prov->nombre }}</option>
-              @endforeach
-            </select>
+            <input id="proveedor-e" type="text" class="form-control" placeholder="Nombre del proveedor">
           </div>
           <div class="form-group col-md-6">
             <label>Fecha de recepción</label>
@@ -207,7 +202,7 @@
       var observaciones = $('#observaciones-e').val();
 
       if (!nfactura)  { $('#cajaerror-e').html('<div class="alert alert-warning">Ingrese el No. de factura.</div>'); return; }
-      if (!proveedor) { $('#cajaerror-e').html('<div class="alert alert-warning">Seleccione un proveedor.</div>'); return; }
+      if (!proveedor) { $('#cajaerror-e').html('<div class="alert alert-warning">Ingrese el nombre del proveedor.</div>'); return; }
       if (!categoria) { $('#cajaerror-e').html('<div class="alert alert-warning">Seleccione un almacén.</div>'); return; }
 
       $.ajax({

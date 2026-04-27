@@ -26,21 +26,21 @@ class EntradaController extends Controller
         //
         if ($request->ajax()) {
                 return datatables()->of(DB::table('entradas')
-            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
+            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario',DB::raw('COALESCE(proveedors.nombre, entradas.proveedor) as nombreproveedor'),'cat_almacens.nombre as nomalmacen')
             ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
             ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
             ->orderBy('id', 'DESC')
             ->take(10)
             ->get())
-                    ->make(true);                
-        } 
+                    ->make(true);
+        }
         $date = Carbon::now();
         $date = $date->format('Y-m-d');
         $almacenes      = CatAlmacen::all();
         $proveedores    = Proveedor::all();
         $productos      = Producto::all();
         $entradas       = DB::table('entradas')
-            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
+            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario',DB::raw('COALESCE(proveedors.nombre, entradas.proveedor) as nombreproveedor'),'cat_almacens.nombre as nomalmacen')
             ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
             ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
             ->get();
@@ -89,7 +89,7 @@ class EntradaController extends Controller
     public function show(Request $request, $id)
     {
         $entrada = DB::table('entradas')
-            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
+            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario',DB::raw('COALESCE(proveedors.nombre, entradas.proveedor) as nombreproveedor'),'cat_almacens.nombre as nomalmacen')
             ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
             ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
             ->where('entradas.id', '=', $id)
@@ -185,7 +185,7 @@ class EntradaController extends Controller
     public function reportepdf($id)
     {
         $entrada       = DB::table('entradas')
-            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
+            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario',DB::raw('COALESCE(proveedors.nombre, entradas.proveedor) as nombreproveedor'),'cat_almacens.nombre as nomalmacen')
             ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
             ->leftJoin('cat_almacens', 'entradas.id_almacen', '=', 'cat_almacens.id')
             ->where('entradas.id', '=', $id)
@@ -258,12 +258,12 @@ class EntradaController extends Controller
     {
         if ($request->ajax()) {
             return datatables()->of(DB::table('entradas')
-            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario','proveedors.nombre as nombreproveedor','cat_almacens.nombre as nomalmacen')
+            ->select('entradas.id','entradas.proveedor','entradas.fecha','entradas.nfactura','entradas.referencia','entradas.categoria','entradas.observaciones','entradas.status','entradas.id_usuario',DB::raw('COALESCE(proveedors.nombre, entradas.proveedor) as nombreproveedor'),'cat_almacens.nombre as nomalmacen')
             ->leftJoin('proveedors', 'entradas.proveedor', '=', 'proveedors.id')
             ->leftJoin('cat_almacens', 'entradas.categoria', '=', 'cat_almacens.id')
             ->where('entradas.fecha','>=',$fecha1)
             ->where('entradas.fecha','<=',$fecha2)
-            ->get())->make(true); 
+            ->get())->make(true);
         }
     }
 }
