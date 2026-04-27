@@ -27,11 +27,7 @@
         </div>
         <div class="form-group col-md-4">
           <label>Proveedor</label>
-          <select id="proveedor" class="form-control">
-            @foreach($proveedores as $prov)
-              <option value="{{ $prov->id }}">{{ $prov->nombre }}</option>
-            @endforeach
-          </select>
+          <input id="proveedor" type="text" class="form-control" placeholder="Nombre del proveedor">
         </div>
         <div class="form-group col-md-4">
           <label>Fecha de recepción</label>
@@ -248,7 +244,7 @@
         $('#nfactura').focus(); return;
       }
       if (!proveedor) {
-        $('#cajaerror').html('<div class="alert alert-warning">Seleccione un proveedor.</div>'); return;
+        $('#cajaerror').html('<div class="alert alert-warning">Ingrese el nombre del proveedor.</div>'); return;
       }
       if (!categoria) {
         $('#cajaerror').html('<div class="alert alert-warning">Seleccione un almacén.</div>'); return;
@@ -275,7 +271,7 @@
               $('#cat_entrada').val(entrada.categoria);
               $('#info-almacen').html('<i class="fa fa-building-o" style="color:#aaa;"></i>&nbsp;<strong>' + (entrada.nomalmacen || '') + '</strong>');
               $('#info-factura').html('<i class="fa fa-file-text-o" style="color:#aaa;"></i>&nbsp;Factura: <strong>' + (entrada.nfactura || '—') + '</strong>');
-              $('#info-proveedor').html('<i class="fa fa-user" style="color:#aaa;"></i>&nbsp;<strong>' + (entrada.nombreproveedor || '—') + '</strong>');
+              $('#info-proveedor').html('<i class="fa fa-user" style="color:#aaa;"></i>&nbsp;<strong>' + (entrada.nombreproveedor || entrada.proveedor || '—') + '</strong>');
               $('#info-fecha').html('<i class="fa fa-calendar" style="color:#aaa;"></i>&nbsp;' + (entrada.fecha || ''));
               // Transición: ocultar paso 1, mostrar paso 2
               $('#panel-cabecera').slideUp(300, function() {
