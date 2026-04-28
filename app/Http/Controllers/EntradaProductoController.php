@@ -100,10 +100,10 @@ class EntradaProductoController extends Controller
      * @param  \App\Models\EntradaProducto  $entradaProducto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EntradaProducto $entradaProducto)
+    public function update(Request $request, EntradaProducto $entradaproducto)
     {
-        $entradaProducto->precio = $request->precio;
-        $entradaProducto->save();
+        $entradaproducto->precio = $request->precio;
+        $entradaproducto->save();
         return response()->json(['data' => 'Precio actualizado correctamente.']);
     }
 

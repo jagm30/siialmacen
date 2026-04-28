@@ -52,7 +52,7 @@ class ProductoController extends Controller
         $producto->nombre           = $nombre;
         $producto->claveproducto    = $claveproducto;
         $producto->descripcion      = $descripcion;
-        $producto->talla            = $talla;
+        $producto->talla            = ($talla === 'null') ? null : $talla;
         $producto->categoria        = $categoria;
         $producto->precio           = $precio;
         $producto->precioPromocion  = $precioPromocion;

@@ -310,7 +310,7 @@
   $('#btn_guardarcambio').click(function() {
     var id_producto     = $("#id_producto").val();
     var nombre          = $("#nombre-e").val();
-    var talla           = $("#talla-e").val();
+    var talla           = $("#talla-e").val().trim() || 'null';
     var claveproducto   = $("#claveproducto-e").val();
     var descripcion     = nombre;
     var categoria       = $("#categoria-e").val();
