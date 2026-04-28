@@ -54,9 +54,12 @@ class EntradaProductoController extends Controller
             ->where('entrada_productos.id_entrada',$id)
             ->get()
         )->addColumn('action', function($data){
-            //$btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-original-title="Edit" class="edit btn btn-primary btn-sm editItem">Edit</a>'; {{route('productos.borrar',$producto->id)}},,href="#" data-id="{{ $entradaproductos->id }}
-
-            $btn = '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar artículo"
+            $btn  = '<a href="javascript:void(0)" title="Editar precio"
+                        data-id="'.$data->id.'" data-precio="'.$data->precio.'"
+                        class="btn btn-warning btn-xs btn-editar-precio" style="margin-right:3px;">
+                        <i class="fa fa-pencil"></i>
+                    </a>';
+            $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" title="Eliminar artículo"
                         data-id="'.$data->id.'" id="btn-eliminar" name="btn-eliminar"
                         class="btn btn-danger btn-xs">
                         <i class="fa fa-trash"></i>
@@ -99,7 +102,9 @@ class EntradaProductoController extends Controller
      */
     public function update(Request $request, EntradaProducto $entradaProducto)
     {
-        //
+        $entradaProducto->precio = $request->precio;
+        $entradaProducto->save();
+        return response()->json(['data' => 'Precio actualizado correctamente.']);
     }
 
     /**

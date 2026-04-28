@@ -140,7 +140,7 @@ THEN
     UPDATE entrada_productos
     SET status = 'finalizado'
     WHERE id_entrada = new.id;
-END IF //
+END IF //bdsiialmacenbdsiialmacen
 DELIMITER ;
 
 

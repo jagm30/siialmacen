@@ -55,6 +55,12 @@
       </div>
 
       <div style="margin-left:auto; white-space:nowrap; display:flex; gap:6px; align-items:center;">
+        @if($entrada->status !== 'cancelado')
+          <button type="button" class="btn btn-sm btn-info" id="btnEditarEncabezado"
+                  title="Editar proveedor, factura y observaciones">
+            <i class="fa fa-pencil"></i> Editar
+          </button>
+        @endif
         @if($entrada->status == 'finalizado')
           <a href="/entradas/reportepdf/{{ $entrada->id }}" target="_blank"
              class="btn btn-danger btn-sm">
@@ -188,6 +194,72 @@
   </div>{{-- /col-md-8 --}}
 
 </div>{{-- /row --}}
+
+{{-- ── Modal: Editar encabezado de entrada ── --}}
+<div class="modal fade" id="modalEditarEncabezado" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background:#00c0ef; padding:10px 15px;">
+        <h4 class="modal-title" style="color:#fff;">
+          <i class="fa fa-pencil"></i> Editar datos de la entrada
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label><i class="fa fa-user"></i> Proveedor</label>
+          <input id="edit_proveedor" type="text" class="form-control"
+                 value="{{ $entrada->nombreproveedor }}" placeholder="Nombre del proveedor">
+        </div>
+        <div class="form-group">
+          <label><i class="fa fa-file-text-o"></i> Número de factura</label>
+          <input id="edit_nfactura" type="text" class="form-control"
+                 value="{{ $entrada->nfactura }}" placeholder="Núm. de factura">
+        </div>
+        <div class="form-group">
+          <label><i class="fa fa-comment"></i> Observaciones</label>
+          <textarea id="edit_observaciones" class="form-control" rows="3"
+                    placeholder="Observaciones...">{{ $entrada->observaciones }}</textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button id="btn-guardar-encabezado" type="button" class="btn btn-info">
+          <i class="fa fa-save"></i> Guardar cambios
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{-- ── Modal: Editar precio ── --}}
+<div class="modal fade" id="modalEditarPrecio" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background:#f39c12; padding:10px 15px;">
+        <h4 class="modal-title" style="color:#fff;">
+          <i class="fa fa-pencil"></i> Editar precio
+        </h4>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="edit_id_entpro">
+        <div class="form-group">
+          <label>Nuevo precio de factura</label>
+          <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input id="edit_precio" type="number" step="0.01" min="0"
+                   class="form-control" placeholder="0.00">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button id="btn-guardar-precio" type="button" class="btn btn-warning">
+          <i class="fa fa-save"></i> Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 @endsection
 @section("scriptpie")
@@ -332,6 +404,73 @@
         }
       });
     }
+  });
+
+  // ── Editar encabezado (proveedor, factura, observaciones) ──
+  $('#btnEditarEncabezado').click(function() {
+    $('#modalEditarEncabezado').modal('show');
+  });
+
+  $('#btn-guardar-encabezado').click(function() {
+    var $btn = $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Guardando...');
+    $.ajax({
+      url:  '/entradas/{{ $entrada->id }}',
+      type: 'POST',
+      data: {
+        _token:        '{{ csrf_token() }}',
+        _method:       'PUT',
+        proveedor:     $('#edit_proveedor').val(),
+        nfactura:      $('#edit_nfactura').val(),
+        observaciones: $('#edit_observaciones').val()
+      },
+      success: function(res) {
+        $('#modalEditarEncabezado').modal('hide');
+        location.reload();
+      },
+      error: function() {
+        alert('Error al guardar los cambios.');
+      },
+      complete: function() {
+        $btn.prop('disabled', false).html('<i class="fa fa-save"></i> Guardar cambios');
+      }
+    });
+  });
+
+  // ── Editar precio de artículo ──
+  $(document).on("click", ".btn-editar-precio", function() {
+    $('#edit_id_entpro').val($(this).data('id'));
+    $('#edit_precio').val($(this).data('precio'));
+    $('#modalEditarPrecio').modal('show');
+    setTimeout(function() { $('#edit_precio').select(); }, 500);
+  });
+
+  $('#btn-guardar-precio').click(function() {
+    var id     = $('#edit_id_entpro').val();
+    var precio = $('#edit_precio').val();
+    if (precio === '' || isNaN(parseFloat(precio)) || parseFloat(precio) < 0) {
+      alert('Ingrese un precio válido.');
+      return;
+    }
+    var $btn = $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Guardando...');
+    $.ajax({
+      url:  '/entradaproductos/' + id,
+      type: 'POST',
+      data: {
+        _token:  '{{ csrf_token() }}',
+        _method: 'PUT',
+        precio:  precio
+      },
+      success: function() {
+        $('#modalEditarPrecio').modal('hide');
+        $('#alumnos_table').DataTable().ajax.reload();
+      },
+      error: function() {
+        alert('Error al actualizar el precio.');
+      },
+      complete: function() {
+        $btn.prop('disabled', false).html('<i class="fa fa-save"></i> Guardar');
+      }
+    });
   });
 
   // ── Cancelar entrada finalizada ──

@@ -130,7 +130,11 @@ class EntradaController extends Controller
      */
     public function update(Request $request, Entrada $entrada)
     {
-        //
+        $entrada->proveedor     = $request->proveedor;
+        $entrada->nfactura      = $request->nfactura;
+        $entrada->observaciones = $request->observaciones;
+        $entrada->save();
+        return response()->json(['data' => 'Datos actualizados correctamente.']);
     }
 
     public function edicion(Request $request, $id_entrada ,$proveedor ,$fecha ,$nfactura ,$referencia ,$categoria, $observaciones)
