@@ -164,9 +164,27 @@
         border-top: 1px dashed #aaa;
         padding-top: 4px;
     }
+    .sello-cancelado {
+        position: fixed;
+        top: 38%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 72pt;
+        font-weight: bold;
+        color: #cc0000;
+        opacity: 0.15;
+        transform: rotate(-45deg);
+        z-index: 1000;
+        letter-spacing: 4px;
+    }
 </style>
 </head>
 <body>
+
+@if($salida->status == 'cancelado')
+<div class="sello-cancelado">CANCELADO</div>
+@endif
 
 <main>
 

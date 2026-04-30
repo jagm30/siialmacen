@@ -153,7 +153,7 @@
           return ver +
             '<button class="btn btn-success btn-xs btneditar" data-id="' + id + '" ' +
             'data-toggle="modal" data-target="#modal-default">Editar</button> ' +
-            '<button class="btn btn-danger btn-xs btn-elim-venta" data-id="' + id + '">Borrar</button>';
+            '<button class="btn btn-danger btn-xs btn-elim-venta" data-id="' + id + '">Cancelar</button>';
         }
       }
     ];
@@ -269,10 +269,10 @@
       });
     });
 
-    // ── Eliminar venta ─────────────────────────────────────────────────
+    // ── Cancelar venta en captura ──────────────────────────────────────
     $(document).on('click', '.btn-elim-venta', function() {
       var id = $(this).data('id');
-      if (!confirm("¿Desea eliminar la venta #" + id + "?")) return;
+      if (!confirm("¿Desea cancelar la venta #" + id + "?\nEl folio quedará registrado como cancelado.")) return;
       $.ajax({
         url: "{{ url('salidas/delete') }}/" + id,
         success: function(data) {

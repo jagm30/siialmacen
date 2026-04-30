@@ -139,15 +139,51 @@ class SalidaController extends Controller
      */
     public function destroy($id)
     {
-        $salida   = Salida::findOrFail($id);
-        if($salida->status =='captura'){
-            $salida->delete();
-            Salidaproducto::where('id_salida', $id)->delete();
-            return response()->json(['data' => "Eliminado correctamente..."]);
-        }else{
-            return response()->json(['data' => "El registro no se puede borrar, estatus: finalizado"]);
+        $salida = Salida::findOrFail($id);
+
+        if ($salida->status !== 'captura') {
+            return response()->json(['data' => 'El registro no se puede cancelar, estatus: ' . $salida->status]);
         }
-        
+
+        $motivo = 'venta no concretada';
+
+        $items = Salidaproducto::where('id_salida', $id)
+                    ->whereIn('status', ['captura', 'finalizado'])
+                    ->get();
+
+        foreach ($items as $item) {
+            if ($item->cantidad > 0) {
+                DB::table('productos')
+                    ->where('id', $item->id_producto)
+                    ->increment('stock', $item->cantidad);
+
+                DB::table('kardexes')->insert([
+                    'tipomovimiento' => 'cancelacion',
+                    'id_movimiento'  => $id,
+                    'id_producto'    => $item->id_producto,
+                    'cantidad'       => $item->cantidad,
+                    'motivo'         => 'cancelacion venta: ' . $motivo,
+                    'id_usuario'     => Auth::id(),
+                    'created_at'     => now(),
+                    'updated_at'     => now(),
+                ]);
+            }
+
+            $item->status = 'cancelado';
+            $item->save();
+        }
+
+        $salida->status = 'cancelado';
+        $salida->save();
+
+        $cancelacion = new Cancelacion;
+        $cancelacion->id_salida  = $id;
+        $cancelacion->motivo     = $motivo;
+        $cancelacion->fecha      = Carbon::now()->format('Y-m-d');
+        $cancelacion->id_usuario = Auth::id();
+        $cancelacion->save();
+
+        return response()->json(['data' => 'Venta cancelada. El folio #' . $id . ' queda registrado.']);
     }
     public function finalizarsalida(Request $request, $id, $formapago, $totalventa)
     {
